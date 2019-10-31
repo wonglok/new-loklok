@@ -29,8 +29,9 @@ export const makeCubeCam = async () => {
 
 export const woozy = async ({ scene, parent, api }) => {
   let rID = getID()
+  // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
   var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
-  // var geometry = new THREE.PlaneBufferGeometry(25, 25, 320, 320)
+  // var geometry = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 2, 293, 20, 3, 4)
 
   let cubeTexutre = await makeCubeTexture([
     require('../Textures/cubemap/lok/px.png'), require('../Textures/cubemap/lok/nx.png'),
@@ -123,6 +124,7 @@ export const setupControls = async ({ camera, mounter, api }) => {
 
 export const setupBase = async ({ api, mounter, vm }) => {
   let rID = getID()
+  let exited = false
 
   let rect = mounter.getBoundingClientRect()
   var scene = new THREE.Scene()
@@ -134,6 +136,16 @@ export const setupBase = async ({ api, mounter, vm }) => {
   renderer.setSize(rect.width, rect.height)
   mounter.appendChild(renderer.domElement)
   renderer.domElement.style.marginBottom = '-6px'
+
+  window.addEventListener('resize', () => {
+    if (exited) {
+      return
+    }
+    rect = mounter.getBoundingClientRect()
+    renderer.setSize(rect.width, rect.height)
+    camera.aspect = rect.width / rect.height
+    camera.updateProjectionMatrix()
+  })
 
   setupControls({ camera, api, mounter })
   camera.position.z = 20
@@ -153,11 +165,12 @@ export const setupBase = async ({ api, mounter, vm }) => {
   }
 
   api.teardown[rID] = () => {
+    exited = true
+    console.log('clean')
     cancelAnimationFrame(rAFID)
     mounter.removeChild(renderer.domElement)
     renderer.dispose()
     scene.dispose()
-    console.log('clean')
   }
 
   animate()
