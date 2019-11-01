@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "github": "git add .; git commit -am \"github backup\"; git push -u origin master",
-    "deploy": "npm run build; npm run cp; npm run netlify; npm run github; ",
+    "deploy": "npm run build; npm run netlify; npm run github; ",
     "netlify": "netlify deploy --dir=\"./dist\" --prod"
   },
   "dependencies": {

@@ -53,10 +53,12 @@ varying vec2 vUv;
 void main() {
   vUv = uv;
   vec3 funPos = position;
-
-  funPos.x += funPos.x * cnoise(normal.x + vec2(0.0) + time) * 0.2;
-  funPos.y += funPos.y * cnoise(normal.y + vec2(0.0) + time) * 0.3;
-  funPos.z += funPos.z * cnoise(normal.z + vec2(0.0) + time) * 0.1;
+  float cx = cnoise(normal.x + vec2(position.x * 0.1) + time) * 0.1;
+  float cy = cnoise(normal.y + vec2(position.y * 0.2) + time) * 0.1;
+  float cz = cnoise(normal.z + vec2(position.z * 0.3) + time) * 0.1;
+  funPos.x += funPos.x * cx;
+  funPos.y += funPos.y * cy;
+  funPos.z += funPos.z * cz;
 
   vec4 mvPosition = modelViewMatrix * vec4( funPos, 1.0 );
   vec4 worldPosition = modelMatrix * vec4( funPos, 1.0 );

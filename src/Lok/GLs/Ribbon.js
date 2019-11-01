@@ -34,9 +34,9 @@ export const woozy = async ({ scene, parent, api }) => {
   // var geometry = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 2, 293, 20, 3, 4)
 
   let cubeTexutre = await makeCubeTexture([
-    require('../Textures/cubemap/lok/px.png'), require('../Textures/cubemap/lok/nx.png'),
-    require('../Textures/cubemap/lok/py.png'), require('../Textures/cubemap/lok/ny.png'),
-    require('../Textures/cubemap/lok/pz.png'), require('../Textures/cubemap/lok/nz.png')
+    require('../Textures/cubemap/happy-mint/px.png'), require('../Textures/cubemap/happy-mint/nx.png'),
+    require('../Textures/cubemap/happy-mint/py.png'), require('../Textures/cubemap/happy-mint/ny.png'),
+    require('../Textures/cubemap/happy-mint/pz.png'), require('../Textures/cubemap/happy-mint/nz.png')
   ])
 
   scene.background = cubeTexutre

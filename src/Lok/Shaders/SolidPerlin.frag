@@ -40,6 +40,6 @@ void main() {
   // } else {
   //   gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
   // }
-
-  gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
+  float colorModifier = 0.1;
+  gl_FragColor = mix( refractedColor, reflectedColor + colorModifier, clamp( vReflectionFactor, 0.0, 1.0 ) );
 }
