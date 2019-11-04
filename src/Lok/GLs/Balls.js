@@ -4,7 +4,8 @@ export const getID = () => {
 
 let THREE = {
   ...require('three'),
-  ...require('three/examples/jsm/controls/OrbitControls.js')
+  ...require('three/examples/jsm/controls/OrbitControls.js'),
+  ...require('three/examples/jsm/loaders/SVGLoader.js')
 }
 
 let glsl = require('glslify')
@@ -107,6 +108,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
   let material = await makeWoozyMat({ cubeTexture, api })
 
+  let imgs = []
   let cubes = []
   // eslint-disable-next-line
   for (var i = 0; i < 20; i++) {
@@ -121,6 +123,18 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     cubes.push(cube)
     parent.add(cube)
+
+    let img = await makeLogo({ cubeTexture, parent, idx: i })
+    img.userData.rx = cube.userData.rx
+    img.userData.ry = cube.userData.ry
+    img.userData.rz = cube.userData.rz
+
+    img.position.x = img.userData.rx * 70
+    img.position.y = img.userData.ry * 70
+    img.position.z = img.userData.rz * 70
+    // img.position.copy(cube.position)
+    imgs.push(img)
+    parent.add(img)
   }
 
   api.teardown[rID] = () => {
@@ -139,7 +153,12 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
   api.tasks[rID] = () => {
     let time = window.performance.now() * 0.001
 
-    cubes.forEach(e => {
+    cubes.forEach((e, idx) => {
+      e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
+      e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
+      e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
+    })
+    imgs.forEach(e => {
       e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
       e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
       e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
@@ -183,7 +202,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       this.height = 128
       this.width = this.height = this.size
 
-      this.maxAge = 64
+      this.maxAge = 200
       this.radius = 0.1 * this.size
       // this.radius = 0.15 * 1000
 
@@ -291,11 +310,13 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
+      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 60%`
+
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
       ctx.shadowOffsetY = offset // (default 0)
       ctx.shadowBlur = radius * 1 // (default 0)
-      ctx.shadowColor = `rgba(${color},${0.35 * intensity})` // (default transparent black)
+      ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
 
       this.ctx.beginPath()
       this.ctx.fillStyle = 'rgba(255,0,0,1)'
@@ -327,19 +348,21 @@ export const makeCanvasCubeTexture = async ({ api }) => {
     }
   }
 
+  let t = new TouchTexture()
   var touchTextures = [
-    new TouchTexture(),
-    new TouchTexture(),
-    new TouchTexture(),
-    new TouchTexture(),
-    new TouchTexture(),
-    new TouchTexture()
+    t,
+    t,
+    t,
+    t,
+    t,
+    t
   ]
 
   api.tasks[rID] = () => {
-    touchTextures.forEach(e => {
-      e.update()
-    })
+    // touchTextures.forEach(e => {
+    //   e.update()
+    // })
+    t.update()
     cubeTexture.needsUpdate = true
   }
 
@@ -347,20 +370,144 @@ export const makeCanvasCubeTexture = async ({ api }) => {
   window.addEventListener('touchmove', on.onTouchMove, { passive: false })
 
   let cubeTexture = new THREE.CubeTexture([
-    ...touchTextures.map(e => e.canvas)
+    t.canvas,
+    t.canvas,
+    t.canvas,
+    t.canvas,
+    t.canvas,
+    t.canvas
   ])
   return cubeTexture
 }
 
-export const makeCenterPiece = ({ cubeTexture, parent, scene }) => {
-  // var geo = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 1.5, 293, 20, 3, 4)
-  var geo = new THREE.TorusBufferGeometry(10, 3, 16, 100)
+export const makeFontGeo = ({ text }) => {
+  return new Promise((resolve) => {
+    // var loader = new THREE.FontLoader()
+    // loader.load(, function (font) {
+    // eslint-disable-next-line
+    var font = require('../Fonts/helvetiker_regilar.typeface.json');
+    font = new THREE.Font(font)
+    var geometry = new THREE.TextGeometry(text, {
+      font: font,
+      size: 7.2,
+      height: 2,
+      curveSegments: 16,
+      bevelEnabled: true,
+      bevelThickness: 0.2,
+      bevelSize: 0.11,
+      bevelOffset: 0,
+      bevelSegments: 2
+    })
+    resolve(geometry)
+    // })
+  })
+}
 
+export const loadTexture = (img) => {
+  let items = img
+  let texture = new THREE.TextureLoader()
+
+  return new Promise((resolve) => {
+    texture.load(items, (texture) => {
+      resolve(texture)
+    })
+  })
+}
+
+export const makeLogo = async ({ cubeTexture, parent, idx = 0 }) => {
+  let geo = new THREE.CircleBufferGeometry(5, 64, 64)
+  // let loader = new THREE.TextureLoader()
+  // let logo = loader.load(require('../Textures/demos/face1.svg'), () => {
+  // })
+
+  let logos = [
+    await loadTexture(require('../Textures/demos/lok.png'))
+    // await loadTexture(require('../Textures/demos/doggo.png'))
+    // await loadTexture(require('../Textures/demos/cat.png'))
+  ]
+
+  var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, map: logos[idx % logos.length], transparent: false, opacity: 1.0 })
+  mat.color = new THREE.Color(0xffffff)
+  mat.refractionRatio = 0.9
+  mat.reflectionRatio = 0.9
+
+  mat.envMap = cubeTexture
+  // mat.envMap.mapping = THREE.CubeReflectionMapping
+  mat.envMap.mapping = THREE.CubeRefractionMapping
+  mat.needsUpdate = true
+
+  var mesh = new THREE.Mesh(geo, mat)
+  // mesh.scale.x = 0.5
+  // mesh.scale.y = 0.5
+  // mesh.scale.z = 0.5
+  mesh.position.x = -8
+
+  // parent.add(mesh)
+  parent.add(mesh)
+
+  return mesh
+}
+
+// export const makeSVG = ({ scene }) => {
+//   return new Promise((resolve) => {
+//     // eslint-disable-next-line
+//     var text = require('../Textures/demos/face1.svg')
+//     let svgLoader = new THREE.SVGLoader()
+//     console.log(text)
+//     svgLoader.load(text, (data) => {
+//       var paths = data.paths
+//       var group = new THREE.Group()
+
+//       for (var i = 0; i < paths.length; i++) {
+//         var path = paths[ i ]
+
+//         var material = new THREE.MeshBasicMaterial({
+//           color: path.color,
+//           side: THREE.DoubleSide,
+//           depthWrite: false
+//         })
+
+//         var shapes = path.toShapes(true)
+
+//         for (var j = 0; j < shapes.length; j++) {
+//           var shape = shapes[ j ]
+//           var geometry = new THREE.ShapeBufferGeometry(shape)
+//           var mesh = new THREE.Mesh(geometry, material)
+//           group.add(mesh)
+//         }
+//       }
+//       scene.add(group)
+//     })
+//     // var geometry = new THREE.TextGeometry(text, {
+//     //   font: font,
+//     //   size: 7.2,
+//     //   height: 2,
+//     //   curveSegments: 16,
+//     //   bevelEnabled: true,
+//     //   bevelThickness: 0.2,
+//     //   bevelSize: 0.11,
+//     //   bevelOffset: 0,
+//     //   bevelSegments: 2
+//     // })
+//     // resolve(geometry)
+//   })
+// }
+
+export const makeCenterPiece = async ({ cubeTexture, parent, scene }) => {
+  // var geo = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 1.5, 293, 20, 4, 5)
+  // var geo = new THREE.TorusBufferGeometry(10, 3, 16, 100)
+  // var geo = new THREE.TorusBufferGeometry(10, 1.5, 16, 100)
+  // var geo = new THREE.SphereBufferGeometry(10, 128, 128)
+  // var geo = new THREE.BoxBufferGeometry(10, 10, 10, 128, 128, 128)
   // var geo = new THREE.OctahedronGeometry(5, 2)
-  var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: cubeTexture })
+
+  let geo = await makeFontGeo({ text: 'LokLok.' })
+
+  var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: cubeTexture, opacity: 0.7, transparent: true })
   mat.color = new THREE.Color(0xeeeeee)
   mat.refractionRatio = 0.98
   mat.reflectionRatio = 0.98
+
   mat.envMap = cubeTexture
   mat.envMap.mapping = THREE.CubeReflectionMapping
   // mat.envMap.mapping = THREE.CubeRefractionMapping
@@ -370,9 +517,12 @@ export const makeCenterPiece = ({ cubeTexture, parent, scene }) => {
   mesh.scale.x = 0.5
   mesh.scale.y = 0.5
   mesh.scale.z = 0.5
+  mesh.position.x = -8
 
   // parent.add(mesh)
   parent.add(mesh)
+
+  return mesh
 }
 
 export const setupBase = async ({ api, mounter, vm }) => {
@@ -405,11 +555,12 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // setupControls({ camera, api, mounter })
   camera.position.z = 20
 
-  let cubeBox1 = await makeCubeTexture([
-    require('../Textures/cubemap/happy-mint/px.png'), require('../Textures/cubemap/happy-mint/nx.png'),
-    require('../Textures/cubemap/happy-mint/py.png'), require('../Textures/cubemap/happy-mint/ny.png'),
-    require('../Textures/cubemap/happy-mint/pz.png'), require('../Textures/cubemap/happy-mint/nz.png')
-  ])
+  // let cubeBox1 = await makeCubeTexture([
+  //   require('../Textures/cubemap/happy-mint/px.png'), require('../Textures/cubemap/happy-mint/nx.png'),
+  //   require('../Textures/cubemap/happy-mint/py.png'), require('../Textures/cubemap/happy-mint/ny.png'),
+  //   require('../Textures/cubemap/happy-mint/pz.png'), require('../Textures/cubemap/happy-mint/nz.png')
+  // ])
+
   // let cubeBox2 = await makeCubeTexture([
   //   require('../Textures/cubemap/green-love/px.png'), require('../Textures/cubemap/green-love/nx.png'),
   //   require('../Textures/cubemap/green-love/py.png'), requ-ire('../Textures/cubemap/green-love/ny.png'),
@@ -423,7 +574,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   let canvasCubeTexture = await makeCanvasCubeTexture({ api })
 
-  cubeBox1.flipY = false
+  // cubeBox1.flipY = false
   // cubeBox2.flipY = false
 
   let parent = new THREE.Object3D()
@@ -434,6 +585,10 @@ export const setupBase = async ({ api, mounter, vm }) => {
   scene.background = canvasCubeTexture
 
   makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
+  // let nd2 = await makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
+  // nd2.position.x = 8
+  // nd2.scale.x = -0.5
+
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
   scene.add(parent)
@@ -609,8 +764,9 @@ void main() {
   // } else {
   //   gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
   // }
-  float colorModifier = 0.1;
+  float colorModifier = 0.0;
   gl_FragColor = mix( refractedColor, reflectedColor + colorModifier, clamp( vReflectionFactor, 0.0, 1.0 ) );
+  gl_FragColor.a = 0.5;
 }
   `
 
