@@ -585,6 +585,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   })
 
   renderer.setSize(rect.width, rect.height)
+  renderer.setPixelRatio(2.0)
   mounter.appendChild(renderer.domElement)
   renderer.domElement.style.marginBottom = '-6px'
 
