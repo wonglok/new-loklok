@@ -1,5 +1,3 @@
-import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js'
-
 export const getID = () => {
   return `_${(Math.random() * 10000000000).toFixed(0)}`
 }
@@ -7,13 +5,7 @@ export const getID = () => {
 let THREE = {
   ...require('three'),
   ...require('three/examples/jsm/controls/OrbitControls.js'),
-  ...require('three/examples/jsm/loaders/SVGLoader.js'),
-
-  ...require('three/examples/jsm/controls/OrbitControls.js'),
-  ...require('three/examples/jsm/postprocessing/EffectComposer.js'),
-  ...require('three/examples/jsm/postprocessing/RenderPass.js'),
-  ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
-  ...require('three/examples/jsm/postprocessing/UnrealBloomPass.js')
+  ...require('three/examples/jsm/loaders/SVGLoader.js')
 }
 
 let glsl = require('glslify')
@@ -266,7 +258,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       // this.test()
     }
     clear () {
-      this.ctx.fillStyle = 'yellow'
+      this.ctx.fillStyle = 'black'
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
@@ -324,7 +316,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       ctx.shadowOffsetX = offset // (default 0)
       ctx.shadowOffsetY = offset // (default 0)
       ctx.shadowBlur = radius * 1 // (default 0)
-      ctx.shadowColor = `hsla(${color},${0.45 * intensity})` // (default transparent black)
+      ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
 
       this.ctx.beginPath()
       this.ctx.fillStyle = 'rgba(255,0,0,1)'
@@ -501,40 +493,18 @@ export const makeLogo = async ({ cubeTexture, parent, idx = 0 }) => {
 //   })
 // }
 
-export const visibleHeightAtZDepth = (depth, camera) => {
-  // compensate for cameras not positioned at z=0
-  const cameraOffset = camera.position.z
-  if (depth < cameraOffset) depth -= cameraOffset
-  else depth += cameraOffset
-
-  // vertical fov in radians
-  const vFOV = camera.fov * Math.PI / 180
-
-  // Math.abs to ensure the result is always positive
-  return 2 * Math.tan(vFOV / 2) * Math.abs(depth)
-}
-
-export const visibleWidthAtZDepth = (depth, camera) => {
-  const height = visibleHeightAtZDepth(depth, camera)
-  return height * camera.aspect
-}
-
-export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) => {
+export const makeCenterPiece = async ({ cubeTexture, parent, scene }) => {
   // var geo = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 1.5, 293, 20, 4, 5)
   // var geo = new THREE.TorusBufferGeometry(10, 3, 16, 100)
   // var geo = new THREE.TorusBufferGeometry(10, 1.5, 16, 100)
   // var geo = new THREE.SphereBufferGeometry(10, 128, 128)
   // var geo = new THREE.BoxBufferGeometry(10, 10, 10, 128, 128, 128)
   // var geo = new THREE.OctahedronGeometry(5, 2)
-  let width = visibleWidthAtZDepth(camera.position.z, camera)
 
-  let geo = await makeFontGeo({ text: 'Lok Lok', width })
-  let light = new THREE.PointLight(0xda2865, 1, 100)
-  light.position.z = 10
-  scene.add(light)
-  var mat = new THREE.MeshBasicMaterial({ color: 0xbababa, envMap: cubeTexture, opacity: 0.9, transparent: true })
-  // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
-  mat.color = new THREE.Color(`#fff`)
+  let geo = await makeFontGeo({ text: 'LokLok.' })
+
+  var mat = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: cubeTexture, opacity: 0.7, transparent: true })
+  mat.color = new THREE.Color(0xeeeeee)
   mat.refractionRatio = 0.98
   mat.reflectionRatio = 0.98
 
@@ -544,76 +514,15 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   mat.needsUpdate = true
 
   var mesh = new THREE.Mesh(geo, mat)
-
-  // if (window.innerWidth > window.innerHeight) {
-  //   mesh.scale.x = mesh.geometry.boundingSphere.radius / width
-  //   mesh.scale.y = mesh.geometry.boundingSphere.radius / width
-  //   mesh.scale.z = mesh.geometry.boundingSphere.radius / width
-  // } else {
-  //   mesh.scale.x = mesh.geometry.boundingSphere.radius / width
-  //   mesh.scale.y = mesh.geometry.boundingSphere.radius / width
-  //   mesh.scale.z = mesh.geometry.boundingSphere.radius / width
-  // }
   mesh.scale.x = 0.5
   mesh.scale.y = 0.5
   mesh.scale.z = 0.5
-
-  geo.computeBoundingSphere()
-
-  console.log(mesh)
-
-  mesh.position.x = geo.boundingSphere.radius * -0.5
+  mesh.position.x = -8
 
   // parent.add(mesh)
   parent.add(mesh)
 
   return mesh
-}
-
-export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
-  var rID = getID()
-  var params = {
-    exposure: 1,
-    bloomThreshold: 0.56,
-    bloomStrength: 1.1,
-    bloomRadius: 0.95
-  }
-  var gui = new GUI()
-  var folder = gui.addFolder('Bloom Parameters')
-  folder.add(params, 'exposure', 0.1, 2).onChange(function (value) {
-    renderer.toneMappingExposure = Math.pow(value, 4.0)
-  })
-  folder.add(params, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
-    bloomPass.threshold = Number(value)
-  })
-  folder.add(params, 'bloomStrength', 0.0, 10.0).onChange(function (value) {
-    bloomPass.strength = Number(value)
-  })
-  folder.add(params, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function (value) {
-    bloomPass.radius = Number(value)
-  })
-  // var ENTIRE_SCENE = 0
-  var BLOOM_SCENE = 1
-
-  var bloomLayer = new THREE.Layers()
-  bloomLayer.set(BLOOM_SCENE)
-
-  var renderScene = new THREE.RenderPass(scene, camera)
-  var bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth * 2, window.innerHeight * 2), 1.5, 0.4, 0.85)
-  bloomPass.threshold = params.bloomThreshold
-  bloomPass.strength = params.bloomStrength
-  bloomPass.radius = params.bloomRadius
-
-  var bloomComposer = new THREE.EffectComposer(renderer)
-  bloomComposer.renderToScreen = true
-  bloomComposer.addPass(renderScene)
-  bloomComposer.addPass(bloomPass)
-
-  api.teardown[rID] = () => {
-    gui.destroy()
-  }
-
-  return bloomComposer
 }
 
 export const setupBase = async ({ api, mounter, vm }) => {
@@ -675,7 +584,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   scene.background = canvasCubeTexture
 
-  makeCenterPiece({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
+  makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
   // let nd2 = await makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
   // nd2.position.x = 8
   // nd2.scale.x = -0.5
@@ -684,8 +593,6 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // parent.scale.x = -1
   scene.add(parent)
 
-  // let composer = setupBloomComposer({ renderer, scene, camera, api })
-
   var rAFID = 0
   var animate = function () {
     rAFID = requestAnimationFrame(animate)
@@ -693,10 +600,6 @@ export const setupBase = async ({ api, mounter, vm }) => {
       api.tasks[kn]()
     }
     renderer.render(scene, camera)
-    // if (composer) {
-    //   composer.render()
-    // } else {
-    // }
   }
 
   api.teardown[rID] = () => {
