@@ -526,10 +526,10 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene }) => {
   mat.needsUpdate = true
 
   var mesh = new THREE.Mesh(geo, mat)
-  mesh.scale.x = 0.4
-  mesh.scale.y = 0.4
-  mesh.scale.z = 0.4
-  mesh.position.x = -13
+  mesh.scale.x = 0.3
+  mesh.scale.y = 0.3
+  mesh.scale.z = 0.3
+  mesh.position.x = -9
 
   // parent.add(mesh)
   parent.add(mesh)
