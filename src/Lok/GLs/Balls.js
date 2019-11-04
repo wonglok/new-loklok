@@ -388,7 +388,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
   return cubeTexture
 }
 
-export const makeFontGeo = ({ text }) => {
+export const makeFontGeo = ({ text, width }) => {
   return new Promise((resolve) => {
     // var loader = new THREE.FontLoader()
     // loader.load(, function (font) {
@@ -397,7 +397,7 @@ export const makeFontGeo = ({ text }) => {
     font = new THREE.Font(font)
     var geometry = new THREE.TextGeometry(text, {
       font: font,
-      size: 7.2,
+      size: width * 0.15,
       height: 2,
       curveSegments: 16,
       bevelEnabled: true,
@@ -622,9 +622,9 @@ export const setupBase = async ({ api, mounter, vm }) => {
   let exited = false
 
   let rect = mounter.getBoundingClientRect()
-  var scene = new THREE.Scene()
-  var camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
-  var renderer = new THREE.WebGLRenderer({
+  let scene = new THREE.Scene()
+  let camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
+  let renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: true
   })
@@ -657,6 +657,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   //   require('../Textures/cubemap/green-love/py.png'), requ-ire('../Textures/cubemap/green-love/ny.png'),
   //   require('../Textures/cubemap/green-love/pz.png'), require('../Textures/cubemap/green-love/nz.png')
   // ])
+
   // let cubeBox2 = await makeCubeTexture([
   //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png'),
   //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png'),
@@ -676,9 +677,6 @@ export const setupBase = async ({ api, mounter, vm }) => {
   scene.background = canvasCubeTexture
 
   makeCenterPiece({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
-  // let nd2 = await makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
-  // nd2.position.x = 8
-  // nd2.scale.x = -0.5
 
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
@@ -693,6 +691,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
       api.tasks[kn]()
     }
     renderer.render(scene, camera)
+
     // if (composer) {
     //   composer.render()
     // } else {
