@@ -4,15 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
+    "devs": "vue-cli-service serve --https",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "github": "git add .; git commit -am \"github backup\"; git push -u origin master",
     "deploy": "npm run build; npm run netlify; npm run github; ",
-    "netlify": "netlify deploy --dir=\"./dist\" --prod"
+    "netlify": "netlify deploy --dir=\"./dist\" --prod",
+    "tunnel": "npm run stop; ssh -f -N -T -R 9000:127.0.0.1:8080 lok@157.230.247.60",
+    "stop": "killall ssh"
   },
   "dependencies": {
     "autoprefixer": "^9.7.0",
     "core-js": "^3.3.2",
+    "glslify": "^7.0.0",
+    "glslify-loader": "^2.0.0",
     "monaco-editor": "^0.18.1",
     "monaco-editor-webpack-plugin": "^1.7.0",
     "raw-loader": "^3.1.0",

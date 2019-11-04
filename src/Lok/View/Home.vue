@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as Ribbon from '../GLs/Ribbon'
+import * as Balls from '../GLs/Balls'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = Ribbon.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = Balls.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

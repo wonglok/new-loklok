@@ -10,6 +10,7 @@ module.exports = {
     //     target: 'http://localhost:8888'
     //   }
     // }
+    // proxy: 'http://tunnel.wonglok.com:8080'
   },
   css: {
     extract: false
