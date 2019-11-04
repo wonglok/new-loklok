@@ -306,6 +306,8 @@ export const makeCanvasCubeTexture = async ({ api }) => {
   let mouse = new THREE.Vector2()
   let on = {
     onTouchMove (ev) {
+      ev.preventDefault()
+
       const touch = ev.targetTouches[0]
 
       mouse = {
@@ -341,8 +343,8 @@ export const makeCanvasCubeTexture = async ({ api }) => {
     cubeTexture.needsUpdate = true
   }
 
-  window.addEventListener('mousemove', on.onMouseMove)
-  window.addEventListener('touchmove', on.onTouchMove)
+  window.addEventListener('mousemove', on.onMouseMove, { passive: false })
+  window.addEventListener('touchmove', on.onTouchMove, { passive: false })
 
   let cubeTexture = new THREE.CubeTexture([
     ...touchTextures.map(e => e.canvas)
