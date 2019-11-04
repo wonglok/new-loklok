@@ -384,8 +384,8 @@ export const setupBase = async ({ api, mounter, vm }) => {
   var scene = new THREE.Scene()
   var camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
   var renderer = new THREE.WebGLRenderer({
-    alpha: true// ,
-    // antialias: true
+    alpha: true,
+    antialias: true
   })
 
   renderer.setSize(rect.width, rect.height)
