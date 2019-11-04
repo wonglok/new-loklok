@@ -312,7 +312,9 @@ export const makeCanvasCubeTexture = async ({ api }) => {
         x: touch.clientX / window.innerWidth,
         y: 1 - touch.clientY / window.innerHeight
       }
-      this.onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
+
+      touchTextures.forEach(e => e.addTouch(mouse))
+      // onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
     },
     onMouseMove (ev) {
       mouse = {
@@ -398,7 +400,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
     camera.updateProjectionMatrix()
   })
 
-  setupControls({ camera, api, mounter })
+  // setupControls({ camera, api, mounter })
   camera.position.z = 20
 
   let cubeBox1 = await makeCubeTexture([
