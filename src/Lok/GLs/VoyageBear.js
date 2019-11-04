@@ -389,7 +389,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
   return cubeTexture
 }
 
-export const makeFontGeo = ({ text }) => {
+export const makeFontGeo = ({ text, width }) => {
   return new Promise((resolve) => {
     // var loader = new THREE.FontLoader()
     // loader.load(, function (font) {
@@ -398,7 +398,7 @@ export const makeFontGeo = ({ text }) => {
     font = new THREE.Font(font)
     var geometry = new THREE.TextGeometry(text, {
       font: font,
-      size: 7.2,
+      size: width * 0.1,
       height: 2,
       curveSegments: 16,
       bevelEnabled: true,
@@ -502,15 +502,34 @@ export const makeLogo = async ({ cubeTexture, parent, idx = 0 }) => {
 //   })
 // }
 
-export const makeCenterPiece = async ({ cubeTexture, parent, scene }) => {
+export const visibleHeightAtZDepth = (depth, camera) => {
+  // compensate for cameras not positioned at z=0
+  const cameraOffset = camera.position.z
+  if (depth < cameraOffset) depth -= cameraOffset
+  else depth += cameraOffset
+
+  // vertical fov in radians
+  const vFOV = camera.fov * Math.PI / 180
+
+  // Math.abs to ensure the result is always positive
+  return 2 * Math.tan(vFOV / 2) * Math.abs(depth)
+}
+
+export const visibleWidthAtZDepth = (depth, camera) => {
+  const height = visibleHeightAtZDepth(depth, camera)
+  return height * camera.aspect
+}
+
+export const makeCenterPiece = async ({ camera, cubeTexture, parent, scene }) => {
   // var geo = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 1.5, 293, 20, 4, 5)
   // var geo = new THREE.TorusBufferGeometry(10, 3, 16, 100)
   // var geo = new THREE.TorusBufferGeometry(10, 1.5, 16, 100)
   // var geo = new THREE.SphereBufferGeometry(10, 128, 128)
   // var geo = new THREE.BoxBufferGeometry(10, 10, 10, 128, 128, 128)
   // var geo = new THREE.OctahedronGeometry(5, 2)
+  let width = visibleWidthAtZDepth(camera.position.z, camera)
 
-  let geo = await makeFontGeo({ text: 'VoyageBEAR' })
+  let geo = await makeFontGeo({ text: 'VoyageBEAR', width })
   let light = new THREE.PointLight(0xda2865, 1, 100)
   light.position.z = 10
   scene.add(light)
@@ -526,10 +545,25 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene }) => {
   mat.needsUpdate = true
 
   var mesh = new THREE.Mesh(geo, mat)
-  mesh.scale.x = 0.3
-  mesh.scale.y = 0.3
-  mesh.scale.z = 0.3
-  mesh.position.x = -9
+
+  // if (window.innerWidth > window.innerHeight) {
+  //   mesh.scale.x = mesh.geometry.boundingSphere.radius / width
+  //   mesh.scale.y = mesh.geometry.boundingSphere.radius / width
+  //   mesh.scale.z = mesh.geometry.boundingSphere.radius / width
+  // } else {
+  //   mesh.scale.x = mesh.geometry.boundingSphere.radius / width
+  //   mesh.scale.y = mesh.geometry.boundingSphere.radius / width
+  //   mesh.scale.z = mesh.geometry.boundingSphere.radius / width
+  // }
+  mesh.scale.x = 0.5
+  mesh.scale.y = 0.5
+  mesh.scale.z = 0.5
+
+  geo.computeBoundingSphere()
+
+  console.log(mesh)
+
+  mesh.position.x = geo.boundingSphere.radius * -0.5
 
   // parent.add(mesh)
   parent.add(mesh)
@@ -596,7 +630,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   scene.background = canvasCubeTexture
 
-  makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
+  makeCenterPiece({ ...env, camera, scene, parent: parent, cubeTexture: cubeCamTexture })
   // let nd2 = await makeCenterPiece({ ...env, scene, parent: parent, cubeTexture: cubeCamTexture })
   // nd2.position.x = 8
   // nd2.scale.x = -0.5
