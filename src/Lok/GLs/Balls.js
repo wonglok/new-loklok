@@ -411,13 +411,13 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 60%`
+      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 65%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
       ctx.shadowOffsetY = offset // (default 0)
       ctx.shadowBlur = radius * 1 // (default 0)
-      ctx.shadowColor = `hsla(${color},${0.45 * intensity})` // (default transparent black)
+      ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
 
       this.ctx.beginPath()
       this.ctx.fillStyle = 'rgba(255,0,0,1)'
