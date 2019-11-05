@@ -144,7 +144,8 @@ export const makeOneEmoji = async ({ file, camera, api, parent, offset, rotate, 
   first.geometry.computeBoundingSphere()
   let geoWidth = first.geometry.boundingSphere.radius * 2.0
 
-  let sizer = width / geoWidth / 100 / 1.5
+  let min = Math.min(width, height)
+  let sizer = min / geoWidth / 100 / 1.5
   emojiScene.scale.set(sizer, sizer, sizer)
   // emojiScene.position.y =
   emojiScene.position.add(offset)
@@ -177,6 +178,8 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   let width = visibleWidthAtZDepth(camera.position.z, camera)
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(height, width)
+  // eslint-disable-next-line
+
   makeOneEmoji({
     camera,
     api,
@@ -185,7 +188,18 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
     file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
     width,
     height,
-    offset: new THREE.Vector3(min * 0.1, min * -0.15, -5),
+    offset: new THREE.Vector3(0, min * -0.15, -5),
+    rotate: new THREE.Vector3(0, 0, 0)
+  })
+  makeOneEmoji({
+    camera,
+    api,
+    parent,
+    // eslint-disable-next-line
+    file: require('file-loader!../Model/emojipack-glb/hands/rock.glb'),
+    width,
+    height,
+    offset: new THREE.Vector3(min * 0.15, min * -0.15, -5),
     rotate: new THREE.Vector3(0, 0, 0)
   })
   makeOneEmoji({
@@ -196,7 +210,7 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
     file: require('file-loader!../Model/emojipack-glb/hands/thumbs-up.glb'),
     width,
     height,
-    offset: new THREE.Vector3(-min * 0.1, min * -0.15, -5),
+    offset: new THREE.Vector3(-min * 0.15, min * -0.15, -5),
     rotate: new THREE.Vector3(0, 0, 0)
   })
 }
@@ -485,7 +499,7 @@ export const makeFontGeo = ({ text, width }) => {
     var geometry = new THREE.TextGeometry(text, {
       font: font,
       size: width,
-      height: 2,
+      height: 1.75,
       curveSegments: 16,
       bevelEnabled: true,
       bevelThickness: 0.2,
