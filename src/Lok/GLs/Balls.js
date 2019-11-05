@@ -132,6 +132,9 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   emojiScene.scale.y = 18
   emojiScene.scale.z = 18
 
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  emojiScene.position.y = height * -0.1
+
   console.log(emojiScene)
 
   // let material = await makeWoozyMat({ cubeTexture, api, woozy: 0 })
@@ -139,12 +142,12 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
   mat.color = new THREE.Color(`#fff`)
-  mat.refractionRatio = 0.75
-  mat.reflectionRatio = 0.75
+  mat.reflectionRatio = 0.8
+  mat.refractionRatio = 0.8
 
   mat.envMap = cubeTexture
-  mat.envMap.mapping = THREE.CubeReflectionMapping
-  // mat.envMap.mapping = THREE.CubeRefractionMapping
+  // mat.envMap.mapping = THREE.CubeReflectionMapping
+  mat.envMap.mapping = THREE.CubeRefractionMapping
   mat.needsUpdate = true
 
   emojiScene.children[0].children.forEach(e => {
@@ -152,11 +155,6 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   })
 
   parent.add(emojiScene)
-
-  let height = visibleHeightAtZDepth(camera.position.z, camera)
-
-  // emojiScene.position.x = width * 0.1
-  emojiScene.position.y = height * -0.1
 
   // parent.add(glb)
   // let geo = glb.geometry
