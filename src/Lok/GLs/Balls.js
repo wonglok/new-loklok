@@ -187,13 +187,7 @@ export const setupControls = async ({ camera, mounter, api }) => {
 
 export const makeCanvasCubeTexture = async ({ api }) => {
   var rID = getID()
-  // let image = new Image()
-  // image.src = require('../Textures/cubemap/happy-mint/px.png')
-  // image.onload = () => {
-  //   cubeTexture.needsUpdate = true
-  // }
 
-  // let canvas = document.createElement('canvas')
   const easeOutSine = (t, b, c, d) => {
     return c * Math.sin((t / d) * (Math.PI / 2)) + b
   }
@@ -210,11 +204,11 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       this.height = 128
       this.width = this.height = this.size
 
-      this.maxAge = 200
-      this.radius = 0.1 * this.size
+      this.maxAge = 350
+      this.radius = 0.07 * this.size
       // this.radius = 0.15 * 1000
 
-      this.speed = 1 / this.maxAge
+      this.speed = 1.1333 / this.maxAge
       // this.speed = 0.01
 
       this.trail = []
@@ -345,6 +339,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       }
 
       touchTextures.forEach(e => e.addTouch(mouse))
+      // t.addTouch(mouse)
       // onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
     },
     onMouseMove (ev) {
@@ -352,14 +347,13 @@ export const makeCanvasCubeTexture = async ({ api }) => {
         x: ev.clientX / window.innerWidth,
         y: 1 - ev.clientY / window.innerHeight
       }
+
       touchTextures.forEach(e => e.addTouch(mouse))
     }
   }
 
   let t = new TouchTexture()
   var touchTextures = [
-    t,
-    t,
     t,
     t,
     t,
@@ -630,6 +624,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   })
 
   renderer.setSize(rect.width, rect.height)
+  renderer.setPixelRatio(window.devicePixelRatio > 1.5 ? window.devicePixelRatio : 1.5)
   mounter.appendChild(renderer.domElement)
   renderer.domElement.style.marginBottom = '-6px'
 
