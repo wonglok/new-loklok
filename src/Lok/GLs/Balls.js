@@ -1,5 +1,3 @@
-import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js'
-
 export const getID = () => {
   return `_${(Math.random() * 10000000000).toFixed(0)}`
 }
@@ -123,19 +121,9 @@ export const loadGLB = ({ file }) => {
   })
 }
 
-export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => {
+export const makeOneEmoji = async ({ file, camera, api, parent, offset, rotate, width, height }) => {
   let rID = getID()
-
-  // eslint-disable-next-line
-  let emojiScene = await loadGLB({ file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb') })
-  emojiScene.scale.x = 18
-  emojiScene.scale.y = 18
-  emojiScene.scale.z = 18
-
-  let height = visibleHeightAtZDepth(camera.position.z, camera)
-  emojiScene.position.y = height * -0.1
-
-  console.log(emojiScene)
+  let emojiScene = await loadGLB({ file })
 
   // let material = await makeWoozyMat({ cubeTexture, api, woozy: 0 })
 
@@ -152,59 +140,65 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   mat.envMap.mapping = THREE.CubeRefractionMapping
   mat.needsUpdate = true
 
-  emojiScene.children[0].children.forEach(e => {
+  let first = emojiScene.children[0].children[0]
+  first.geometry.computeBoundingSphere()
+  let geoWidth = first.geometry.boundingSphere.radius * 2.0
+
+  let sizer = width / geoWidth / 100 / 1.5
+  emojiScene.scale.set(sizer, sizer, sizer)
+  // emojiScene.position.y =
+  emojiScene.position.add(offset)
+  // console.log(sizer, geoWidth, width)
+
+  emojiScene.children[0].children.forEach((e) => {
     e.material = mat
   })
 
   parent.add(emojiScene)
 
-  // parent.add(glb)
-  // let geo = glb.geometry
-  // console.log(geo)
-
-  // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
-  // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
-
-  // let emojis = []
-  // // eslint-disable-next-line
-  // for (var i = 0; i < 1; i++) {
-  //   let cube = new THREE.Mesh(geo, material)
-  //   cube.userData.rx = Math.random() - 0.5
-  //   cube.userData.ry = Math.random() - 0.5
-  //   cube.userData.rz = Math.random() - 0.5
-
-  //   cube.scale.x = 0.1
-  //   cube.scale.y = 0.1
-  //   cube.scale.z = 0.1
-
-  //   emojis.push(cube)
-  //   parent.add(cube)
-  // }
-
   api.teardown[rID] = () => {
-    // geo.dispose()
-    // cubeTexture.dispose()
   }
-
-  let mixer = (v) => {
-    if (v < 0) {
-      return Math.sin(v)
-    } else {
-      return Math.cos(v)
-    }
-  }
-
-  console.log(mixer)
-
   api.tasks[rID] = () => {
     let time = window.performance.now() * 0.001
     if (emojiScene) {
+      emojiScene.rotation.x = rotate.x
+      emojiScene.rotation.y = rotate.y
+      emojiScene.rotation.z = rotate.z
+
       emojiScene.rotation.x = Math.sin(time * 2.0) * 0.15
       emojiScene.rotation.z = Math.sin(time * 2.0) * 0.15
     }
     // let time = window.performance.now() * 0.001
     // console.log(time)
   }
+}
+
+export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => {
+  let width = visibleWidthAtZDepth(camera.position.z, camera)
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  let min = Math.min(height, width)
+  makeOneEmoji({
+    camera,
+    api,
+    parent,
+    // eslint-disable-next-line
+    file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
+    width,
+    height,
+    offset: new THREE.Vector3(min * 0.1, min * -0.15, -5),
+    rotate: new THREE.Vector3(0, 0, 0)
+  })
+  makeOneEmoji({
+    camera,
+    api,
+    parent,
+    // eslint-disable-next-line
+    file: require('file-loader!../Model/emojipack-glb/hands/thumbs-up.glb'),
+    width,
+    height,
+    offset: new THREE.Vector3(-min * 0.1, min * -0.15, -5),
+    rotate: new THREE.Vector3(0, 0, 0)
+  })
 }
 
 export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => {
@@ -304,7 +298,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       this.width = this.height = this.size
 
       this.maxAge = 350
-      this.radius = 0.07 * this.size
+      this.radius = 0.1 * this.size
       // this.radius = 0.15 * 1000
 
       this.speed = 1.1333 / this.maxAge
@@ -411,7 +405,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 65%`
+      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 60%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -490,7 +484,7 @@ export const makeFontGeo = ({ text, width }) => {
     font = new THREE.Font(font)
     var geometry = new THREE.TextGeometry(text, {
       font: font,
-      size: width * 0.15,
+      size: width,
       height: 2,
       curveSegments: 16,
       bevelEnabled: true,
@@ -549,7 +543,7 @@ export const makeLogo = async ({ cubeTexture, parent, idx = 0 }) => {
   return mesh
 }
 
-// export const makeSVG = ({ scene }) => {
+// export const makeSVG = async ({ scene }) => {
 //   return new Promise((resolve) => {
 //     // eslint-disable-next-line
 //     var text = require('../Textures/demos/face1.svg')
@@ -620,8 +614,10 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   // var geo = new THREE.BoxBufferGeometry(10, 10, 10, 128, 128, 128)
   // var geo = new THREE.OctahedronGeometry(5, 2)
   let width = visibleWidthAtZDepth(camera.position.z, camera)
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  let min = Math.min(width, height)
 
-  let geo = await makeFontGeo({ text: 'Lok Lok', width })
+  let geo = await makeFontGeo({ text: 'Lok Lok', width: min * 0.15 })
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
   // scene.add(light)
@@ -653,10 +649,12 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   mesh.scale.z = 0.5
 
   geo.computeBoundingSphere()
+  geo.computeBoundingBox()
 
   console.log(mesh)
 
   mesh.position.x = geo.boundingSphere.radius * -0.5
+  mesh.position.y = geo.boundingBox.max.y * -0.25
 
   // parent.add(mesh)
   parent.add(mesh)
@@ -664,51 +662,52 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   return mesh
 }
 
-export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
-  var rID = getID()
-  var params = {
-    exposure: 1,
-    bloomThreshold: 0.56,
-    bloomStrength: 1.1,
-    bloomRadius: 0.95
-  }
-  var gui = new GUI()
-  var folder = gui.addFolder('Bloom Parameters')
-  folder.add(params, 'exposure', 0.1, 2).onChange(function (value) {
-    renderer.toneMappingExposure = Math.pow(value, 4.0)
-  })
-  folder.add(params, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
-    bloomPass.threshold = Number(value)
-  })
-  folder.add(params, 'bloomStrength', 0.0, 10.0).onChange(function (value) {
-    bloomPass.strength = Number(value)
-  })
-  folder.add(params, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function (value) {
-    bloomPass.radius = Number(value)
-  })
-  // var ENTIRE_SCENE = 0
-  var BLOOM_SCENE = 1
+// export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
+// let { GUI } = await import('three/examples/jsm/libs/dat.gui.module.js')
+//   var rID = getID()
+//   var params = {
+//     exposure: 1,
+//     bloomThreshold: 0.56,
+//     bloomStrength: 1.1,
+//     bloomRadius: 0.95
+//   }
+//   var gui = new GUI()
+//   var folder = gui.addFolder('Bloom Parameters')
+//   folder.add(params, 'exposure', 0.1, 2).onChange(function (value) {
+//     renderer.toneMappingExposure = Math.pow(value, 4.0)
+//   })
+//   folder.add(params, 'bloomThreshold', 0.0, 1.0).onChange(function (value) {
+//     bloomPass.threshold = Number(value)
+//   })
+//   folder.add(params, 'bloomStrength', 0.0, 10.0).onChange(function (value) {
+//     bloomPass.strength = Number(value)
+//   })
+//   folder.add(params, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function (value) {
+//     bloomPass.radius = Number(value)
+//   })
+//   // var ENTIRE_SCENE = 0
+//   var BLOOM_SCENE = 1
 
-  var bloomLayer = new THREE.Layers()
-  bloomLayer.set(BLOOM_SCENE)
+//   var bloomLayer = new THREE.Layers()
+//   bloomLayer.set(BLOOM_SCENE)
 
-  var renderScene = new THREE.RenderPass(scene, camera)
-  var bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth * 2, window.innerHeight * 2), 1.5, 0.4, 0.85)
-  bloomPass.threshold = params.bloomThreshold
-  bloomPass.strength = params.bloomStrength
-  bloomPass.radius = params.bloomRadius
+//   var renderScene = new THREE.RenderPass(scene, camera)
+//   var bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth * 2, window.innerHeight * 2), 1.5, 0.4, 0.85)
+//   bloomPass.threshold = params.bloomThreshold
+//   bloomPass.strength = params.bloomStrength
+//   bloomPass.radius = params.bloomRadius
 
-  var bloomComposer = new THREE.EffectComposer(renderer)
-  bloomComposer.renderToScreen = true
-  bloomComposer.addPass(renderScene)
-  bloomComposer.addPass(bloomPass)
+//   var bloomComposer = new THREE.EffectComposer(renderer)
+//   bloomComposer.renderToScreen = true
+//   bloomComposer.addPass(renderScene)
+//   bloomComposer.addPass(bloomPass)
 
-  api.teardown[rID] = () => {
-    gui.destroy()
-  }
+//   api.teardown[rID] = () => {
+//     gui.destroy()
+//   }
 
-  return bloomComposer
-}
+//   return bloomComposer
+// }
 
 export const setupBase = async ({ api, mounter, vm }) => {
   let env = { api, mounter, vm }
@@ -772,7 +771,6 @@ export const setupBase = async ({ api, mounter, vm }) => {
   scene.background = canvasCubeTexture
 
   makeCenterPiece({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
-
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   makeEmoji({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
