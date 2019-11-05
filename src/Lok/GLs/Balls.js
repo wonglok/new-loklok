@@ -128,9 +128,9 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
 
   // eslint-disable-next-line
   let emojiScene = await loadGLB({ file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb') })
-  emojiScene.scale.x = 20
-  emojiScene.scale.y = 20
-  emojiScene.scale.z = 20
+  emojiScene.scale.x = 18
+  emojiScene.scale.y = 18
+  emojiScene.scale.z = 18
 
   console.log(emojiScene)
 
@@ -139,8 +139,8 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
   mat.color = new THREE.Color(`#fff`)
-  mat.refractionRatio = 0.5
-  mat.reflectionRatio = 0.5
+  mat.refractionRatio = 0.75
+  mat.reflectionRatio = 0.75
 
   mat.envMap = cubeTexture
   mat.envMap.mapping = THREE.CubeReflectionMapping
