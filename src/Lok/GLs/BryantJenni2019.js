@@ -172,6 +172,8 @@ export const makeOneEmoji = async ({ file, camera, api, parent, offset, rotate, 
     // let time = window.performance.now() * 0.001
     // console.log(time)
   }
+
+  return emojiScene
 }
 
 export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => {
@@ -185,69 +187,99 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
     api,
     parent,
     // eslint-disable-next-line
-    file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
+    file: require('file-loader!../Model/emojipack-glb/icons1/heart-sparkle.glb'),
     width,
     height,
     offset: new THREE.Vector3(0, min * -0.15, -5),
-    rotate: new THREE.Vector3(0, 0, 0)
+    rotate: new THREE.Vector3(0, Math.PI, 0)
   })
-  makeOneEmoji({
-    camera,
-    api,
-    parent,
-    // eslint-disable-next-line
-    file: require('file-loader!../Model/emojipack-glb/hands/rock.glb'),
-    width,
-    height,
-    offset: new THREE.Vector3(min * 0.15, min * -0.15, -5),
-    rotate: new THREE.Vector3(0, 0, 0)
-  })
+  // makeOneEmoji({
+  //   camera,
+  //   api,
+  //   parent,
+  //   // eslint-disable-next-line
+  //   file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
+  //   width,
+  //   height,
+  //   offset: new THREE.Vector3(min * 0.15, min * -0.15, -5),
+  //   rotate: new THREE.Vector3(0, 0, 0)
+  // })
 
-  makeOneEmoji({
-    camera,
-    api,
-    parent,
-    // eslint-disable-next-line
-    file: require('file-loader!../Model/emojipack-glb/hands/thumbs-up.glb'),
-    width,
-    height,
-    offset: new THREE.Vector3(-min * 0.15, min * -0.15, -5),
-    rotate: new THREE.Vector3(0, 0, 0)
-  })
+  // makeOneEmoji({
+  //   camera,
+  //   api,
+  //   parent,
+  //   // eslint-disable-next-line
+  //   file: require('file-loader!../Model/emojipack-glb/hands/writting.glb'),
+  //   width,
+  //   height,
+  //   offset: new THREE.Vector3(-min * 0.15, min * -0.15, -5),
+  //   rotate: new THREE.Vector3(0, 0, 0)
+  // })
 }
 
-export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => {
+export const makeFloatingBalls = async ({ scene, camera, parent, api, cubeTexture }) => {
   let rID = getID()
+
+  let width = visibleWidthAtZDepth(camera.position.z, camera)
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  let min = Math.min(height, width)
 
   // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
   var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
 
-  let material = await makeWoozyMat({ cubeTexture, api })
+  // let material = await makeWoozyMat({ cubeTexture, api })
 
   let imgs = []
   let cubes = []
   // eslint-disable-next-line
-  for (var i = 0; i < 20; i++) {
-    let cube = new THREE.Mesh(geometry, material)
-    cube.userData.rx = Math.random() - 0.5
-    cube.userData.ry = Math.random() - 0.5
-    cube.userData.rz = Math.random() - 0.5
+  for (var i = 0; i < 7; i++) {
+    // let cube = new THREE.Mesh(geometry, material)
+    // cube.userData.rx = Math.random() - 0.5
+    // cube.userData.ry = Math.random() - 0.5
+    // cube.userData.rz = Math.random() - 0.5
 
-    cube.position.x = cube.userData.rx * 70
-    cube.position.y = cube.userData.ry * 70
-    cube.position.z = cube.userData.rz * 35
+    // cube.position.x = cube.userData.rx * 70
+    // cube.position.y = cube.userData.ry * 70
+    // cube.position.z = cube.userData.rz * 35
 
-    cubes.push(cube)
-    parent.add(cube)
+    // cubes.push(cube)
+    // parent.add(cube)
 
-    let img = await makeLogo({ cubeTexture, parent, idx: i })
-    img.userData.rx = cube.userData.rx
-    img.userData.ry = cube.userData.ry
-    img.userData.rz = cube.userData.rz
+    let files = [
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/icons1/heart.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/clapping.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/handshake.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/writing.glb')
+    ]
 
-    img.position.x = img.userData.rx * 70
-    img.position.y = img.userData.ry * 70
-    img.position.z = img.userData.rz * 35
+    // let file = files[Math.floor((files.length - 1) * Math.random())]
+    let file = files[i % files.length]
+
+    let img = await makeOneEmoji({
+      camera,
+      api,
+      parent,
+      file,
+      width,
+      height,
+      offset: new THREE.Vector3(0, min * -0.15, -5),
+      rotate: new THREE.Vector3(0, Math.PI * 0.0, 0)
+    })
+
+    img.userData.rx = Math.random() - 0.5
+    img.userData.ry = Math.random() - 0.5
+    img.userData.rz = Math.random() + 0.2
+
+    img.position.x = img.userData.rx * 50
+    img.position.y = img.userData.ry * 50
+    img.position.z = img.userData.rz * -35
     // img.position.copy(cube.position)
     imgs.push(img)
     parent.add(img)
@@ -307,12 +339,12 @@ export const makeCanvasCubeTexture = async ({ api }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 128
-      this.width = 128
-      this.height = 128
+      this.size = 96
+      this.width = 96
+      this.height = 96
       this.width = this.height = this.size
 
-      this.maxAge = 350
+      this.maxAge = 250
       this.radius = 0.09 * this.size
       // this.radius = 0.15 * 1000
 
@@ -368,7 +400,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       // this.test()
     }
     clear () {
-      this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
+      this.ctx.fillStyle = '#efefef'
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
@@ -420,7 +452,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 60%`
+      color = `${(((intensity)) * 360).toFixed(0)}, 65%, 60%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -629,7 +661,7 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(width, height)
 
-  let geo = await makeFontGeo({ text: 'Lok Lok', width: min * 0.15 })
+  let geo = await makeFontGeo({ text: 'B & J', width: min * 0.15 })
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
   // scene.add(light)
