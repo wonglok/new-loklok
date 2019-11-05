@@ -606,7 +606,7 @@ export const visibleWidthAtZDepth = (depth, camera) => {
   return height * camera.aspect
 }
 
-export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) => {
+export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => {
   // var geo = new THREE.TorusKnotGeometry(9 / 2, 1.2 / 1.5, 293, 20, 4, 5)
   // var geo = new THREE.TorusBufferGeometry(10, 3, 16, 100)
   // var geo = new THREE.TorusBufferGeometry(10, 1.5, 16, 100)
@@ -654,7 +654,7 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   console.log(mesh)
 
   mesh.position.x = geo.boundingSphere.radius * -0.5
-  mesh.position.y = geo.boundingBox.max.y * -0.25
+  // mesh.position.y = geo.boundingBox.max.y * -0.25
 
   // parent.add(mesh)
   parent.add(mesh)
@@ -770,7 +770,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   scene.background = canvasCubeTexture
 
-  makeCenterPiece({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
+  makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   makeEmoji({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
