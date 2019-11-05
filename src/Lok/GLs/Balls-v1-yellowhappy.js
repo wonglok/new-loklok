@@ -10,13 +10,10 @@ let THREE = {
   ...require('three/examples/jsm/loaders/SVGLoader.js'),
 
   ...require('three/examples/jsm/controls/OrbitControls.js'),
-
-  // ...require('three/examples/jsm/postprocessing/EffectComposer.js'),
-  // ...require('three/examples/jsm/postprocessing/RenderPass.js'),
-  // ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
-  // ...require('three/examples/jsm/postprocessing/UnrealBloomPass.js'),
-
-  ...require('three/examples/jsm/loaders/GLTFLoader.js')
+  ...require('three/examples/jsm/postprocessing/EffectComposer.js'),
+  ...require('three/examples/jsm/postprocessing/RenderPass.js'),
+  ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
+  ...require('three/examples/jsm/postprocessing/UnrealBloomPass.js')
 }
 
 let glsl = require('glslify')
@@ -70,11 +67,10 @@ export const makeCubeCam = ({ api, parent, renderer, scene }) => {
   return cubeCamera
 }
 
-export const makeWoozyMat = async ({ cubeTexture, api, woozy = 1 }) => {
+export const makeWoozyMat = async ({ cubeTexture, api }) => {
   let rID = getID()
 
   var uniforms = {
-    'uWozzy': { value: woozy },
     'mRefractionRatio': { value: 1.02 },
     'mFresnelBias': { value: 0.1 },
     'mFresnelPower': { value: 2.0 },
@@ -84,7 +80,6 @@ export const makeWoozyMat = async ({ cubeTexture, api, woozy = 1 }) => {
     'tDudv': { value: null },
     'useDudv': { value: true }
   }
-
   let tDudvTexture = new THREE.TextureLoader().load(require('../Textures/maps/waterdudv.jpg'))
   uniforms.tDudv.value = tDudvTexture
   uniforms.tCube.value = cubeTexture
@@ -111,100 +106,6 @@ export const makeWoozyMat = async ({ cubeTexture, api, woozy = 1 }) => {
   }
 
   return material
-}
-
-export const loadGLB = ({ file }) => {
-  return new Promise((resolve) => {
-    var loader = new THREE.GLTFLoader()
-    loader.load(file, (glb) => {
-      let scene = glb.scenes[0]
-      resolve(scene)
-    })
-  })
-}
-
-export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => {
-  let rID = getID()
-
-  // eslint-disable-next-line
-  let emojiScene = await loadGLB({ file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb') })
-  emojiScene.scale.x = 20
-  emojiScene.scale.y = 20
-  emojiScene.scale.z = 20
-
-  console.log(emojiScene)
-
-  // let material = await makeWoozyMat({ cubeTexture, api, woozy: 0 })
-
-  var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
-  // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
-  mat.color = new THREE.Color(`#fff`)
-  mat.refractionRatio = 0.25
-  mat.reflectionRatio = 0.25
-
-  mat.envMap = cubeTexture
-  mat.envMap.mapping = THREE.CubeReflectionMapping
-  // mat.envMap.mapping = THREE.CubeRefractionMapping
-  mat.needsUpdate = true
-
-  emojiScene.children[0].children.forEach(e => {
-    e.material = mat
-  })
-
-  parent.add(emojiScene)
-
-  let height = visibleHeightAtZDepth(camera.position.z, camera)
-
-  // emojiScene.position.x = width * 0.1
-  emojiScene.position.y = height * -0.1
-
-  // parent.add(glb)
-  // let geo = glb.geometry
-  // console.log(geo)
-
-  // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
-  // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
-
-  // let emojis = []
-  // // eslint-disable-next-line
-  // for (var i = 0; i < 1; i++) {
-  //   let cube = new THREE.Mesh(geo, material)
-  //   cube.userData.rx = Math.random() - 0.5
-  //   cube.userData.ry = Math.random() - 0.5
-  //   cube.userData.rz = Math.random() - 0.5
-
-  //   cube.scale.x = 0.1
-  //   cube.scale.y = 0.1
-  //   cube.scale.z = 0.1
-
-  //   emojis.push(cube)
-  //   parent.add(cube)
-  // }
-
-  api.teardown[rID] = () => {
-    // geo.dispose()
-    // cubeTexture.dispose()
-  }
-
-  let mixer = (v) => {
-    if (v < 0) {
-      return Math.sin(v)
-    } else {
-      return Math.cos(v)
-    }
-  }
-
-  console.log(mixer)
-
-  api.tasks[rID] = () => {
-    let time = window.performance.now() * 0.001
-    if (emojiScene) {
-      emojiScene.rotation.x = Math.sin(time * 2.0) * 0.15
-      emojiScene.rotation.z = Math.sin(time * 2.0) * 0.15
-    }
-    // let time = window.performance.now() * 0.001
-    // console.log(time)
-  }
 }
 
 export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => {
@@ -622,10 +523,9 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
   let width = visibleWidthAtZDepth(camera.position.z, camera)
 
   let geo = await makeFontGeo({ text: 'Lok Lok', width })
-  // let light = new THREE.PointLight(0xda2865, 1, 100)
-  // light.position.z = 10
-  // scene.add(light)
-
+  let light = new THREE.PointLight(0xda2865, 1, 100)
+  light.position.z = 10
+  scene.add(light)
   var mat = new THREE.MeshBasicMaterial({ color: 0xbababa, envMap: cubeTexture, opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
   mat.color = new THREE.Color(`#fff`)
@@ -738,7 +638,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
     camera.updateProjectionMatrix()
   })
 
-  setupControls({ camera, api, mounter })
+  // setupControls({ camera, api, mounter })
   camera.position.z = 20
 
   // let cubeBox1 = await makeCubeTexture([
@@ -774,7 +674,6 @@ export const setupBase = async ({ api, mounter, vm }) => {
   makeCenterPiece({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
 
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
-  makeEmoji({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
   scene.add(parent)
 
@@ -875,8 +774,6 @@ uniform float mFresnelBias;
 uniform float mFresnelScale;
 uniform float mFresnelPower;
 
-uniform float uWozzy;
-
 uniform float time;
 
 varying vec3 vReflect;
@@ -887,9 +784,9 @@ varying vec2 vUv;
 void main() {
   vUv = uv;
   vec3 funPos = position;
-  float cx = cnoise(normal.x + vec2(position.x * 0.11) + time) * 0.1 * uWozzy;
-  float cy = cnoise(normal.y + vec2(position.y * 0.12) + time) * 0.1 * uWozzy;
-  float cz = cnoise(normal.z + vec2(position.z * 0.13) + time) * 0.1 * uWozzy;
+  float cx = cnoise(normal.x + vec2(position.x * 0.11) + time) * 0.1;
+  float cy = cnoise(normal.y + vec2(position.y * 0.12) + time) * 0.1;
+  float cz = cnoise(normal.z + vec2(position.z * 0.13) + time) * 0.1;
   funPos.x += funPos.x * cx;
   funPos.y += funPos.y * cy;
   funPos.z += funPos.z * cz;
