@@ -139,8 +139,8 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
   var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
   mat.color = new THREE.Color(`#fff`)
-  mat.refractionRatio = 0.25
-  mat.reflectionRatio = 0.25
+  mat.refractionRatio = 0.5
+  mat.reflectionRatio = 0.5
 
   mat.envMap = cubeTexture
   mat.envMap.mapping = THREE.CubeReflectionMapping
@@ -738,7 +738,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
     camera.updateProjectionMatrix()
   })
 
-  setupControls({ camera, api, mounter })
+  // setupControls({ camera, api, mounter })
   camera.position.z = 20
 
   // let cubeBox1 = await makeCubeTexture([
