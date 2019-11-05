@@ -139,13 +139,15 @@ export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => 
 
   // let material = await makeWoozyMat({ cubeTexture, api, woozy: 0 })
 
+  let mapper = await makeCanvasCubeTexture({ api })
+
   var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
   mat.color = new THREE.Color(`#fff`)
-  mat.reflectionRatio = 0.8
   mat.refractionRatio = 0.8
+  mat.reflectionRatio = 0.8
 
-  mat.envMap = cubeTexture
+  mat.envMap = mapper
   // mat.envMap.mapping = THREE.CubeReflectionMapping
   mat.envMap.mapping = THREE.CubeRefractionMapping
   mat.needsUpdate = true
@@ -224,7 +226,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     cube.position.x = cube.userData.rx * 70
     cube.position.y = cube.userData.ry * 70
-    cube.position.z = cube.userData.rz * 70
+    cube.position.z = cube.userData.rz * 35
 
     cubes.push(cube)
     parent.add(cube)
@@ -236,7 +238,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     img.position.x = img.userData.rx * 70
     img.position.y = img.userData.ry * 70
-    img.position.z = img.userData.rz * 70
+    img.position.z = img.userData.rz * 35
     // img.position.copy(cube.position)
     imgs.push(img)
     parent.add(img)
