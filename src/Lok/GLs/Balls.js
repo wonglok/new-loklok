@@ -433,7 +433,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${((intensity * 255) % 255).toFixed(0)}, 70%, 60%`
+      color = `${((intensity * 255) % 255).toFixed(0)}, 65%, 65%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
