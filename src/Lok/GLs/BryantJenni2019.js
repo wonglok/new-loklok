@@ -339,9 +339,9 @@ export const makeCanvasCubeTexture = async ({ api }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 96
-      this.width = 96
-      this.height = 96
+      this.size = 64
+      this.width = 64
+      this.height = 64
       this.width = this.height = this.size
 
       this.maxAge = 250
