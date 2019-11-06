@@ -6,15 +6,15 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Home.vue')
   },
   {
     path: '/bear',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/VoyageBear.vue')
+    component: () => import(/* webpackChunkName: "vb" */ '../Lok/View/VoyageBear.vue')
   },
   {
     path: '/bryant-and-jenni-2019',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/BryantAndJenni2019.vue')
+    component: () => import(/* webpackChunkName: "bj" */ '../Lok/View/BryantAndJenni2019.vue')
   }
 ]
 
