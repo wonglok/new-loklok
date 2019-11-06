@@ -36,6 +36,7 @@ export const makeCubeTexture = (images) => {
     })
   })
 }
+
 export const makeCubeCam = ({ api, parent, renderer, scene }) => {
   let rID = getID()
   var cubeCamera = new THREE.CubeCamera(0.1, 100000000000000, 1024)
@@ -120,13 +121,13 @@ export const loadGLB = ({ file }) => {
   })
 }
 
-export const makeOneEmoji = async ({ mapper, file, camera, api, parent, offset, rotate, width, height }) => {
+export const makeOneEmoji = async ({ file, camera, api, parent, offset, rotate, width, height }) => {
   let rID = getID()
   let emojiScene = await loadGLB({ file })
 
   // let material = await makeWoozyMat({ cubeTexture, api, woozy: 0 })
 
-  // let mapper = await makeCanvasCubeTexture({ api })
+  let mapper = await makeCanvasCubeTexture({ api })
 
   var mat = new THREE.MeshBasicMaterial({ opacity: 0.9, transparent: true })
   // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
@@ -173,7 +174,7 @@ export const makeOneEmoji = async ({ mapper, file, camera, api, parent, offset, 
   }
 }
 
-export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTexture }) => {
+export const makeEmoji = async ({ scene, parent, api, camera, cubeTexture }) => {
   let width = visibleWidthAtZDepth(camera.position.z, camera)
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(height, width)
@@ -183,7 +184,6 @@ export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTextur
     camera,
     api,
     parent,
-    mapper,
     // eslint-disable-next-line
     file: require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
     width,
@@ -195,7 +195,6 @@ export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTextur
     camera,
     api,
     parent,
-    mapper,
     // eslint-disable-next-line
     file: require('file-loader!../Model/emojipack-glb/hands/rock.glb'),
     width,
@@ -208,7 +207,6 @@ export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTextur
     camera,
     api,
     parent,
-    mapper,
     // eslint-disable-next-line
     file: require('file-loader!../Model/emojipack-glb/hands/thumbs-up.glb'),
     width,
@@ -295,7 +293,7 @@ export const setupControls = async ({ camera, mounter, api }) => {
   }
 }
 
-export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
+export const makeCanvasCubeTexture = async ({ api }) => {
   var rID = getID()
 
   const easeOutSine = (t, b, c, d) => {
@@ -345,9 +343,9 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
 
       // Add three color stops
-      gradient.addColorStop(0, 'hsl(60, 0%, 70%)')
+      gradient.addColorStop(0, 'hsl(60, 0%, 35%)')
       gradient.addColorStop(0.5, 'hsl(60, 0%, 90%)')
-      gradient.addColorStop(1, 'hsl(60, 0%, 70%)')
+      gradient.addColorStop(1, 'hsl(60, 0%, 35%)')
       this.gradient = gradient
     }
 
@@ -435,7 +433,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${((intensity * 360) % 360).toFixed(0)}, 65%, 65%`
+      color = `${((intensity * 255) % 255).toFixed(0)}, 65%, 65%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -480,37 +478,12 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t
   ]
 
-  mounter.appendChild(poserAPI.video)
-
-  api.tasks[rID] = async () => {
+  api.tasks[rID] = () => {
     // touchTextures.forEach(e => {
     //   e.update()
     // })
     t.update()
     cubeTexture.needsUpdate = true
-
-    let info = poserAPI.update()
-    let output = info.output
-    if (output.active) {
-      t.addTouch({
-        x: output.cx,
-        y: output.cy
-      })
-      console.log(output.cx, output.cy)
-    }
-
-    // if (info.poses) {
-    //   let poses = info.poses.sort((a, b) => {
-    //     return a.score - b.score
-    //   })
-    //   if (poses[0]) {
-    //     // let leftWrist = poses[0].keypoints.find(k => k.part === 'leftWrist')
-    //     // let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
-    //     console.table(poses[0].keypoints)
-    //     // console.log(leftWrist.position)
-    //     // console.log(rightWrist.position)
-    //   }
-    // }
   }
 
   window.addEventListener('mousemove', on.onMouseMove, { passive: false })
@@ -763,8 +736,6 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
 // }
 
 export const setupBase = async ({ api, mounter, vm }) => {
-  let poserMod = await import('../GLService/cam-movement.js')
-  let poserAPI = await poserMod.setup()
   let env = { api, mounter, vm }
   let rID = getID()
   let exited = false
@@ -813,7 +784,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png')
   // ])
 
-  let canvasCubeTexture = await makeCanvasCubeTexture({ poserAPI, api, ...env })
+  let canvasCubeTexture = await makeCanvasCubeTexture({ api })
 
   // cubeBox1.flipY = false
   // cubeBox2.flipY = false
@@ -827,7 +798,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
-  makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
+  makeEmoji({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
   // parent.scale.x = -1
   scene.add(parent)
 

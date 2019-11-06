@@ -345,9 +345,9 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
 
       // Add three color stops
-      gradient.addColorStop(0, 'hsl(60, 0%, 70%)')
+      gradient.addColorStop(0, 'hsl(60, 0%, 35%)')
       gradient.addColorStop(0.5, 'hsl(60, 0%, 90%)')
-      gradient.addColorStop(1, 'hsl(60, 0%, 70%)')
+      gradient.addColorStop(1, 'hsl(60, 0%, 35%)')
       this.gradient = gradient
     }
 
@@ -435,7 +435,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${((intensity * 360) % 360).toFixed(0)}, 65%, 65%`
+      color = `${((intensity * 255) % 255).toFixed(0)}, 65%, 65%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -489,7 +489,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t.update()
     cubeTexture.needsUpdate = true
 
-    let info = poserAPI.update()
+    let info = await poserAPI.update()
     let output = info.output
     if (output.active) {
       t.addTouch({
