@@ -231,7 +231,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
     let cube = new THREE.Mesh(geometry, material)
     cube.userData.rx = Math.random() - 0.5
     cube.userData.ry = Math.random() - 0.5
-    cube.userData.rz = Math.random() - 0.5
+    cube.userData.rz = -Math.random() - 0.2
 
     cube.position.x = cube.userData.rx * 70
     cube.position.y = cube.userData.ry * 70
@@ -380,7 +380,8 @@ export const makeCanvasCubeTexture = async ({ api }) => {
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
       // this.ctx.fillStyle = 'yellow'
-      this.ctx.fillStyle = this.gradient
+      this.ctx.fillStyle = 'white'
+      // this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
@@ -641,7 +642,8 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(width, height)
 
-  let geo = await makeFontGeo({ text: 'Lok Lok', width: min * 0.15 })
+  let text = 'Lok Lok'
+  let geo = await makeFontGeo({ text, width: min * 0.125 })
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
   // scene.add(light)
