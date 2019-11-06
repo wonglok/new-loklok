@@ -343,9 +343,9 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
 
       // Add three color stops
-      gradient.addColorStop(0, 'hsl(61, 100%, 35%)')
-      gradient.addColorStop(0.5, 'hsl(60, 100%, 50%)')
-      gradient.addColorStop(1, 'hsl(61, 100%, 35%)')
+      gradient.addColorStop(0, 'hsl(60, 0%, 35%)')
+      gradient.addColorStop(0.5, 'hsl(60, 0%, 90%)')
+      gradient.addColorStop(1, 'hsl(60, 0%, 35%)')
       this.gradient = gradient
     }
 
@@ -432,7 +432,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(((intensity)) * 255).toFixed(0)}, 70%, 60%`
+      color = `${((intensity * 255) % 255).toFixed(0)}, 70%, 60%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
