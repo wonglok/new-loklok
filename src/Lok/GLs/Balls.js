@@ -343,11 +343,12 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
 
       // Add three color stops
-      gradient.addColorStop(0, '#fff')
-      gradient.addColorStop(0.5, '#fff')
-      gradient.addColorStop(1, '#fff')
+      gradient.addColorStop(0, 'hsl(61, 100%, 35%)')
+      gradient.addColorStop(0.5, 'hsl(60, 100%, 50%)')
+      gradient.addColorStop(1, 'hsl(61, 100%, 35%)')
       this.gradient = gradient
     }
+
     update (delta) {
       this.clear()
       let speed = this.speed
@@ -375,9 +376,11 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       // this.ctx.fillRect(50, 0, 200, 200)
       // this.test()
     }
+
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
-      this.ctx.fillStyle = 'yellow'
+      // this.ctx.fillStyle = 'yellow'
+      this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
