@@ -227,7 +227,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
   let imgs = []
   let cubes = []
   // eslint-disable-next-line
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 15; i++) {
     let cube = new THREE.Mesh(geometry, material)
     cube.userData.rx = Math.random() - 0.5
     cube.userData.ry = Math.random() - 0.5
@@ -235,7 +235,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     cube.position.x = cube.userData.rx * 70
     cube.position.y = cube.userData.ry * 70
-    cube.position.z = cube.userData.rz * 35
+    cube.position.z = cube.userData.rz * 70
 
     cubes.push(cube)
     parent.add(cube)
@@ -247,7 +247,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     img.position.x = img.userData.rx * 70
     img.position.y = img.userData.ry * 70
-    img.position.z = img.userData.rz * 35
+    img.position.z = img.userData.rz * 70
     // img.position.copy(cube.position)
     imgs.push(img)
     parent.add(img)
@@ -343,9 +343,9 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
 
       // Add three color stops
-      gradient.addColorStop(0, 'white')
-      gradient.addColorStop(0.5, '#ccc')
-      gradient.addColorStop(1, 'white')
+      gradient.addColorStop(0, '#fff')
+      gradient.addColorStop(0.5, '#fff')
+      gradient.addColorStop(1, '#fff')
       this.gradient = gradient
     }
     update (delta) {
@@ -377,7 +377,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
     }
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
-      this.ctx.fillStyle = this.gradient
+      this.ctx.fillStyle = 'yellow'
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
