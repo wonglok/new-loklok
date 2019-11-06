@@ -371,6 +371,14 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       // this.canvas.style.width = this.canvas.style.height = `${
       //   this.canvas.width
       // }px`
+
+      var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
+
+      // Add three color stops
+      gradient.addColorStop(0, 'white')
+      gradient.addColorStop(0.5, '#ccc')
+      gradient.addColorStop(1, 'white')
+      this.gradient = gradient
     }
     update (delta) {
       this.clear()
@@ -400,7 +408,7 @@ export const makeCanvasCubeTexture = async ({ api }) => {
       // this.test()
     }
     clear () {
-      this.ctx.fillStyle = '#efefef'
+      this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
