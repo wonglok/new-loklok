@@ -512,13 +512,13 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
           if (leftWrist) {
             t.addTouch({
               x: (info.video.width - leftWrist.position.x) / info.video.width,
-              y: -leftWrist.position.y / info.video.height
+              y: 1 - (leftWrist.position.y / info.video.height)
             })
           }
           if (rightWrist) {
             t.addTouch({
               x: (info.video.width - rightWrist.position.x) / info.video.width,
-              y: -rightWrist.position.y / info.video.height
+              y: 1 - (rightWrist.position.y / info.video.height)
             })
           }
         }
