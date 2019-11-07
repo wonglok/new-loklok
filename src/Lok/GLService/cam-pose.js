@@ -150,6 +150,7 @@ export const setup = async () => {
       video.style.opacity = 0.5
       video.style.width = '150px'
       video.style.height = '150px'
+      video.style.transform = 'scaleX(-1)'
     } else {
     }
 

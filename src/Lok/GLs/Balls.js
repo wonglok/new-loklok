@@ -326,11 +326,11 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       this.height = 64
       this.width = this.height = this.size
 
-      this.maxAge = 250
+      this.maxAge = 200
       this.radius = 0.09 * this.size
       // this.radius = 0.15 * 1000
 
-      this.speed = 1.2 / this.maxAge
+      this.speed = 1.0 / this.maxAge
       // this.speed = 0.01
 
       this.trail = []
@@ -492,10 +492,6 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t
   ]
 
-  let last = {
-    leftWrist: '',
-    rightWrist: ''
-  }
   api.tasks[rID] = async () => {
     // touchTextures.forEach(e => {
     //   e.update()
@@ -512,23 +508,18 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
         if (poses[0]) {
           let leftWrist = poses[0].keypoints.find(k => k.part === 'leftWrist')
           let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
-          // console.table(poses[0].keypoints)
-          // console.log(leftWrist.position)
-          // console.log(rightWrist.position)
 
-          if (leftWrist && last.leftWrist !== JSON.stringify(leftWrist.position)) {
+          if (leftWrist) {
             t.addTouch({
               x: (info.video.width - leftWrist.position.x) / info.video.width,
-              y: leftWrist.position.y / info.video.height
+              y: -leftWrist.position.y / info.video.height
             })
-            last.leftWrist = JSON.stringify(leftWrist.position)
           }
-          if (rightWrist && last.rightWrist !== JSON.stringify(rightWrist.position)) {
+          if (rightWrist) {
             t.addTouch({
               x: (info.video.width - rightWrist.position.x) / info.video.width,
-              y: rightWrist.position.y / info.video.height
+              y: -rightWrist.position.y / info.video.height
             })
-            last.rightWrist = JSON.stringify(rightWrist.position)
           }
         }
       }
