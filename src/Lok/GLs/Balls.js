@@ -492,6 +492,10 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t
   ]
 
+  let last = {
+    leftWrist: '',
+    rightWrist: ''
+  }
   api.tasks[rID] = async () => {
     // touchTextures.forEach(e => {
     //   e.update()
@@ -512,17 +516,19 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
           // console.log(leftWrist.position)
           // console.log(rightWrist.position)
 
-          if (leftWrist) {
+          if (leftWrist && last.leftWrist !== JSON.stringify(leftWrist.position)) {
             t.addTouch({
               x: (info.video.width - leftWrist.position.x) / info.video.width,
               y: leftWrist.position.y / info.video.height
             })
+            last.leftWrist = JSON.stringify(leftWrist.position)
           }
-          if (rightWrist) {
+          if (rightWrist && last.rightWrist !== JSON.stringify(rightWrist.position)) {
             t.addTouch({
               x: (info.video.width - rightWrist.position.x) / info.video.width,
               y: rightWrist.position.y / info.video.height
             })
+            last.rightWrist = JSON.stringify(rightWrist.position)
           }
         }
       }
@@ -835,7 +841,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   var animate = async function () {
     rAFID = requestAnimationFrame(animate)
     for (let kn in api.tasks) {
-      await api.tasks[kn]()
+      api.tasks[kn]()
     }
     renderer.render(scene, camera)
 
