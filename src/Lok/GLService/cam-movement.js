@@ -1,5 +1,19 @@
 require('./diff-cam-adapter.js')
 
+function isAndroid () {
+  return /Android/i.test(navigator.userAgent)
+}
+
+function isiOS () {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+}
+
+function isMobile () {
+  return isAndroid() || isiOS()
+}
+
+const maxVideoSize = 530
+
 var DiffCamEngine = require('./diff-cam').default
 export const setup = async () => {
   var api = {
@@ -72,11 +86,11 @@ export const setup = async () => {
       ...vars
     }
 
-    output.cx = (vars.bw - vars.vr) / vars.bw
-    output.cy = (vars.bh - vars.vt) / vars.bh
+    output.x = (vars.bw - vars.vr) / vars.bw
+    output.y = (vars.bh - vars.vt) / vars.bh
 
-    output.cx = output.cx * 2.0 - 1
-    output.cy = output.cy * 2.0 - 1
+    output.x = output.cx * 2.0 - 1
+    output.y = output.cy * 2.0 - 1
   }, 1000 / 120)
 
   function capture (payload) {
@@ -111,17 +125,61 @@ export const setup = async () => {
     }
   }
 
-  let video = document.createElement('video')
-  api.video = video
+  async function setupCamera () {
+    let video = document.createElement('video')
+    // const video = document.getElementById('video')
+    video.width = maxVideoSize
+    video.height = maxVideoSize
 
-  video.style.transformOrigin = '25% 0%'
-  video.style.transform = `scaleX(-1) scale(0.4)`
-  video.style.position = `fixed`
-  video.style.top = `0px`
-  video.style.left = `0px`
-  video.style.zIndex = `1`
-  video.style.opacity = 1
-  document.body.appendChild(video)
+    document.body.appendChild(video)
+    video.style.position = 'fixed'
+    video.style.top = '0px'
+    video.style.right = '0px'
+    video.style.zIndex = '-1'
+    video.style.opacity = 0.00001
+
+    if (process.env.NODE_ENV === 'development') {
+      video.style.zIndex = '100'
+      video.style.opacity = 0.5
+      video.style.width = '150px'
+      video.style.height = '150px'
+      video.style.transform = 'scaleX(-1)'
+    } else {
+    }
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const mobile = isMobile()
+      const stream = await navigator.mediaDevices.getUserMedia({
+        'audio': false,
+        'video': {
+          facingMode: 'user',
+          width: mobile ? undefined : maxVideoSize,
+          height: mobile ? undefined : maxVideoSize
+        }
+      })
+      video.srcObject = stream
+
+      return new Promise(resolve => {
+        video.onloadedmetadata = () => {
+          resolve(video)
+        }
+      })
+    } else {
+      const errorMessage = 'This browser does not support video capture, or this device does not have a camera'
+      alert(errorMessage)
+      return Promise.reject(errorMessage)
+    }
+  }
+
+  async function loadVideo () {
+    const video = await setupCamera()
+    video.play()
+
+    return video
+  }
+  let video = await loadVideo()
+
+  api.video = video
 
   window.addEventListener('touchstart', () => {
     if (video.paused) {
