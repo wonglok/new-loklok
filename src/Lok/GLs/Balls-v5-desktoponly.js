@@ -2,18 +2,6 @@ export const getID = () => {
   return `_${(Math.random() * 10000000000).toFixed(0)}`
 }
 
-function isAndroid () {
-  return /Android/i.test(navigator.userAgent)
-}
-
-function isiOS () {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
-}
-
-export function isMobile () {
-  return isAndroid() || isiOS()
-}
-
 let THREE = {
   ...require('three'),
   ...require('three/examples/jsm/controls/OrbitControls.js'),
@@ -296,7 +284,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
   }
 }
 
-export const setupCameraControls = async ({ camera, mounter, api }) => {
+export const setupControls = async ({ camera, mounter, api }) => {
   let rID = getID()
   let control = new THREE.OrbitControls(camera, mounter)
 
@@ -499,34 +487,28 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t.update()
     cubeTexture.needsUpdate = true
 
-    if (poserAPI) {
-      let info = await poserAPI.update()
-      if (info.poses) {
-        let poses = info.poses.sort((a, b) => {
-          return a.score - b.score
-        })
-        if (poses[0]) {
-          let leftWrist = poses[0].keypoints.find(k => k.part === 'leftWrist')
-          let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
-          // console.table(poses[0].keypoints)
-          // console.log(leftWrist.position)
-          // console.log(rightWrist.position)
-
-          if (leftWrist) {
-            t.addTouch({
-              x: (info.video.width - leftWrist.position.x) / info.video.width,
-              y: leftWrist.position.y / info.video.height
-            })
-          }
-          if (rightWrist) {
-            t.addTouch({
-              x: (info.video.width - rightWrist.position.x) / info.video.width,
-              y: rightWrist.position.y / info.video.height
-            })
-          }
-        }
-      }
+    let info = poserAPI.update()
+    let output = info.output
+    if (output.active) {
+      t.addTouch({
+        x: output.cx,
+        y: output.cy
+      })
+      console.log(output.cx, output.cy)
     }
+
+    // if (info.poses) {
+    //   let poses = info.poses.sort((a, b) => {
+    //     return a.score - b.score
+    //   })
+    //   if (poses[0]) {
+    //     // let leftWrist = poses[0].keypoints.find(k => k.part === 'leftWrist')
+    //     // let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
+    //     console.table(poses[0].keypoints)
+    //     // console.log(leftWrist.position)
+    //     // console.log(rightWrist.position)
+    //   }
+    // }
   }
 
   window.addEventListener('mousemove', on.onMouseMove, { passive: false })
@@ -779,14 +761,11 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
 // }
 
 export const setupBase = async ({ api, mounter, vm }) => {
+  let poserMod = await import('../GLService/cam-movement.js')
+  let poserAPI = await poserMod.setup()
   let env = { api, mounter, vm }
   let rID = getID()
   let exited = false
-  let poserAPI = false
-  if (!isMobile()) {
-    let poserMod = await import('../GLService/cam-pose.js')
-    poserAPI = await poserMod.setup()
-  }
 
   let rect = mounter.getBoundingClientRect()
   let scene = new THREE.Scene()
@@ -811,10 +790,31 @@ export const setupBase = async ({ api, mounter, vm }) => {
     camera.updateProjectionMatrix()
   })
 
-  // setupCameraControls({ camera, api, mounter })
-  camera.position.z = 22
+  // setupControls({ camera, api, mounter })
+  camera.position.z = 20
+
+  // let cubeBox1 = await makeCubeTexture([
+  //   require('../Textures/cubemap/happy-mint/px.png'), require('../Textures/cubemap/happy-mint/nx.png'),
+  //   require('../Textures/cubemap/happy-mint/py.png'), require('../Textures/cubemap/happy-mint/ny.png'),
+  //   require('../Textures/cubemap/happy-mint/pz.png'), require('../Textures/cubemap/happy-mint/nz.png')
+  // ])
+
+  // let cubeBox2 = await makeCubeTexture([
+  //   require('../Textures/cubemap/green-love/px.png'), require('../Textures/cubemap/green-love/nx.png'),
+  //   require('../Textures/cubemap/green-love/py.png'), requ-ire('../Textures/cubemap/green-love/ny.png'),
+  //   require('../Textures/cubemap/green-love/pz.png'), require('../Textures/cubemap/green-love/nz.png')
+  // ])
+
+  // let cubeBox2 = await makeCubeTexture([
+  //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png'),
+  //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png'),
+  //   require('../Textures/cubemap/grad-rainbow/nx.png'), require('../Textures/cubemap/grad-rainbow/nx.png')
+  // ])
 
   let canvasCubeTexture = await makeCanvasCubeTexture({ poserAPI, api, ...env })
+
+  // cubeBox1.flipY = false
+  // cubeBox2.flipY = false
 
   let parent = new THREE.Object3D()
 
@@ -832,10 +832,10 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // let composer = setupBloomComposer({ renderer, scene, camera, api })
 
   var rAFID = 0
-  var animate = async function () {
+  var animate = function () {
     rAFID = requestAnimationFrame(animate)
     for (let kn in api.tasks) {
-      await api.tasks[kn]()
+      api.tasks[kn]()
     }
     renderer.render(scene, camera)
 

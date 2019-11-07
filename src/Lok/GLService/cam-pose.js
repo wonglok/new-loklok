@@ -1,79 +1,201 @@
 import * as posenet from '@tensorflow-models/posenet'
+function isAndroid () {
+  return /Android/i.test(navigator.userAgent)
+}
+
+function isiOS () {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+}
+
+function isMobile () {
+  return isAndroid() || isiOS()
+}
 
 export const loadPoser = async () => {
+  // 0.50, 0.75, 1.00, or 1.01
   const net = await posenet.load()
-  const imageScaleFactor = 1.0
+
+  // const maxVideoSize = 513
+  // const canvasSize = 400
+
+  const state = {
+    algorithm: 'single-pose',
+    input: {
+      mobileNetArchitecture: isMobile() ? '0.50' : '1.01',
+      outputStride: 16,
+      imageScaleFactor: 0.5
+    },
+    singlePoseDetection: {
+      minPoseConfidence: 0.1,
+      minPartConfidence: 0.5
+    },
+    multiPoseDetection: {
+      maxPoseDetections: 2,
+      minPoseConfidence: 0.1,
+      minPartConfidence: 0.3,
+      nmsRadius: 20.0
+    },
+    output: {
+      showVideo: true,
+      showSkeleton: true,
+      showPoints: true
+    },
+    net
+  }
+
   const flipHorizontal = false
-  const outputStride = 16
-  // get up to 5 poses
-  const maxPoseDetections = 5
-  // minimum confidence of the root part of a pose
-  const scoreThreshold = 0.5
-  // minimum distance in pixels between the root parts of poses
-  const nmsRadius = 20
   let api = {}
 
-  api.run = async ({ image, many = false }) => {
-    const imageElement = image
+  async function poseDetectionFrame ({ video }) {
+    // if (state.changeToArchitecture) {
+    //   // Important to purge variables and free up GPU memory
+    //   state.net.dispose()
 
-    if (many) {
-      const poses = await net.estimateMultiplePoses(imageElement, imageScaleFactor, flipHorizontal, outputStride, maxPoseDetections, scoreThreshold, nmsRadius)
-      return poses
-    } else {
-      const pose = await net.estimateSinglePose(imageElement, imageScaleFactor, flipHorizontal, outputStride)
-      return [pose]
+    //   // Load the PoseNet model weights for either the 0.50, 0.75, 1.00, or 1.01 version
+    //   state.net = await posenet.load(Number(state.changeToArchitecture))
+
+    //   state.changeToArchitecture = null
+    // }
+
+    // Scale an image down to a certain factor. Too large of an image will slow down
+    // the GPU
+    const imageScaleFactor = state.input.imageScaleFactor
+    const outputStride = Number(state.input.outputStride)
+
+    let poses = []
+    // var minPoseConfidence = 0
+    // var minPartConfidence = 0
+    switch (state.algorithm) {
+      case 'single-pose':
+        const pose = await state.net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride)
+        poses.push(pose)
+
+        // minPoseConfidence = Number(
+        //   state.singlePoseDetection.minPoseConfidence)
+        // minPartConfidence = Number(
+        //   state.singlePoseDetection.minPartConfidence)
+        break
+      case 'multi-pose':
+        poses = await state.net.estimateMultiplePoses(video, imageScaleFactor, flipHorizontal, outputStride,
+          state.multiPoseDetection.maxPoseDetections,
+          state.multiPoseDetection.minPartConfidence,
+          state.multiPoseDetection.nmsRadius)
+
+        // minPoseConfidence = Number(state.multiPoseDetection.minPoseConfidence)
+        // minPartConfidence = Number(state.multiPoseDetection.minPartConfidence)
+        break
     }
+
+    return poses
+
+    // ctx.clearRect(0, 0, canvasSize, canvasSize)
+
+    // if (state.output.showVideo) {
+    //   ctx.save()
+    //   ctx.scale(-1, 1)
+    //   ctx.translate(-canvasSize, 0)
+    //   ctx.drawImage(video, 0, 0, canvasSize, canvasSize)
+    //   ctx.restore()
+    // }
+
+    // const scale = canvasSize / video.width
+
+    // For each pose (i.e. person) detected in an image, loop through the poses
+    // and draw the resulting skeleton and keypoints if over certain confidence
+    // scores
+
+    // poses.forEach(({ score, keypoints }) => {
+    //   if (score >= minPoseConfidence) {
+    //     if (state.output.showPoints) {
+    //       drawKeypoints(keypoints, minPartConfidence, ctx, scale)
+    //     }
+    //     if (state.output.showSkeleton) {
+    //       drawSkeleton(keypoints, minPartConfidence, ctx, scale)
+    //     }
+    //   }
+    // })
+  }
+
+  api.run = async ({ video }) => {
+    return poseDetectionFrame({ video })
   }
 
   return api
 }
 
 export const setup = async () => {
+  let maxVideoSize = 513
+
   var api = {
     loaded: false
   }
+
   let posterAPI = await loadPoser()
 
-  let video = document.createElement('video')
-  api.video = video
-  window.addEventListener('touchstart', () => {
-    if (video.paused) {
-      video.play()
-    }
-  })
-  window.addEventListener('click', () => {
-    if (video.paused) {
-      video.play()
-    }
-  })
+  async function setupCamera () {
+    let video = document.createElement('video')
+    // const video = document.getElementById('video')
+    video.width = maxVideoSize
+    video.height = maxVideoSize
 
+    document.body.appendChild(video)
+    video.style.position = 'fixed'
+    video.style.top = '0px'
+    video.style.right = '0px'
+    video.style.zIndex = '-1'
+    video.style.opacity = 0.00001
+
+    if (process.env.NODE_ENV === 'development') {
+      video.style.zIndex = '100'
+      video.style.opacity = 0.5
+      video.style.width = '150px'
+      video.style.height = '150px'
+    } else {
+    }
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const mobile = isMobile()
+      const stream = await navigator.mediaDevices.getUserMedia({
+        'audio': false,
+        'video': {
+          facingMode: 'user',
+          width: mobile ? undefined : maxVideoSize,
+          height: mobile ? undefined : maxVideoSize
+        }
+      })
+      video.srcObject = stream
+
+      return new Promise(resolve => {
+        video.onloadedmetadata = () => {
+          resolve(video)
+        }
+      })
+    } else {
+      const errorMessage = 'This browser does not support video capture, or this device does not have a camera'
+      alert(errorMessage)
+      return Promise.reject(errorMessage)
+    }
+  }
+
+  async function loadVideo () {
+    const video = await setupCamera()
+    video.play()
+
+    return video
+  }
+  let video = await loadVideo()
   video.addEventListener('loadeddata', () => {
     api.loaded = true
   })
 
-  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then((stream) => {
-    video.autoplay = true
-    video.muted = true
-    video.srcObject = stream
-    video.play()
-    video.setAttribute('playsinline', true)
-  })
-
-  api.pause = () => {
-    if (video.paused) {
-      video.play()
-    } else {
-      video.pause()
-    }
-  }
-
   api.update = async () => {
     let poses = false
     if (api.loaded) {
-      poses = await posterAPI.run({ image: video })
+      poses = await posterAPI.run({ video })
     }
 
     return {
+      maxVideoSize,
       video,
       poses
     }

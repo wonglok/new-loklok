@@ -812,7 +812,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   })
 
   // setupCameraControls({ camera, api, mounter })
-  camera.position.z = 22
+  camera.position.z = 20
 
   let canvasCubeTexture = await makeCanvasCubeTexture({ poserAPI, api, ...env })
 
@@ -832,10 +832,10 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // let composer = setupBloomComposer({ renderer, scene, camera, api })
 
   var rAFID = 0
-  var animate = async function () {
+  var animate = function () {
     rAFID = requestAnimationFrame(animate)
     for (let kn in api.tasks) {
-      await api.tasks[kn]()
+      api.tasks[kn]()
     }
     renderer.render(scene, camera)
 

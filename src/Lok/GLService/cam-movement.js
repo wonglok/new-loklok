@@ -1,3 +1,5 @@
+require('./diff-cam-adapter.js')
+
 var DiffCamEngine = require('./diff-cam').default
 export const setup = async () => {
   var api = {
@@ -100,10 +102,10 @@ export const setup = async () => {
       vars.width = (box.x.max - box.x.min) * scale
       vars.height = (box.y.max - box.y.min) * scale
     } else {
-      if (vars.lt === vars.top && vars.lr === vars.right) {
-        vars.active = false
-        // hide()
-      }
+      // if (vars.lt === vars.top && vars.lr === vars.right) {
+      //   vars.active = false
+      //   // hide()
+      // }
       vars.lt = vars.top
       vars.lr = vars.right
     }
@@ -112,15 +114,14 @@ export const setup = async () => {
   let video = document.createElement('video')
   api.video = video
 
-  if (process.env.NODE_ENV === 'development') {
-    video.style.transformOrigin = '25% 0%'
-    video.style.transform = `scaleX(-1) scale(0.4)`
-    video.style.position = `fixed`
-    video.style.top = `0`
-    video.style.left = `0`
-    video.style.zIndex = `1`
-    video.style.opacity = 1
-  }
+  video.style.transformOrigin = '25% 0%'
+  video.style.transform = `scaleX(-1) scale(0.4)`
+  video.style.position = `fixed`
+  video.style.top = `0px`
+  video.style.left = `0px`
+  video.style.zIndex = `1`
+  video.style.opacity = 1
+  document.body.appendChild(video)
 
   window.addEventListener('touchstart', () => {
     if (video.paused) {
