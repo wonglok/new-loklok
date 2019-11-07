@@ -326,11 +326,11 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       this.height = 64
       this.width = this.height = this.size
 
-      this.maxAge = 200
+      this.maxAge = 350
       this.radius = 0.09 * this.size
       // this.radius = 0.15 * 1000
 
-      this.speed = 1.0 / this.maxAge
+      this.speed = 1 / this.maxAge
       // this.speed = 0.01
 
       this.trail = []
@@ -492,13 +492,17 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t
   ]
 
-  api.tasks[rID] = async () => {
-    // touchTextures.forEach(e => {
-    //   e.update()
-    // })
-    t.update()
-    cubeTexture.needsUpdate = true
-
+  let rAFID = 0
+  let touchAdder = ({ pose, info, name }) => {
+    let pointer = pose.keypoints.find(k => k.part === name)
+    if (pointer && pointer.score > 0.15) {
+      t.addTouch({
+        x: (info.video.width - pointer.position.x) / info.video.width,
+        y: 1 - (pointer.position.y / info.video.height)
+      })
+    }
+  }
+  let loop = async () => {
     if (poserAPI) {
       let info = await poserAPI.update()
       if (info.poses) {
@@ -506,24 +510,33 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
           return a.score - b.score
         })
         if (poses[0]) {
-          let leftWrist = poses[0].keypoints.find(k => k.part === 'leftWrist')
-          let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
+          touchAdder({ pose: poses[0], info, name: 'leftWrist' })
+          touchAdder({ pose: poses[0], info, name: 'rightWrist' })
+          // touchAdder({ pose: poses[0], info, name: 'nose' })
 
-          if (leftWrist) {
-            t.addTouch({
-              x: (info.video.width - leftWrist.position.x) / info.video.width,
-              y: 1 - (leftWrist.position.y / info.video.height)
-            })
-          }
-          if (rightWrist) {
-            t.addTouch({
-              x: (info.video.width - rightWrist.position.x) / info.video.width,
-              y: 1 - (rightWrist.position.y / info.video.height)
-            })
-          }
+          // let rightWrist = poses[0].keypoints.find(k => k.part === 'rightWrist')
+          // if (rightWrist) {
+          //   t.addTouch({
+          //     x: (info.video.width - rightWrist.position.x) / info.video.width,
+          //     y: 1 - (rightWrist.position.y / info.video.height)
+          //   })
+          // }
         }
       }
+      rAFID = requestAnimationFrame(loop)
     }
+  }
+  rAFID = requestAnimationFrame(loop)
+  api.teardown[rID] = () => {
+    loop = () => {}
+    cancelAnimationFrame(rAFID)
+  }
+  api.tasks[rID] = async () => {
+    // touchTextures.forEach(e => {
+    //   e.update()
+    // })
+    t.update()
+    cubeTexture.needsUpdate = true
   }
 
   window.addEventListener('mousemove', on.onMouseMove, { passive: false })
@@ -781,8 +794,11 @@ export const setupBase = async ({ api, mounter, vm }) => {
   let exited = false
   let poserAPI = false
   if (!isMobile()) {
-    let poserMod = await import('../GLService/cam-pose.js')
-    poserAPI = await poserMod.setup()
+    try {
+      let poserMod = await import('../GLService/cam-pose.js')
+      poserAPI = await poserMod.setup()
+    } catch (e) {
+    }
   }
 
   let rect = mounter.getBoundingClientRect()
