@@ -123,7 +123,7 @@ export const loadPoser = async () => {
   return api
 }
 
-export const setup = async () => {
+export const setup = async ({ showPreview = true } = {}) => {
   let maxVideoSize = 513
 
   var api = {
@@ -146,7 +146,7 @@ export const setup = async () => {
     video.style.opacity = 0.00001
     video.style.borderRadius = '50%'
 
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || showPreview) {
       video.style.zIndex = '100'
       video.style.opacity = 1.0
       video.style.width = '150px'

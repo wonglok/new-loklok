@@ -854,7 +854,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   try {
     let poserMod = await import('../GLService/cam-pose.js')
-    poserAPI = await poserMod.setup()
+    poserAPI = await poserMod.setup({ showPreview: true })
   } catch (e) {
   }
 
@@ -882,7 +882,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   })
 
   // setupCameraControls({ camera, api, mounter })
-  camera.position.z = 22
+  camera.position.z = 20
 
   let canvasCubeTexture = await makeCanvasCubeTexture({ poserAPI, api, ...env })
 
