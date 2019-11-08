@@ -1,3 +1,5 @@
+require('requestidlecallback')
+
 export const getID = () => {
   return `_${(Math.random() * 10000000000).toFixed(0)}`
 }
@@ -330,7 +332,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       this.radius = 0.09 * this.size
       // this.radius = 0.15 * 1000
 
-      this.speed = 2 / this.maxAge
+      this.speed = 1.33 / this.maxAge
       // this.speed = 0.01
 
       this.trail = []
@@ -507,9 +509,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       if (poserAPI) {
         let info = await poserAPI.update()
         if (info.poses) {
-          let poses = info.poses.sort((a, b) => {
-            return a.score - b.score
-          })
+          let poses = info.poses
           if (poses[0]) {
             touchAdder({ pose: poses[0], info, name: 'leftWrist' })
             touchAdder({ pose: poses[0], info, name: 'nose' })
