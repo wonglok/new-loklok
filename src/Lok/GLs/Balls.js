@@ -323,13 +323,13 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 64
-      this.width = 64
-      this.height = 64
+      this.size = 128
+      this.width = 128
+      this.height = 128
       this.width = this.height = this.size
 
       this.maxAge = 350
-      this.radius = 0.09 * this.size
+      this.radius = 0.1 * this.size
       // this.radius = 0.15 * 1000
 
       this.speed = 1.33 / this.maxAge
@@ -356,13 +356,14 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       //   this.canvas.width
       // }px`
 
-      var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
+      // var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
+      // var gradient = this.ctx.createRadialGradient(this.width / 2, this.height / 2, 0, this.width / 2, this.height / 2, this.width / 2)
 
       // Add three color stops
-      gradient.addColorStop(0, 'hsl(60, 0%, 70%)')
-      gradient.addColorStop(0.5, 'hsl(60, 0%, 90%)')
-      gradient.addColorStop(1, 'hsl(60, 0%, 70%)')
-      this.gradient = gradient
+      // gradient.addColorStop(0, 'rgba(255,255,255,1.0)')
+      // gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)')
+      // gradient.addColorStop(1, 'rgba(255,255,255,1.0)')
+      // this.gradient = gradient
     }
 
     update (delta) {
@@ -396,7 +397,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
       // this.ctx.fillStyle = 'yellow'
-      this.ctx.fillStyle = 'white'
+      this.ctx.fillStyle = 'darkblue'
       // this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
@@ -454,7 +455,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
       ctx.shadowOffsetY = offset // (default 0)
-      ctx.shadowBlur = radius * 1 // (default 0)
+      ctx.shadowBlur = radius // (default 0)
       ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
 
       this.ctx.beginPath()
