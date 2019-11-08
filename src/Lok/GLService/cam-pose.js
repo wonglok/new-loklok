@@ -19,7 +19,7 @@ export const loadPoser = async () => {
   // const canvasSize = 400
 
   const state = {
-    algorithm: 'single-pose',
+    algorithm: 'multi-pose',
     input: {
       mobileNetArchitecture: isMobile() ? '0.50' : '1.01',
       outputStride: 16,
@@ -140,14 +140,15 @@ export const setup = async () => {
 
     document.body.appendChild(video)
     video.style.position = 'fixed'
-    video.style.top = '0px'
-    video.style.right = '0px'
+    video.style.top = '20px'
+    video.style.right = '20px'
     video.style.zIndex = '-1'
     video.style.opacity = 0.00001
+    video.style.borderRadius = '50%'
 
     if (process.env.NODE_ENV === 'development') {
       video.style.zIndex = '100'
-      video.style.opacity = 0.5
+      video.style.opacity = 1.0
       video.style.width = '150px'
       video.style.height = '150px'
       video.style.transform = 'scaleX(-1)'
@@ -185,6 +186,7 @@ export const setup = async () => {
     return video
   }
   let video = await loadVideo()
+  api.video = video
   video.addEventListener('loadeddata', () => {
     api.loaded = true
   })

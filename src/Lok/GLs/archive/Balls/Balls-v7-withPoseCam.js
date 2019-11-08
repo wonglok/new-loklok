@@ -243,7 +243,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
   let imgs = []
   let cubes = []
   // eslint-disable-next-line
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 15; i++) {
     let cube = new THREE.Mesh(geometry, material)
     cube.userData.rx = Math.random() - 0.5
     cube.userData.ry = Math.random() - 0.5

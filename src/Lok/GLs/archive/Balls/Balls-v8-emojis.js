@@ -185,6 +185,7 @@ export const makeOneEmoji = async ({ mapper, file, camera, api, parent, offset, 
     // let time = window.performance.now() * 0.001
     // console.log(time)
   }
+  return emojiScene
 }
 
 export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTexture }) => {
@@ -232,38 +233,69 @@ export const makeEmoji = async ({ mapper, scene, parent, api, camera, cubeTextur
   })
 }
 
-export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => {
+export const makeFloatingEmojis = async ({ scene, camera, parent, api, cubeTexture }) => {
   let rID = getID()
+
+  let width = visibleWidthAtZDepth(camera.position.z, camera)
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  let min = Math.min(height, width)
 
   // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
   var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
 
-  let material = await makeWoozyMat({ cubeTexture, api })
+  // let material = await makeWoozyMat({ cubeTexture, api })
 
   let imgs = []
-  let cubes = []
+  // let cubes = []
   // eslint-disable-next-line
-  for (var i = 0; i < 10; i++) {
-    let cube = new THREE.Mesh(geometry, material)
-    cube.userData.rx = Math.random() - 0.5
-    cube.userData.ry = Math.random() - 0.5
-    cube.userData.rz = -Math.random() - 0.2
+  for (var i = 0; i < 7; i++) {
+    // let cube = new THREE.Mesh(geometry, material)
+    // cube.userData.rx = Math.random() - 0.5
+    // cube.userData.ry = Math.random() - 0.5
+    // cube.userData.rz = Math.random() - 0.5
 
-    cube.position.x = cube.userData.rx * 70
-    cube.position.y = cube.userData.ry * 70
-    cube.position.z = cube.userData.rz * 70
+    // cube.position.x = cube.userData.rx * 70
+    // cube.position.y = cube.userData.ry * 70
+    // cube.position.z = cube.userData.rz * 35
 
-    cubes.push(cube)
-    parent.add(cube)
+    // cubes.push(cube)
+    // parent.add(cube)
 
-    let img = await makeLogo({ cubeTexture, parent, idx: i })
-    img.userData.rx = cube.userData.rx
-    img.userData.ry = cube.userData.ry
-    img.userData.rz = cube.userData.rz
+    let files = [
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/winwin.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/ok.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/clapping.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/handshake.glb'),
+      // eslint-disable-next-line
+      require('file-loader!../Model/emojipack-glb/hands/writing.glb')
+    ]
 
-    img.position.x = img.userData.rx * 70
-    img.position.y = img.userData.ry * 70
-    img.position.z = img.userData.rz * 70
+    // let file = files[Math.floor((files.length - 1) * Math.random())]
+    let file = files[i % files.length]
+
+    let img = await makeOneEmoji({
+      mapper: cubeTexture,
+      camera,
+      api,
+      parent,
+      file,
+      width,
+      height,
+      offset: new THREE.Vector3(0, min * -0.15, -5),
+      rotate: new THREE.Vector3(0, Math.PI * 0.0, 0)
+    })
+
+    img.userData.rx = Math.random() - 0.5
+    img.userData.ry = Math.random() - 0.5
+    img.userData.rz = Math.random() + 0.2
+
+    img.position.x = img.userData.rx * 50
+    img.position.y = img.userData.ry * 50
+    img.position.z = img.userData.rz * -35
     // img.position.copy(cube.position)
     imgs.push(img)
     parent.add(img)
@@ -285,11 +317,11 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
   api.tasks[rID] = () => {
     let time = window.performance.now() * 0.001
 
-    cubes.forEach((e, idx) => {
-      e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
-      e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
-      e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
-    })
+    // cubes.forEach((e, idx) => {
+    //   e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
+    //   e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
+    //   e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
+    // })
     imgs.forEach(e => {
       e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
       e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
@@ -297,6 +329,72 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
     })
   }
 }
+
+// export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => {
+//   let rID = getID()
+
+//   // var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
+//   var geometry = new THREE.SphereBufferGeometry(5.5, 128, 128)
+
+//   let material = await makeWoozyMat({ cubeTexture, api })
+
+//   let imgs = []
+//   let cubes = []
+//   // eslint-disable-next-line
+//   for (var i = 0; i < 15; i++) {
+//     let cube = new THREE.Mesh(geometry, material)
+//     cube.userData.rx = Math.random() - 0.5
+//     cube.userData.ry = Math.random() - 0.5
+//     cube.userData.rz = -Math.random() - 0.2
+
+//     cube.position.x = cube.userData.rx * 70
+//     cube.position.y = cube.userData.ry * 70
+//     cube.position.z = cube.userData.rz * 70
+
+//     cubes.push(cube)
+//     parent.add(cube)
+
+//     let img = await makeLogo({ cubeTexture, parent, idx: i })
+//     img.userData.rx = cube.userData.rx
+//     img.userData.ry = cube.userData.ry
+//     img.userData.rz = cube.userData.rz
+
+//     img.position.x = img.userData.rx * 70
+//     img.position.y = img.userData.ry * 70
+//     img.position.z = img.userData.rz * 70
+//     // img.position.copy(cube.position)
+//     imgs.push(img)
+//     parent.add(img)
+//   }
+
+//   api.teardown[rID] = () => {
+//     geometry.dispose()
+//     // cubeTexture.dispose()
+//   }
+
+//   let mixer = (v) => {
+//     if (v < 0) {
+//       return Math.sin(v)
+//     } else {
+//       return Math.cos(v)
+//     }
+//   }
+
+//   api.tasks[rID] = () => {
+//     let time = window.performance.now() * 0.001
+
+//     cubes.forEach((e, idx) => {
+//       e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
+//       e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
+//       e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
+//     })
+//     imgs.forEach(e => {
+//       e.position.x += 0.05 * mixer(time * 3.14 * e.userData.rx * 3.14)
+//       e.position.y += 0.05 * mixer(time * 3.14 * e.userData.ry * 3.14)
+//       e.position.z += 0.05 * mixer(time * 3.14 * e.userData.rz * 3.14)
+//     })
+//   }
+// }
 
 export const setupCameraControls = async ({ camera, mounter, api }) => {
   let rID = getID()
@@ -396,8 +494,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
       // this.ctx.fillStyle = 'yellow'
-      this.ctx.fillStyle = 'white'
-      // this.ctx.fillStyle = this.gradient
+      // this.ctx.fillStyle = 'white'
+      this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
     addTouch (point) {
@@ -897,7 +995,8 @@ export const setupBase = async ({ api, mounter, vm }) => {
   scene.background = canvasCubeTexture
 
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
-  makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
+  makeFloatingEmojis({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
+  // makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   // parent.scale.x = -1
   scene.add(parent)
