@@ -447,7 +447,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${((intensity * 360) % 360).toFixed(0)}, 65%, 65%`
+      color = `${(intensity * 255).toFixed(0)}, 65%, 65%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -809,6 +809,35 @@ export const mobileAndTabletcheck = () => {
   return check
 }
 
+export const makeBallBg = ({ api, scene, camera, canvas }) => {
+  let rID = getID()
+  let cbg = new THREE.CanvasTexture(canvas)
+
+  api.tasks[rID] = () => {
+    cbg.needsUpdate = true
+  }
+  api.teardown[rID] = () => {
+    api.tasks[rID] = () => {}
+  }
+  let mat = new THREE.MeshBasicMaterial({ map: cbg, side: THREE.BackSide })
+  let mesh = new THREE.Mesh()
+  mesh.material = mat
+
+  window.addEventListener('resize', () => {
+    let width = visibleWidthAtZDepth(camera.position.z, camera)
+    let height = visibleHeightAtZDepth(camera.position.z, camera)
+    let max = Math.max(width, height) * 10.0
+    let geo = new THREE.BoxBufferGeometry(max, max, max, 2, 2, 2)
+    mesh.geometry = geo
+    mesh.needsUpdate = true
+  })
+
+  window.dispatchEvent(new Event('resize'))
+
+  mesh.scale.x = -1
+  scene.add(mesh)
+}
+
 export const setupBase = async ({ api, mounter, vm }) => {
   let env = { api, mounter, vm }
   let rID = getID()
@@ -833,7 +862,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   let camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
   let renderer = new THREE.WebGLRenderer({
     alpha: true,
-    antialias: true
+    antialias: false
   })
 
   renderer.setSize(rect.width, rect.height)
@@ -858,14 +887,17 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   let parent = new THREE.Object3D()
 
-  let cubeCam = makeCubeCam({ api, camera, parent: parent, renderer, scene })
-  let cubeCamTexture = cubeCam.renderTarget.texture
+  // let cubeCam = makeCubeCam({ api, camera, parent: parent, renderer, scene })
+  // let cubeCamTexture = cubeCam.renderTarget.texture
+
+  // let cubeCamTexture = canvasCubeTexture
+  // makeBallBg({ ...env, api, scene, canvas: canvasCubeTexture.images[0], camera })
 
   scene.background = canvasCubeTexture
 
-  makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: cubeCamTexture })
-  makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
-  makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: cubeCamTexture })
+  makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
+  makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
+  makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   // parent.scale.x = -1
   scene.add(parent)
 
