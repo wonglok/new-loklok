@@ -123,7 +123,7 @@ export const loadPoser = async () => {
   return api
 }
 
-export const setup = async ({ showPreview = true } = {}) => {
+export const setup = async ({ showPreview = true, mounter } = {}) => {
   let maxVideoSize = 513
 
   var api = {
@@ -138,7 +138,7 @@ export const setup = async ({ showPreview = true } = {}) => {
     video.width = maxVideoSize
     video.height = maxVideoSize
 
-    document.body.appendChild(video)
+    mounter.appendChild(video)
     video.style.position = 'fixed'
     video.style.top = '20px'
     video.style.right = '20px'

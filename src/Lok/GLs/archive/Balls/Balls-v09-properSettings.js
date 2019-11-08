@@ -854,8 +854,8 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // }
 
   try {
-    let poserModule = await import('../GLService/cam-pose.js')
-    poserAPI = await poserModule.setup({ showPreview: true, mounter })
+    let poserMod = await import('../GLService/cam-pose.js')
+    poserAPI = await poserMod.setup({ showPreview: true })
   } catch (e) {
   }
 

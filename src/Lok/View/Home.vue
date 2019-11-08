@@ -1,23 +1,19 @@
 <template>
-  <div class="full" ref="mounter">
+  <div>
+    <div class=" text-teal-800 font-serif font-hairline text-xl p-5">
+      <router-link class="block" to="/lok">Lok</router-link>
+      <router-link class="block" to="/bear">Voyage Bear</router-link>
+      <router-link class="block" to="/bryant-and-jenni-2019">B&J</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import * as Balls from '../GLs/Balls'
 export default {
-  components: {
-  },
-  data () {
-    return {
-      rAPI: false
-    }
-  },
-  mounted () {
-    this.rAPI = Balls.install({ mounter: this.$refs['mounter'], vm: this })
-  },
-  beforeDestroy () {
-    this.rAPI.clean()
-  }
+
 }
 </script>
+
+<style>
+
+</style>
