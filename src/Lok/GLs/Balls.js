@@ -247,11 +247,11 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
     let cube = new THREE.Mesh(geometry, material)
     cube.userData.rx = Math.random() - 0.5
     cube.userData.ry = Math.random() - 0.5
-    cube.userData.rz = -Math.random() - 0.2
+    cube.userData.rz = Math.random() - 0.5
 
     cube.position.x = cube.userData.rx * 70
     cube.position.y = cube.userData.ry * 70
-    cube.position.z = cube.userData.rz * 70
+    cube.position.z = cube.userData.rz * 100
 
     cubes.push(cube)
     parent.add(cube)
@@ -263,7 +263,7 @@ export const makeFloatingBalls = async ({ scene, parent, api, cubeTexture }) => 
 
     img.position.x = img.userData.rx * 70
     img.position.y = img.userData.ry * 70
-    img.position.z = img.userData.rz * 70
+    img.position.z = img.userData.rz * 100
     // img.position.copy(cube.position)
     imgs.push(img)
     parent.add(img)
@@ -516,8 +516,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
             touchAdder({ pose: poses[0], info, name: 'rightWrist' })
           }
         }
-        rAFID = requestAnimationFrame(loop)
       }
+      rAFID = requestAnimationFrame(loop)
     }
     rAFID = requestAnimationFrame(loop)
   }
