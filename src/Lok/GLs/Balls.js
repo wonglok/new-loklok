@@ -396,8 +396,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
 
     clear () {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
-      // this.ctx.fillStyle = 'yellow'
-      this.ctx.fillStyle = 'darkblue'
+      this.ctx.fillStyle = 'white'
+
       // this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
