@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class=" text-teal-800 font-serif font-hairline text-xl p-5">
-      <router-link class="block" to="/lok">Lok</router-link>
-      <router-link class="block" to="/bear">Voyage Bear</router-link>
-      <router-link class="block" to="/bryant-and-jenni-2019">B&J</router-link>
+    <div class=" text-teal-500 font-serif font-hairline text-xl p-5">
+      <router-link class="block" to="/lok">For Lok</router-link>
+      <router-link class="block" to="/bear">For Voyage Bear</router-link>
+      <router-link class="block" to="/bryant-and-jenni-2019">For B&J</router-link>
+      <router-link class="block" to="/words">Current Experiment: Words</router-link>
     </div>
   </div>
 </template>

@@ -19,6 +19,10 @@ const routes = [
   {
     path: '/bryant-and-jenni-2019',
     component: () => import(/* webpackChunkName: "bj" */ '../Lok/View/BryantAndJenni2019.vue')
+  },
+  {
+    path: '/words',
+    component: () => import(/* webpackChunkName: "bj" */ '../Lok/View/Words.vue')
   }
 ]
 
