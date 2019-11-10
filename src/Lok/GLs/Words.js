@@ -411,24 +411,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     }
   }
 
-  let video
-  async function loadVid () {
-    try {
-      video = await setupCamera({ mounter })
-      if (!video) {
-        setTimeout(() => {
-          loadVid()
-        }, 1000)
-      }
-    } catch (e) {
-      if (!video) {
-        setTimeout(() => {
-          loadVid()
-        }, 1000)
-      }
-    }
-  }
-  await loadVid()
+  let video = await setupCamera({ mounter })
 
   let videoTexture = new THREE.VideoTexture(video)
   videoTexture.format = THREE.RGBFormat
