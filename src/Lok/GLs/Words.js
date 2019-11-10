@@ -342,12 +342,19 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
-  let primaryWord2D = new TextCanvas('黃', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
-  let secondaryWord2D = new TextCanvas('樂', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
-  let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
-  let secondaryWord = new THREE.CanvasTexture(secondaryWord2D.render())
-  primaryWord.needsUpdate = true
-  secondaryWord.needsUpdate = true
+  function setupWord ({ priWord = '黃', secWord = '樂' }) {
+    let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
+    let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
+    let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
+    let secondaryWord = new THREE.CanvasTexture(secondaryWord2D.render())
+    primaryWord.needsUpdate = true
+    secondaryWord.needsUpdate = true
+    return {
+      primaryWord,
+      secondaryWord
+    }
+  }
+  let { primaryWord, secondaryWord } = setupWord({ priWord: '黃', secWord: '樂' })
 
   let maxVideoSize = 1280
 
@@ -429,7 +436,9 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   w = fs.height / (video.videoHeight / video.videoWidth)
   h = fs.height
   let settings = {
-    pointSize: 1 * dpi.value,
+    get pointSize () {
+      return 1.5 * dpi.value
+    },
     density: 2
   }
 
@@ -480,6 +489,15 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
       }
     }
   }
+
+  video.addEventListener('click', () => {
+    let priWord = window.prompt('Family name?') || '黃'
+    let secWord = window.prompt('Given name?') || '樂'
+    let { primaryWord, secondaryWord } = setupWord({ priWord, secWord })
+    uniforms.primaryWord.value = primaryWord
+    uniforms.secondaryWord.value = secondaryWord
+  })
+
   let material = new THREE.ShaderMaterial({
     vertexShader: glsl`
 #include <common>
