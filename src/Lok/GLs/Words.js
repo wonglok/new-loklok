@@ -292,9 +292,9 @@ export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
 
 export const waitForFont = async ({ name }) => {
   let FontFaceObserver = require('fontfaceobserver')
+  var font = new FontFaceObserver(name)
   return new Promise((resolve) => {
-    var font = new FontFaceObserver(name)
-    font.load().then(() => {
+    font.load(null, 3000).then(() => {
       resolve()
     }, () => {
     })
