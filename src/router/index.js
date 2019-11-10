@@ -14,20 +14,23 @@ const routes = [
   },
   {
     path: '/bear',
-    component: () => import(/* webpackChunkName: "vb" */ '../Lok/View/VoyageBear.vue')
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/VoyageBear.vue')
   },
   {
     path: '/bryant-and-jenni-2019',
-    component: () => import(/* webpackChunkName: "bj" */ '../Lok/View/BryantAndJenni2019.vue')
+    component: () => import(/* webpackChunkName: "bnj" */ '../Lok/View/BryantAndJenni2019.vue')
   },
   {
     path: '/words',
     component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Words.vue')
   }
 ]
-
+let mode = 'history'
+if (process.env.NODE_ENV === 'development') {
+  mode = 'hash'
+}
 const router = new VueRouter({
-  mode: 'history',
+  mode,
   base: process.env.BASE_URL,
   routes
 })
