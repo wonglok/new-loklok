@@ -342,8 +342,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
-  let primaryWord2D = new TextCanvas('樂', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 20)
-  let secondaryWord2D = new TextCanvas('黃', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 20)
+  let primaryWord2D = new TextCanvas('黃', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
+  let secondaryWord2D = new TextCanvas('樂', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
   let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
   let secondaryWord = new THREE.CanvasTexture(secondaryWord2D.render())
   primaryWord.needsUpdate = true
@@ -380,8 +380,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
       })
       video.srcObject = stream
 
-      let enableInlineVideo = require('iphone-inline-video').default
-      enableInlineVideo(video)
+      // let enableInlineVideo = require('iphone-inline-video').default
+      // enableInlineVideo(video)
       video.setAttribute('playsinline', 'playsinline')
       video.setAttribute('webkit-playsinline', 'webkit-playsinline')
       video.addEventListener('touchstart', () => {
@@ -427,14 +427,15 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
 
   w = fs.height / (video.videoHeight / video.videoWidth)
   h = fs.height
-  let config = {
-    pointSize: 1.4
+  let settings = {
+    pointSize: 1.4,
+    density: 1.75
   }
 
   let nx = video.videoWidth * 0.2
-  nx = w * 2
+  nx = w * settings.density
   let ny = video.videoHeight * 0.2
-  ny = h * 2
+  ny = h * settings.density
 
   let geometry = new THREE.PlaneBufferGeometry(w, h, nx, ny)
   let res = new THREE.Vector2()
@@ -474,7 +475,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     },
     pointSize: {
       get value () {
-        return Math.min(w * config.pointSize / nx / dpi.value, h * config.pointSize / ny / dpi.value)
+        return Math.min(w * settings.pointSize / nx, h * settings.pointSize / ny)
       }
     }
   }
@@ -542,8 +543,9 @@ vidColor.rgb = 1.0 - vidColor.rgb;
 float vidAvg = (vidColor.r + vidColor.g + vidColor.b) / 3.0;
 
 float finalAvg = (vidAvg);
-finalAvg = finalAvg * finalAvg;
-finalAvg = 1.0;
+// finalAvg = finalAvg * finalAvg;
+// finalAvg = 1.0;
+// outputPos.z = -finalAvg * 20.0;
 
 gl_Position = outputPos;
 
@@ -552,9 +554,9 @@ float sy = resolution.y / screen.y;
 float sa = 242.0 / -mvPosition.z;
 
 if (aspect > 1.0) {
-  gl_PointSize = pointSize * dpi / 10.0 * sy * sa;
+  gl_PointSize = finalAvg * pointSize * dpi / 10.0 * sy * sa;
 } else {
-  gl_PointSize = pointSize * dpi / 10.0 * sy * sa;
+  gl_PointSize = finalAvg * pointSize * dpi / 10.0 * sy * sa;
 }
 
 // gl_PointSize = (1.0 / -mvPosition.z);
@@ -602,10 +604,10 @@ void main () {
 
   if (avg > 0.5) {
     vec4 fColor = texture2D(primaryWord, glpc);
-    gl_FragColor = vec4(1.0 - (1.0 - fColor.rgb) * finalColor.rgb, finalColor.a * fColor.a);
+    gl_FragColor = vec4((1.0 - fColor.rgb) * finalColor.rgb, finalColor.a * fColor.a);
   } else {
     vec4 wColor = texture2D(secondaryWord, glpc);
-    gl_FragColor = vec4(1.0 - (1.0 - wColor.rgb) * finalColor.rgb, finalColor.a * wColor.a);
+    gl_FragColor = vec4((1.0 - wColor.rgb) * finalColor.rgb, finalColor.a * wColor.a);
   }
 
 }
