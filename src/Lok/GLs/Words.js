@@ -361,8 +361,6 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     video.style.position = 'fixed'
     video.style.top = '20px'
     video.style.right = '20px'
-    video.style.opacity = 0.00001
-    video.style.borderRadius = '50%'
 
     video.style.zIndex = '100'
     video.style.opacity = 1.0
@@ -386,6 +384,12 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
       enableInlineVideo(video)
       video.setAttribute('playsinline', 'playsinline')
       video.setAttribute('webkit-playsinline', 'webkit-playsinline')
+      video.addEventListener('touchstart', () => {
+        video.play()
+      })
+      video.addEventListener('click', () => {
+        video.play()
+      })
 
       return new Promise(resolve => {
         video.onloadedmetadata = () => {
