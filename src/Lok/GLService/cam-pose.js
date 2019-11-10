@@ -148,8 +148,8 @@ export const setup = async ({ showPreview = true, mounter } = {}) => {
     video.style.top = '20px'
     video.style.right = '20px'
     video.style.zIndex = '-1'
-    video.style.opacity = 0.00001
-    video.style.borderRadius = '50%'
+    // video.style.opacity = 0.00001
+    // video.style.borderRadius = '50%'
 
     if (process.env.NODE_ENV === 'development' || showPreview) {
       video.style.zIndex = '100'
@@ -187,9 +187,9 @@ export const setup = async ({ showPreview = true, mounter } = {}) => {
   async function loadVideo () {
     const video = await setupCamera()
     video.play()
-
     return video
   }
+
   let video = await loadVideo()
   api.video = video
   video.addEventListener('loadeddata', () => {
