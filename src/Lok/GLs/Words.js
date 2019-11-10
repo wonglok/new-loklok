@@ -342,6 +342,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
+  // words emoji
   function setupWord ({ priWord = '黃', secWord = '樂' }) {
     let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
     let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
@@ -354,7 +355,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
       secondaryWord
     }
   }
-  let { primaryWord, secondaryWord } = setupWord({ priWord: '黃', secWord: '樂' })
+  let { primaryWord, secondaryWord } = setupWord({ priWord: '💎', secWord: '⚡️' })
 
   let maxVideoSize = 1280
 
@@ -603,6 +604,7 @@ varying vec2 vUv;
 void main () {
   vec2 glpc = gl_PointCoord.xy;
   glpc.y = 1.0 - glpc.y;
+  glpc.y *= 1.23;
   // vec2 offset = vec2(0.35, 0.35);
   vec4 vidColor = texture2D(video, vUv);
 
@@ -624,9 +626,11 @@ void main () {
   if (avg > 0.5) {
     vec4 fColor = texture2D(primaryWord, glpc);
     gl_FragColor = vec4((1.0 - fColor.rgb) * finalColor.rgb, finalColor.a * fColor.a);
+    gl_FragColor = fColor.rgba;
   } else {
     vec4 wColor = texture2D(secondaryWord, glpc);
     gl_FragColor = vec4((1.0 - wColor.rgb) * finalColor.rgb, finalColor.a * wColor.a);
+    gl_FragColor = wColor.rgba;
   }
 
 }
