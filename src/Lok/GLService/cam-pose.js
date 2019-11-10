@@ -138,6 +138,9 @@ export const setup = async ({ showPreview = true, mounter } = {}) => {
     video.width = maxVideoSize
     video.height = maxVideoSize
 
+    let enableInlineVideo = require('iphone-inline-video').default
+    enableInlineVideo(video)
+
     mounter.appendChild(video)
     video.style.position = 'fixed'
     video.style.top = '20px'
@@ -189,6 +192,17 @@ export const setup = async ({ showPreview = true, mounter } = {}) => {
   api.video = video
   video.addEventListener('loadeddata', () => {
     api.loaded = true
+  })
+
+  window.addEventListener('touchstart', () => {
+    video.play()
+  })
+
+  video.addEventListener('touchstart', () => {
+    video.play()
+  })
+  video.addEventListener('click', () => {
+    video.play()
   })
 
   api.update = async () => {
