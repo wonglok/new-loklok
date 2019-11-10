@@ -384,6 +384,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
 
       let enableInlineVideo = require('iphone-inline-video').default
       enableInlineVideo(video)
+      video.setAttribute('playsinline', 'playsinline')
+      video.setAttribute('webkit-playsinline', 'webkit-playsinline')
 
       return new Promise(resolve => {
         video.onloadedmetadata = () => {

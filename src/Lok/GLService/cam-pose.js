@@ -140,6 +140,8 @@ export const setup = async ({ showPreview = true, mounter } = {}) => {
 
     let enableInlineVideo = require('iphone-inline-video').default
     enableInlineVideo(video)
+    video.setAttribute('playsinline', 'playsinline')
+    video.setAttribute('webkit-playsinline', 'webkit-playsinline')
 
     mounter.appendChild(video)
     video.style.position = 'fixed'
