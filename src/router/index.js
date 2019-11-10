@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Home.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
   {
     path: '/lok',
@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: '/words',
-    component: () => import(/* webpackChunkName: "bj" */ '../Lok/View/Words.vue')
+    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Words.vue')
   }
 ]
 
