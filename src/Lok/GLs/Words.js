@@ -290,12 +290,10 @@ export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
   return bloomComposer
 }
 
-export const loadFont = async () => {
-  let FontFaceObserver = (require('fontfaceobserver'))
-  require('../Fonts/cwTeXKai/font.css')
+export const waitForFont = async ({ name }) => {
+  let FontFaceObserver = require('fontfaceobserver')
   return new Promise((resolve) => {
-    // cwTeXKai
-    var font = new FontFaceObserver('cwTeXKai')
+    var font = new FontFaceObserver(name)
     font.load().then(() => {
       resolve()
     }, () => {
@@ -340,8 +338,10 @@ export const mobileAndTabletcheck = () => {
 
 export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => {
   let rID = getID()
-  await loadFont()
+  require('../Fonts/cwTeXKai/font.css')
+  await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
+  // font: cwTeXKai
   let primaryWord2D = new TextCanvas('樂', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 20)
   let secondaryWord2D = new TextCanvas('黃', { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 20)
   let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
@@ -349,9 +349,9 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   primaryWord.needsUpdate = true
   secondaryWord.needsUpdate = true
 
-  let maxVideoSize = 530
+  let maxVideoSize = 1280
 
-  async function setupCamera () {
+  async function setupCamera ({ mounter }) {
     let video = document.createElement('video')
     // const video = document.getElementById('video')
     video.width = maxVideoSize
@@ -398,7 +398,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     }
   }
 
-  let video = await setupCamera()
+  let video = await setupCamera({ mounter })
 
   let videoTexture = new THREE.VideoTexture(video)
   videoTexture.format = THREE.RGBFormat
@@ -417,15 +417,15 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   h = fs.height
 
   let nx = video.videoWidth * 0.2
-  nx = w * 1.0
+  nx = w * 2.0
   let ny = video.videoHeight * 0.2
-  ny = h * 1.0
+  ny = h * 2.0
 
   let geometry = new THREE.PlaneBufferGeometry(w, h, nx, ny)
   let res = new THREE.Vector2()
   let screen = new THREE.Vector2()
   let config = {
-    pointSize: 1.6
+    pointSize: 1.2
   }
   let uniforms = {
     dpi: {
@@ -461,12 +461,12 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     },
     pointSize: {
       get value () {
-        return Math.min(w * config.pointSize / nx, h * config.pointSize / ny)
+        return Math.min(w * config.pointSize / nx / window.devicePixelRatio, h * config.pointSize / ny / window.devicePixelRatio)
       }
     }
   }
   let material = new THREE.ShaderMaterial({
-    vertexShader: `
+    vertexShader: glsl`
 #include <common>
 
 precision lowp float;
@@ -513,9 +513,8 @@ return mat3(
 
 void main (void) {
 vec3 newPos = position;
-// newPos.x += tan(newPos.x * 10.0 + time);
+// newPos.z += tan(newPos.x * 0.01 + time * -0.0005);
 // newPos.y += tan(newPos.y * 10.0 + time);
-
 // newPos = rotateZ(time) * newPos;
 
 vPos = position;
@@ -525,11 +524,13 @@ vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
 vec4 outputPos = projectionMatrix * mvPosition;
 
 vec4 vidColor = texture2D(video, uv);
+vidColor.rgb = 1.0 - vidColor.rgb;
 
 float vidAvg = (vidColor.r + vidColor.g + vidColor.b) / 3.0;
 
 float finalAvg = (vidAvg);
-finalAvg = finalAvg;
+finalAvg = finalAvg * finalAvg;
+finalAvg = 1.0;
 
 gl_Position = outputPos;
 
@@ -538,9 +539,9 @@ float sy = resolution.y / screen.y;
 float sa = 242.0 / -mvPosition.z;
 
 if (aspect > 1.0) {
-  gl_PointSize = finalAvg * pointSize * dpi / 10.0 * sy * sa;
+  gl_PointSize = pointSize * dpi / 10.0 * sy * sa;
 } else {
-  gl_PointSize = finalAvg * pointSize * dpi / 10.0 * sy * sa;
+  gl_PointSize = pointSize * dpi / 10.0 * sy * sa;
 }
 
 // gl_PointSize = (1.0 / -mvPosition.z);
@@ -550,12 +551,12 @@ if (aspect > 1.0) {
 //   gl_PointSize = screen.y / 10.0 * aspect;
 // }
 }`,
-    fragmentShader: `
+    fragmentShader: glsl`
 vec4 Desaturate(vec3 color, float Desaturation)
 {
-vec3 grayXfer = vec3(0.3, 0.59, 0.11);
-vec3 gray = vec3(dot(grayXfer, color));
-return vec4(mix(color, gray, Desaturation), 1.0);
+  vec3 grayXfer = vec3(0.3, 0.59, 0.11);
+  vec3 gray = vec3(dot(grayXfer, color));
+  return vec4(mix(color, gray, Desaturation), 1.0);
 }
 
 precision lowp float;
@@ -566,34 +567,36 @@ uniform lowp sampler2D secondaryWord;
 varying vec3 vPos;
 varying vec2 vUv;
 void main () {
-vec2 glpc = gl_PointCoord.xy;
-glpc.y = 1.0 - glpc.y;
-vec4 vidColor = texture2D(video, vUv);
+  vec2 glpc = gl_PointCoord.xy;
+  glpc.y = 1.0 - glpc.y;
+  // vec2 offset = vec2(0.35, 0.35);
+  vec4 vidColor = texture2D(video, vUv);
 
-// 灰階
-// vidColor.rgb = vec3((vidColor.r + vidColor.g + vidColor.b) / 3.0);
+  // 灰階
+  // vidColor.rgb = vec3((vidColor.r + vidColor.g + vidColor.b) / 3.0);
 
-// 黑白
-// vidColor.rgb = vec3(0.0);
+  // 黑白
+  // vidColor.rgb = vec3(0.0);
 
-// 淡彩
-// vidColor.rgb = Desaturate(vidColor.rgb, 0.75).rgb;
+  // 淡彩
+  // vidColor.rgb = Desaturate(vidColor.rgb, 0.75).rgb;
 
-vec3 vidAvg = vec3((vidColor.r + vidColor.g + vidColor.b) / 3.0);
+  vec3 vidAvg = vec3((vidColor.r + vidColor.g + vidColor.b) / 3.0);
 
-vec4 finalColor = vec4(vec3(vidColor), 0.3);
+  vec4 finalColor = vec4(vec3(vidAvg), 1.0);
 
-float avg = (vidColor.x + vidColor.y + vidColor.z) / 3.0;
-avg = avg;
+  float avg = (vidColor.x + vidColor.y + vidColor.z) / 3.0;
 
-if (avg > 0.5) {
-  vec4 fColor = texture2D(primaryWord, glpc);
-  gl_FragColor = vec4((1.0 - fColor.rgb) * finalColor.rgb, finalColor.a * fColor.a) * 1.5;
-} else {
-  vec4 wColor = texture2D(secondaryWord, glpc);
-  gl_FragColor = vec4((1.0 - wColor.rgb) * vidAvg.rgb, finalColor.a * wColor.a);
+  if (avg > 0.5) {
+    vec4 fColor = texture2D(primaryWord, glpc);
+    gl_FragColor = vec4(1.0 - (1.0 - fColor.rgb) * finalColor.rgb, finalColor.a * fColor.a);
+  } else {
+    vec4 wColor = texture2D(secondaryWord, glpc);
+    gl_FragColor = vec4(1.0 - (1.0 - wColor.rgb) * finalColor.rgb, finalColor.a * wColor.a);
+  }
+
 }
-}`,
+    `,
     uniforms,
     transparent: true
   })
@@ -601,14 +604,14 @@ if (avg > 0.5) {
   let points = new THREE.Points(geometry, material)
   parent.add(points)
 
-  let simpleMat = new THREE.MeshBasicMaterial({
-    map: videoTexture,
-    opacity: 1,
-    transparent: true
-  })
-  let plane = new THREE.Mesh(geometry, simpleMat)
-  plane.position.z = -0.1
-  parent.add(plane)
+  // let simpleMat = new THREE.MeshBasicMaterial({
+  //   map: videoTexture,
+  //   opacity: 1,
+  //   transparent: true
+  // })
+  // let plane = new THREE.Mesh(geometry, simpleMat)
+  // plane.position.z = -0.1
+  // parent.add(plane)
 
   api.teardown[rID] = () => {
     api.tasks[rID] = () => {
