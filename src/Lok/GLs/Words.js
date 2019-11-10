@@ -418,7 +418,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
 
   let dpi = {
     get value () {
-      return window.devicePixelRatio > 1.5 ? 1.5 : window.devicePixelRatio
+      return 1.5
+      // return window.devicePixelRatio > 1.5 ? 1.5 : window.devicePixelRatio
     }
   }
 
@@ -428,8 +429,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   w = fs.height / (video.videoHeight / video.videoWidth)
   h = fs.height
   let settings = {
-    pointSize: dpi.value,
-    density: dpi.value * 1.5
+    pointSize: 1.0,
+    density: 1.0 * 1.5
   }
 
   let nx = video.videoWidth * 0.2
