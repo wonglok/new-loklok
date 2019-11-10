@@ -423,9 +423,9 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   h = fs.height
 
   let nx = video.videoWidth * 0.2
-  nx = w * 2.0
+  nx = w * 1.2
   let ny = video.videoHeight * 0.2
-  ny = h * 2.0
+  ny = h * 1.2
 
   let geometry = new THREE.PlaneBufferGeometry(w, h, nx, ny)
   let res = new THREE.Vector2()
