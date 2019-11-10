@@ -467,7 +467,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     },
     pointSize: {
       get value () {
-        return Math.min(w * config.pointSize / nx / window.devicePixelRatio, h * config.pointSize / ny / window.devicePixelRatio)
+        return Math.min(w * config.pointSize / nx, h * config.pointSize / ny)
       }
     }
   }
