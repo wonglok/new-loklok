@@ -429,8 +429,8 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   w = fs.height / (video.videoHeight / video.videoWidth)
   h = fs.height
   let settings = {
-    pointSize: 1.0,
-    density: 1.0 * 1.5
+    pointSize: 1.25,
+    density: 1.0
   }
 
   let nx = video.videoWidth * 0.2
