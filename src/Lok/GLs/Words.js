@@ -416,27 +416,34 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     fs = FSCalc({ camera: camera, zPos: 0 })
   }, false)
 
-  let w = window.devicePixelRatio * 640
-  let h = window.devicePixelRatio * 640 * video.videoHeight / video.videoWidth
+  let dpi = {
+    get value () {
+      return window.devicePixelRatio > 1.5 ? 1.5 : window.devicePixelRatio
+    }
+  }
+
+  let w = dpi.value * 640
+  let h = dpi.value * 640 * video.videoHeight / video.videoWidth
 
   w = fs.height / (video.videoHeight / video.videoWidth)
   h = fs.height
+  let config = {
+    pointSize: 1.4
+  }
 
   let nx = video.videoWidth * 0.2
-  nx = w * 1.2
+  nx = w * 2
   let ny = video.videoHeight * 0.2
-  ny = h * 1.2
+  ny = h * 2
 
   let geometry = new THREE.PlaneBufferGeometry(w, h, nx, ny)
   let res = new THREE.Vector2()
   let screen = new THREE.Vector2()
-  let config = {
-    pointSize: 1.2
-  }
+
   let uniforms = {
     dpi: {
       get value () {
-        return window.devicePixelRatio || 1.0
+        return dpi.value || 1.0
       }
     },
     resolution: {
@@ -467,7 +474,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     },
     pointSize: {
       get value () {
-        return Math.min(w * config.pointSize / nx, h * config.pointSize / ny)
+        return Math.min(w * config.pointSize / nx / dpi.value, h * config.pointSize / ny / dpi.value)
       }
     }
   }
