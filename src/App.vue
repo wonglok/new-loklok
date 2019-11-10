@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="full">
     <router-view/>
+    <router-link to="/" class="absolute bottom-0 left-0 p-2">Home</router-link>
   </div>
 </template>
 
