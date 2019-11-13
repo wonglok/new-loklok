@@ -13,6 +13,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Lok.vue')
   },
   {
+    path: '/creative-code-lab',
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/CreativeLab.vue')
+  },
+  {
     path: '/bear',
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/VoyageBear.vue')
   },
