@@ -452,7 +452,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(intensity * 255).toFixed(0)}, 65%, 60%`
+      color = `${(intensity * 255).toFixed(0)}, 65%, 55%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -512,8 +512,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     }
     let loop = async () => {
       t.addTouch({
-        x: Math.random() - 0.5,
-        y: Math.random() - 0.5
+        x: Math.random(),
+        y: Math.random()
       })
 
       if (poserAPI) {
@@ -861,11 +861,11 @@ export const setupBase = async ({ api, mounter, vm }) => {
   //   }
   // }
 
-  try {
-    let poserModule = await import('../GLService/cam-pose.js')
-    poserAPI = await poserModule.setup({ showPreview: true, mounter })
-  } catch (e) {
-  }
+  // try {
+  //   let poserModule = await import('../GLService/cam-pose.js')
+  //   poserAPI = await poserModule.setup({ showPreview: true, mounter })
+  // } catch (e) {
+  // }
 
   let rect = mounter.getBoundingClientRect()
   let scene = new THREE.Scene()
