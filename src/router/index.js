@@ -21,6 +21,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/VoyageBear.vue')
   },
   {
+    path: '/cascade',
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Cascade.vue')
+  },
+  {
     path: '/bryant-and-jenni-2019',
     component: () => import(/* webpackChunkName: "bnj" */ '../Lok/View/BryantAndJenni2019.vue')
   },

@@ -336,13 +336,14 @@ export const mobileAndTabletcheck = () => {
   return check
 }
 
-export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => {
+export const makeWords = async ({ api, mounter, vm, parent, camera, scene, texture }) => {
   let rID = getID()
   require('../Fonts/cwTeXKai/font.css')
   await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
   // words emoji
+
   function setupWord ({ priWord = '黃', secWord = '樂' }) {
     let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
     let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
@@ -357,67 +358,74 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
   }
   let { primaryWord, secondaryWord } = setupWord({ priWord: '💎', secWord: '⚡️' })
 
-  let maxVideoSize = 1280
+  // let maxVideoSize = 1280
+  // async function setupCamera ({ mounter }) {
+  //   let video = document.createElement('video')
+  //   // const video = document.getElementById('video')
+  //   video.width = maxVideoSize
+  //   video.height = maxVideoSize
 
-  async function setupCamera ({ mounter }) {
-    let video = document.createElement('video')
-    // const video = document.getElementById('video')
-    video.width = maxVideoSize
-    video.height = maxVideoSize
+  //   mounter.appendChild(video)
+  //   video.style.position = 'fixed'
+  //   video.style.top = '20px'
+  //   video.style.right = '20px'
 
-    mounter.appendChild(video)
-    video.style.position = 'fixed'
-    video.style.top = '20px'
-    video.style.right = '20px'
+  //   video.style.zIndex = '100'
+  //   video.style.opacity = 1.0
+  //   video.style.width = '150px'
+  //   video.style.height = '150px'
+  //   // video.style.transform = 'scaleX(-1)'
 
-    video.style.zIndex = '100'
-    video.style.opacity = 1.0
-    video.style.width = '150px'
-    video.style.height = '150px'
-    // video.style.transform = 'scaleX(-1)'
+  //   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  //     const mobile = mobileAndTabletcheck()
+  //     const stream = await navigator.mediaDevices.getUserMedia({
+  //       'audio': false,
+  //       'video': {
+  //         facingMode: 'user',
+  //         width: mobile ? undefined : maxVideoSize,
+  //         height: mobile ? undefined : maxVideoSize
+  //       }
+  //     })
+  //     video.srcObject = stream
 
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const mobile = mobileAndTabletcheck()
-      const stream = await navigator.mediaDevices.getUserMedia({
-        'audio': false,
-        'video': {
-          facingMode: 'user',
-          width: mobile ? undefined : maxVideoSize,
-          height: mobile ? undefined : maxVideoSize
-        }
-      })
-      video.srcObject = stream
+  //     // let enableInlineVideo = require('iphone-inline-video').default
+  //     // enableInlineVideo(video)
+  //     video.setAttribute('playsinline', 'playsinline')
+  //     video.setAttribute('webkit-playsinline', 'webkit-playsinline')
+  //     video.addEventListener('touchstart', () => {
+  //       video.play()
+  //     })
+  //     video.addEventListener('click', () => {
+  //       video.play()
+  //     })
 
-      // let enableInlineVideo = require('iphone-inline-video').default
-      // enableInlineVideo(video)
-      video.setAttribute('playsinline', 'playsinline')
-      video.setAttribute('webkit-playsinline', 'webkit-playsinline')
-      video.addEventListener('touchstart', () => {
-        video.play()
-      })
-      video.addEventListener('click', () => {
-        video.play()
-      })
+  //     return new Promise(resolve => {
+  //       video.onloadedmetadata = () => {
+  //         video.play()
+  //         resolve(video)
+  //       }
+  //     })
+  //   } else {
+  //     const errorMessage = 'This browser does not support video capture, or this device does not have a camera'
+  //     alert(errorMessage)
+  //     return Promise.reject(errorMessage)
+  //   }
+  // }
 
-      return new Promise(resolve => {
-        video.onloadedmetadata = () => {
-          video.play()
-          resolve(video)
-        }
-      })
-    } else {
-      const errorMessage = 'This browser does not support video capture, or this device does not have a camera'
-      alert(errorMessage)
-      return Promise.reject(errorMessage)
-    }
+  // let video = await setupCamera({ mounter })
+
+  // let videoTexture = new THREE.VideoTexture(video)
+  // videoTexture.format = THREE.RGBFormat
+  // videoTexture.minFilter = THREE.LinearFilter
+  // videoTexture.magFilter = THREE.LinearFilter
+  let canvas = texture.image
+
+  let video = {
+    videoWidth: canvas.width,
+    videoHeight: canvas.height,
+    width: canvas.width,
+    height: canvas.height
   }
-
-  let video = await setupCamera({ mounter })
-
-  let videoTexture = new THREE.VideoTexture(video)
-  videoTexture.format = THREE.RGBFormat
-  videoTexture.minFilter = THREE.LinearFilter
-  videoTexture.magFilter = THREE.LinearFilter
 
   let fs = FSCalc({ camera: camera, zPos: 0 })
   window.addEventListener('resize', () => {
@@ -473,7 +481,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
       }
     },
     video: {
-      value: videoTexture
+      value: texture
     },
     primaryWord: {
       value: primaryWord
@@ -491,13 +499,16 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     }
   }
 
-  video.addEventListener('click', () => {
-    let priWord = window.prompt('Family name?') || '黃'
-    let secWord = window.prompt('Given name?') || '樂'
-    let { primaryWord, secondaryWord } = setupWord({ priWord, secWord })
-    uniforms.primaryWord.value = primaryWord
-    uniforms.secondaryWord.value = secondaryWord
-  })
+  let dom = vm.$refs['change-name']
+  if (dom) {
+    dom.addEventListener('click', () => {
+      let priWord = window.prompt('Family name?') || '黃'
+      let secWord = window.prompt('Given name?') || '樂'
+      let { primaryWord, secondaryWord } = setupWord({ priWord, secWord })
+      uniforms.primaryWord.value = primaryWord
+      uniforms.secondaryWord.value = secondaryWord
+    })
+  }
 
   let material = new THREE.ShaderMaterial({
     vertexShader: glsl`
@@ -643,7 +654,7 @@ void main () {
   parent.add(points)
 
   // let simpleMat = new THREE.MeshBasicMaterial({
-  //   map: videoTexture,
+  //   map: texture,
   //   opacity: 1,
   //   transparent: true
   // })
@@ -657,7 +668,7 @@ void main () {
   }
   api.tasks[rID] = () => {
     uniforms.time.value = window.performance.now()
-    videoTexture.needsUpdate = true
+    // videoTexture.needsUpdate = true
   }
 
   // scene.background = videoTexture
@@ -668,6 +679,13 @@ export const setupBase = async ({ api, mounter, vm }) => {
   let rID = getID()
   let exited = false
   let rect = mounter.getBoundingClientRect()
+  let poserAPI = false
+
+  try {
+    let poserModule = await import('../GLService/cam-pose.js')
+    poserAPI = await poserModule.setup({ showPreview: true, mounter })
+  } catch (e) {
+  }
 
   let scene = new THREE.Scene()
   let camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
@@ -712,9 +730,11 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // setupControls({ camera, api, mounter })
   camera.position.z = 20
 
-  let camVideo = require('../GLService/cam-video.js').setup()
-  console.log(camVideo)
-  makeWords({ ...env, video: camVideo.video })
+  // let camVideo = require('../GLService/cam-video.js').setup()
+  // console.log(camVideo)
+
+  let texture = await makeCanvasGradientTexture({ ...env, poserAPI, api, mounter })
+  makeWords({ ...env, texture })
 
   scene.add(parent)
 
@@ -726,7 +746,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
       api.tasks[kn]()
     }
 
-    camVideo.update()
+    // camVideo.update()
 
     renderer.render(scene, camera)
 
@@ -768,4 +788,262 @@ export const install = ({ mounter, vm }) => {
   setupBase({ api, mounter, vm })
 
   return api
+}
+
+export const makeCanvasGradientTexture = async ({ poserAPI, api, mounter }) => {
+  var rID = getID()
+
+  const easeOutSine = (t, b, c, d) => {
+    return c * Math.sin((t / d) * (Math.PI / 2)) + b
+  }
+
+  const easeOutQuad = (t, b, c, d) => {
+    t /= d
+    return -c * t * (t - 2) + b
+  }
+
+  class TouchTexture {
+    constructor () {
+      this.size = 128
+      this.width = 128
+      this.height = 128
+      this.width = this.height = this.size
+
+      this.maxAge = 350
+      this.radius = 0.1 * this.size
+      // this.radius = 0.15 * 1000
+
+      this.speed = 1.33 / this.maxAge
+      // this.speed = 0.01
+
+      this.trail = []
+      this.last = null
+
+      this.initTexture()
+    }
+
+    initTexture () {
+      this.canvas = document.createElement('canvas')
+
+      // document.body.appendChild(this.canvas)
+      this.canvas.width = this.width
+      this.canvas.height = this.height
+      this.ctx = this.canvas.getContext('2d')
+      this.ctx.fillStyle = 'black'
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
+      this.canvas.id = 'touchTexture'
+      // this.canvas.style.width = this.canvas.style.height = `${
+      //   this.canvas.width
+      // }px`
+
+      // var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
+      // var gradient = this.ctx.createRadialGradient(this.width / 2, this.height / 2, 0, this.width / 2, this.height / 2, this.width / 2)
+
+      // Add three color stops
+      // gradient.addColorStop(0, 'rgba(255,255,255,1.0)')
+      // gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)')
+      // gradient.addColorStop(1, 'rgba(255,255,255,1.0)')
+      // this.gradient = gradient
+    }
+
+    update (delta) {
+      this.clear()
+      let speed = this.speed
+      this.trail.forEach((point, i) => {
+        let f = point.force * speed * (1 - point.age / this.maxAge)
+        // let x = point.x
+        // let y = point.y
+
+        point.x += point.vx * f
+        point.y += point.vy * f
+        point.age++
+        if (point.age > this.maxAge) {
+          this.trail.splice(i, 1)
+        }
+      })
+
+      this.trail.forEach((point, i) => {
+        this.drawPoint(point)
+      })
+      // this.drawPoints()
+
+      // this.ctx.fillStyle = "rgba(255,0,0,0.5)"
+      // this.ctx.fillRect(0, 0, 200, 200)
+      // this.ctx.fillStyle = "rgba(0,255,0,0.5)"
+      // this.ctx.fillRect(50, 0, 200, 200)
+      // this.test()
+    }
+
+    clear () {
+      // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
+      // this.ctx.fillStyle = 'white'
+
+      this.ctx.fillStyle = 'white'
+
+      // this.ctx.fillStyle = this.gradient
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    }
+    addTouch (point) {
+      let force = 0
+      let vx = 0
+      let vy = 0
+      const last = this.last
+      if (last) {
+        const dx = point.x - last.x
+        const dy = point.y - last.y
+        if (dx === 0 && dy === 0) return
+        const dd = dx * dx + dy * dy
+        let d = Math.sqrt(dd)
+        vx = dx / d
+        vy = dy / d
+
+        force = Math.min(dd * 10000, 1)
+        // force = Math.sqrt(dd)* 50.
+        // force = 1
+      }
+      this.last = {
+        x: point.x,
+        y: point.y
+      }
+      this.trail.push({ x: point.x, y: point.y, age: 0, force, vx, vy })
+    }
+    drawPoint (point) {
+      const ctx = this.ctx
+      const pos = {
+        x: point.x * this.width,
+        y: (1 - point.y) * this.height
+      }
+
+      let intensity = 1
+
+      if (point.age < this.maxAge * 0.3) {
+        intensity = easeOutSine(point.age / (this.maxAge * 0.3), 0, 1, 1)
+      } else {
+        intensity = easeOutQuad(
+          1 - (point.age - this.maxAge * 0.3) / (this.maxAge * 0.7),
+          0,
+          1,
+          1
+        )
+      }
+      intensity *= point.force
+
+      const radius = this.radius
+      let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
+        255}, ${intensity * 255}`
+
+      // color = `${(intensity * 255).toFixed(0)}, 65%, 55%`
+      color = `${(intensity * 255).toFixed(0)}, 65%, 5%`
+
+      let offset = this.size * 5
+      ctx.shadowOffsetX = offset // (default 0)
+      ctx.shadowOffsetY = offset // (default 0)
+      ctx.shadowBlur = radius // (default 0)
+      ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
+
+      this.ctx.beginPath()
+      this.ctx.fillStyle = 'rgba(255,0,0,1)'
+      this.ctx.arc(pos.x - offset, pos.y - offset, radius, 0, Math.PI * 2)
+      this.ctx.fill()
+    }
+  }
+  let mouse = new THREE.Vector2()
+  let on = {
+    onTouchMove (ev) {
+      ev.preventDefault()
+
+      const touch = ev.targetTouches[0]
+
+      mouse = {
+        x: touch.clientX / window.innerWidth,
+        y: 1 - touch.clientY / window.innerHeight
+      }
+
+      touchTextures.forEach(e => e.addTouch(mouse))
+      // t.addTouch(mouse)
+      // onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
+    },
+    onMouseMove (ev) {
+      mouse = {
+        x: ev.clientX / window.innerWidth,
+        y: 1 - ev.clientY / window.innerHeight
+      }
+
+      touchTextures.forEach(e => e.addTouch(mouse))
+    }
+  }
+
+  let t = new TouchTexture()
+  var touchTextures = [
+    t
+  ]
+
+  let rAFID = 0
+  function runAI () {
+    let touchAdder = ({ pose, info, name }) => {
+      let pointer = pose.keypoints.find(k => k.part === name)
+      if (pointer && pointer.score > 0.15) {
+        for (var i = 0; i < 1; i++) {
+          t.addTouch({
+            x: (info.video.width - pointer.position.x) / info.video.width,
+            y: 1 - (pointer.position.y / info.video.height)
+          })
+        }
+      }
+    }
+    let loop = async () => {
+      // t.addTouch({
+      //   x: Math.random(),
+      //   y: Math.random()
+      // })
+
+      if (poserAPI) {
+        let info = await poserAPI.update()
+        if (info.poses) {
+          let poses = info.poses
+          if (poses[0]) {
+            touchAdder({ pose: poses[0], info, name: 'leftWrist' })
+            touchAdder({ pose: poses[0], info, name: 'nose' })
+            touchAdder({ pose: poses[0], info, name: 'rightWrist' })
+          }
+        }
+      }
+      rAFID = requestAnimationFrame(loop)
+    }
+    rAFID = requestAnimationFrame(loop)
+  }
+  runAI()
+
+  // function runDiff () {
+  //   let loop = () => {
+  //     if (poserAPI) {
+  //       let info = poserAPI.update()
+  //       t.addTouch({
+  //         x: info.output.x,
+  //         y: info.output.y
+  //       })
+  //       rAFID = requestAnimationFrame(loop)
+  //     }
+  //   }
+  //   rAFID = requestAnimationFrame(loop)
+  // }
+  // runDiff()
+
+  api.teardown[rID] = () => {
+    cancelAnimationFrame(rAFID)
+  }
+  api.tasks[rID] = async () => {
+    // touchTextures.forEach(e => {
+    //   e.update()
+    // })
+    t.update()
+    canvasTexture.needsUpdate = true
+  }
+
+  window.addEventListener('mousemove', on.onMouseMove, { passive: false })
+  window.addEventListener('touchmove', on.onTouchMove, { passive: false })
+
+  let canvasTexture = new THREE.CanvasTexture(t.canvas)
+  return canvasTexture
 }
