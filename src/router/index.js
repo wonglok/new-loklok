@@ -27,6 +27,10 @@ const routes = [
   {
     path: '/words',
     component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Words.vue')
+  },
+  {
+    path: '/words-glowing',
+    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/WordsGlowing.vue')
   }
 ]
 let mode = 'history'

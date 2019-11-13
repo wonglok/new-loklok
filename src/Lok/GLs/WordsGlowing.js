@@ -661,7 +661,7 @@ void main () {
   }
 
   // scene.background = videoTexture
-  scene.background = new THREE.Color('#fff')
+  scene.background = new THREE.Color('#000')
 }
 
 export const setupBase = async ({ api, mounter, vm }) => {
@@ -718,7 +718,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   scene.add(parent)
 
-  // let composer = setupBloomComposer({ renderer, scene, camera, api })
+  let composer = setupBloomComposer({ renderer, scene, camera, api })
   var rAFID = 0
   var animate = function () {
     rAFID = requestAnimationFrame(animate)
@@ -728,11 +728,11 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
     camVideo.update()
 
-    renderer.render(scene, camera)
-    // if (composer) {
-    //   composer.render()
-    // } else {
-    // }
+    if (composer) {
+      composer.render()
+    } else {
+      renderer.render(scene, camera)
+    }
   }
 
   api.teardown[rID] = () => {
