@@ -6,8 +6,8 @@
       <a class="block" href="/lok">Lok Lok</a>
       <a class="block" href="/bear">Voyage Bear</a>
       <a class="block" href="/bryant-and-jenni-2019">B&J</a>
-      <a class="block" href="/words-glowing">Emoji Matrix</a>
-      <a class="block" href="/words">Words Matrix</a>
+      <a class="block" href="/words-glowing">Glowing Emoji Matrix</a>
+      <a class="block" href="/words">Plain Emoji Matrix</a>
       <a class="block" href="/cascade">Cascading Emoji Pulse</a>
     </div>
   </div>
