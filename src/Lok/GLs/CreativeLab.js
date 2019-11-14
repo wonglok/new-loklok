@@ -23,9 +23,9 @@ let THREE = {
 
   ...require('three/examples/jsm/controls/OrbitControls.js'),
 
-  // ...require('three/examples/jsm/postprocessing/EffectComposer.js'),
-  // ...require('three/examples/jsm/postprocessing/RenderPass.js'),
-  // ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
+  ...require('three/examples/jsm/postprocessing/EffectComposer.js'),
+  ...require('three/examples/jsm/postprocessing/RenderPass.js'),
+  ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
   // ...require('three/examples/jsm/postprocessing/UnrealBloomPass.js'),
 
   ...require('three/examples/jsm/loaders/GLTFLoader.js')
@@ -50,7 +50,7 @@ export const makeCubeTexture = (images) => {
     })
   })
 }
-export const makeCubeCam = ({ api, parent, renderer, scene }) => {
+export const makeCubeCam = ({ api, parent, sphereBG = false, renderer, scene }) => {
   let rID = getID()
   var cubeCamera = new THREE.CubeCamera(0.1, 100000000000000, 1024)
   scene.add(cubeCamera)
@@ -61,6 +61,10 @@ export const makeCubeCam = ({ api, parent, renderer, scene }) => {
   var chromeMaterial = new THREE.MeshLambertMaterial({ color: 0xeeeeee, side: THREE.BackSide })
   var sphere = new THREE.Mesh(sphereGeo, chromeMaterial)
   scene.add(sphere)
+
+  if (sphereBG) {
+    scene.add(sphereBG)
+  }
 
   let texture = cubeCamera.renderTarget.texture
   sphere.material.envMap = texture
@@ -808,6 +812,264 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
 //   return bloomComposer
 // }
 
+export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
+  let glsl = v => v[0]
+
+  const easeOutSine = (t, b, c, d) => {
+    return c * Math.sin((t / d) * (Math.PI / 2)) + b
+  }
+
+  const easeOutQuad = (t, b, c, d) => {
+    t /= d
+    return -c * t * (t - 2) + b
+  }
+
+  class TouchTexture {
+    constructor () {
+      this.size = 128
+      // this.width = window.innerWidth
+      // this.height = window.innerHeight
+      this.width = this.height = this.size
+
+      this.maxAge = 64
+      this.radius = 0.1 * this.size
+      // this.radius = 0.15 * 1000
+
+      this.speed = 1 / this.maxAge
+      // this.speed = 0.01
+
+      this.trail = []
+      this.last = null
+
+      this.initTexture()
+    }
+
+    initTexture () {
+      this.canvas = document.createElement('canvas')
+
+      // document.body.appendChild(this.canvas)
+      this.canvas.width = this.width
+      this.canvas.height = this.height
+      this.ctx = this.canvas.getContext('2d')
+      this.ctx.fillStyle = 'black'
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
+      this.canvas.id = 'touchTexture'
+      // this.canvas.style.width = this.canvas.style.height = `${
+      //   this.canvas.width
+      // }px`
+
+      // var gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height)
+      // var gradient = this.ctx.createRadialGradient(this.width / 2, this.height / 2, 0, this.width / 2, this.height / 2, this.width / 2)
+
+      // Add three color stops
+      // gradient.addColorStop(0, 'rgba(255,255,255,1.0)')
+      // gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)')
+      // gradient.addColorStop(1, 'rgba(255,255,255,1.0)')
+      // this.gradient = gradient
+    }
+
+    update (delta) {
+      this.clear()
+      let speed = this.speed
+      this.trail.forEach((point, i) => {
+        let f = point.force * speed * (1 - point.age / this.maxAge)
+        // let x = point.x
+        // let y = point.y
+
+        point.x += point.vx * f
+        point.y += point.vy * f
+        point.age++
+        if (point.age > this.maxAge) {
+          this.trail.splice(i, 1)
+        }
+      })
+
+      this.trail.forEach((point, i) => {
+        this.drawPoint(point)
+      })
+      // this.drawPoints()
+
+      // this.ctx.fillStyle = "rgba(255,0,0,0.5)"
+      // this.ctx.fillRect(0, 0, 200, 200)
+      // this.ctx.fillStyle = "rgba(0,255,0,0.5)"
+      // this.ctx.fillRect(50, 0, 200, 200)
+      // this.test()
+    }
+
+    clear () {
+      // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
+      // this.ctx.fillStyle = 'white'
+
+      this.ctx.fillStyle = 'black'
+
+      // this.ctx.fillStyle = this.gradient
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    }
+    addTouch (point) {
+      let force = 0
+      let vx = 0
+      let vy = 0
+      const last = this.last
+      if (last) {
+        const dx = point.x - last.x
+        const dy = point.y - last.y
+        if (dx === 0 && dy === 0) return
+        const dd = dx * dx + dy * dy
+        let d = Math.sqrt(dd)
+        vx = dx / d
+        vy = dy / d
+
+        force = Math.min(dd * 10000, 1)
+        // force = Math.sqrt(dd)* 50.
+        // force = 1
+      }
+      this.last = {
+        x: point.x,
+        y: point.y
+      }
+      this.trail.push({ x: point.x, y: point.y, age: 0, force, vx, vy })
+    }
+    drawPoint (point) {
+      const ctx = this.ctx
+      const pos = {
+        x: point.x * this.width,
+        y: (1 - point.y) * this.height
+      }
+
+      let intensity = 1
+
+      if (point.age < this.maxAge * 0.3) {
+        intensity = easeOutSine(point.age / (this.maxAge * 0.3), 0, 1, 1)
+      } else {
+        intensity = easeOutQuad(
+          1 - (point.age - this.maxAge * 0.3) / (this.maxAge * 0.7),
+          0,
+          1,
+          1
+        )
+      }
+      intensity *= point.force
+
+      const radius = this.radius
+      let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
+        255}, ${intensity * 255}`
+
+      let offset = this.size * 5
+      ctx.shadowOffsetX = offset // (default 0)
+      ctx.shadowOffsetY = offset // (default 0)
+      ctx.shadowBlur = radius * 1 // (default 0)
+      ctx.shadowColor = `rgba(${color},${0.2 * intensity})` // (default transparent black)
+
+      this.ctx.beginPath()
+      this.ctx.fillStyle = 'rgba(255,0,0,1)'
+      this.ctx.arc(pos.x - offset, pos.y - offset, radius, 0, Math.PI * 2)
+      this.ctx.fill()
+    }
+  }
+  let mouse = new THREE.Vector2()
+  let on = {
+    onTouchMove (ev) {
+      ev.preventDefault()
+
+      const touch = ev.targetTouches[0]
+
+      mouse = {
+        x: touch.clientX / window.innerWidth,
+        y: 1 - touch.clientY / window.innerHeight
+      }
+
+      touchTextures.forEach(e => e.addTouch(mouse))
+      // t.addTouch(mouse)
+      // onMouseMove({ clientX: touch.clientX, clientY: touch.clientY })
+    },
+    onMouseMove (ev) {
+      mouse = {
+        x: ev.clientX / window.innerWidth,
+        y: 1 - ev.clientY / window.innerHeight
+      }
+
+      touchTextures.forEach(e => e.addTouch(mouse))
+    }
+  }
+
+  let rID = getID()
+  let t = new TouchTexture()
+  let texture = new THREE.CanvasTexture(t.canvas)
+  let touchTextures = [t]
+  let rAFID = 0
+
+  api.teardown[rID] = () => {
+    cancelAnimationFrame(rAFID)
+  }
+  api.tasks[rID] = async () => {
+    // touchTextures.forEach(e => {
+    //   e.update()
+    // })
+    t.update()
+    texture.needsUpdate = true
+  }
+
+  window.addEventListener('mousemove', on.onMouseMove, { passive: false })
+  window.addEventListener('touchmove', on.onTouchMove, { passive: false })
+
+  let material = new THREE.ShaderMaterial({
+    uniforms: {
+      tDiffuse: {
+        value: null
+      },
+      tWave: {
+        value: texture
+      }
+    },
+    vertexShader: glsl`
+      #include <common>
+
+      varying vec2 vUv;
+
+      void main (void) {
+        vUv = uv;
+
+        vec3 nPos = position;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(nPos, 1.0);
+      }
+    `,
+    fragmentShader: glsl`
+      varying vec2 vUv;
+      uniform sampler2D tDiffuse;
+      uniform sampler2D tWave;
+      #define PI 3.14159265359
+
+      void main (void) {
+        vec2 uvv = vec2(vUv);
+        vec4 tex = texture2D(tWave, vUv);
+        float angle = -((tex.r) * (PI * 2.) - PI) ;
+        float vx = -(tex.r *2. - 1.);
+        float vy = -(tex.g *2. - 1.);
+        float intensity = tex.b;
+        uvv.x += vx * 0.2 * intensity * 3.0;
+        uvv.y += vy * 0.2  *intensity * 3.0;
+
+        vec4 tDiff = texture2D(tDiffuse, uvv);
+        gl_FragColor = vec4(tDiff);
+      }
+    `
+
+  })
+  var effectComposer = new THREE.EffectComposer(renderer)
+
+  var renderPass = new THREE.RenderPass(scene, camera)
+
+  let shaderPass = new THREE.ShaderPass(material, 'tDiffuse')
+  shaderPass.renderToScreen = true
+
+  effectComposer.addPass(renderPass)
+  effectComposer.addPass(shaderPass)
+
+  return effectComposer
+}
+
 export const mobileAndTabletcheck = () => {
   var check = false
   let a = navigator.userAgent || navigator.vendor || window.opera
@@ -869,7 +1131,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
 
   let rect = mounter.getBoundingClientRect()
   let scene = new THREE.Scene()
-  let camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 1000)
+  let camera = new THREE.PerspectiveCamera(75, rect.width / rect.height, 0.1, 100000000)
   let renderer = new THREE.WebGLRenderer({
     alpha: true,
     antialias: false
@@ -893,9 +1155,33 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // setupCameraControls({ camera, api, mounter })
   camera.position.z = 20
 
+  let parent = new THREE.Object3D()
+
   let canvasCubeTexture = await makeCanvasCubeTexture({ poserAPI, api, ...env })
 
-  let parent = new THREE.Object3D()
+  // let makeSphereBG = ({ canvasCubeTexture }) => {
+  //   let ct = new THREE.CanvasTexture(canvasCubeTexture.image[0])
+  //   let mat = new THREE.MeshBasicMaterial({
+  //     side: THREE.DoubleSide,
+  //     map: ct,
+  //     opacity: 1,
+  //     transparent: false
+  //   })
+  //   ct.flipY = true
+  //   setInterval(() => {
+  //     ct.needsUpdate = true
+  //   }, 0)
+  //   let geo = new THREE.SphereBufferGeometry(600, 64, 64)
+  //   let sphereBG = new THREE.Mesh(geo, mat)
+  //   return sphereBG
+  // }
+  let ct = new THREE.CanvasTexture(canvasCubeTexture.image[0])
+  setInterval(() => {
+    ct.needsUpdate = true
+  }, 0)
+  let composer = setupBlurComposer({ ...env, scene, camera, renderer, texture: ct })
+
+  // parent.add(makeSphereBG({ canvasCubeTexture }))
 
   // let cubeCam = makeCubeCam({ api, camera, parent: parent, renderer, scene })
   // let cubeCamTexture = cubeCam.renderTarget.texture
@@ -903,6 +1189,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // let cubeCamTexture = canvasCubeTexture
   // makeBallBg({ ...env, api, scene, canvas: canvasCubeTexture.images[0], camera })
 
+  // scene.background = canvasCubeTexture // new THREE.Color('#fff')
   scene.background = canvasCubeTexture
 
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
@@ -919,12 +1206,12 @@ export const setupBase = async ({ api, mounter, vm }) => {
     for (let kn in api.tasks) {
       api.tasks[kn]()
     }
-    renderer.render(scene, camera)
+    // renderer.render(scene, camera)
 
-    // if (composer) {
-    //   composer.render()
-    // } else {
-    // }
+    if (composer) {
+      composer.render()
+    } else {
+    }
   }
 
   api.teardown[rID] = () => {
@@ -1091,8 +1378,7 @@ void main() {
   // } else {
   //   gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
   // }
-  float colorModifier = 0.0;
-  gl_FragColor = mix( refractedColor, reflectedColor + colorModifier, clamp( vReflectionFactor, 0.0, 1.0 ) );
+  gl_FragColor = mix( refractedColor, refractedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );
   gl_FragColor.a = 0.5;
 }
   `
