@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="full">
     <router-view/>
-    <router-link to="/" class="absolute bottom-0 left-0 p-4">🏠</router-link>
+    <router-link to="/menu" class="absolute bottom-0 left-0 p-4">🏠</router-link>
   </div>
 </template>
 
