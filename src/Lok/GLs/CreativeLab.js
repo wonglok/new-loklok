@@ -859,7 +859,7 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
         setTimeout(() => {
           this.canvas.width = this.width
           this.canvas.height = this.height
-        })
+        }, 10)
       }, false)
 
       this.ctx = this.canvas.getContext('2d')
