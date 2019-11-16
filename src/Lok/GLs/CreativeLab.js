@@ -578,11 +578,11 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
 }
 
 export const makeFontGeo = ({ text, width }) => {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     // var loader = new THREE.FontLoader()
     // loader.load(, function (font) {
     // eslint-disable-next-line
-    var font = require('../Fonts/helvetiker_regilar.typeface.json');
+    var font = await import('../Fonts/helvetiker_regilar.typeface.json');
     font = new THREE.Font(font)
     var geometry = new THREE.TextGeometry(text, {
       font: font,
@@ -812,7 +812,7 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
 //   return bloomComposer
 // }
 
-export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
+export const setupCanvasDistortionComposer = ({ api, scene, camera, renderer }) => {
   let glsl = v => v[0]
 
   const easeOutSine = (t, b, c, d) => {
@@ -826,7 +826,7 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 128
+      this.size = 64
       // this.width = window.innerWidth
       // this.height = window.innerHeight
       let setter = () => {
@@ -1197,7 +1197,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   setInterval(() => {
     ct.needsUpdate = true
   }, 0)
-  let composer = setupBlurComposer({ ...env, scene, camera, renderer, texture: ct })
+  let composer = setupCanvasDistortionComposer({ ...env, scene, camera, renderer, texture: ct })
 
   // parent.add(makeSphereBG({ canvasCubeTexture }))
 
