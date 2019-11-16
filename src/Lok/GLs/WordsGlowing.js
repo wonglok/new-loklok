@@ -209,9 +209,11 @@ export const makeCenterPiece = async ({ cubeTexture, parent, scene, camera }) =>
 export const setupBloomComposer = ({ renderer, scene, camera, api }) => {
   var rID = getID()
   var params = {
-    exposure: 1,
+    // exposure: 1,
+    exposure: 0.8,
     bloomThreshold: 0.56,
-    bloomStrength: 1.1,
+    // bloomStrength: 1.1,
+    bloomStrength: 3.4,
     bloomRadius: 0.95
   }
   var gui = new GUI()
@@ -338,14 +340,14 @@ export const mobileAndTabletcheck = () => {
 
 export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => {
   let rID = getID()
-  require('../Fonts/cwTeXKai/font.css')
-  await waitForFont({ name: 'cwTeXKai' })
+  // require('../Fonts/cwTeXKai/font.css')
+  // await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
   // words emoji
   function setupWord ({ priWord = '黃', secWord = '樂' }) {
-    let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'lime', textAlign: 'center' }, 32)
-    let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'lime', textAlign: 'center' }, 32)
+    let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'Arial', wordWrap: 300, textColor: 'lime', textAlign: 'center' }, 32)
+    let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'Arial', wordWrap: 300, textColor: 'lime', textAlign: 'center' }, 32)
     let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
     let secondaryWord = new THREE.CanvasTexture(secondaryWord2D.render())
     primaryWord.needsUpdate = true
@@ -356,6 +358,7 @@ export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => 
     }
   }
   let { primaryWord, secondaryWord } = setupWord({ priWord: '💎', secWord: '⚡️' })
+  // let { primaryWord, secondaryWord } = setupWord({ priWord: '⚡️', secWord: '💎' })
 
   let maxVideoSize = 1920
 
@@ -607,6 +610,7 @@ void main () {
   glpc.y *= 1.23;
   // vec2 offset = vec2(0.35, 0.35);
   vec4 vidColor = texture2D(video, vUv);
+  vidColor = vidColor;
 
   // 灰階
   // vidColor.rgb = vec3((vidColor.r + vidColor.g + vidColor.b) / 3.0);

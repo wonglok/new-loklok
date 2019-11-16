@@ -338,14 +338,14 @@ export const mobileAndTabletcheck = () => {
 
 export const makeWords = async ({ api, mounter, vm, parent, camera, scene }) => {
   let rID = getID()
-  require('../Fonts/cwTeXKai/font.css')
-  await waitForFont({ name: 'cwTeXKai' })
+  // require('../Fonts/cwTeXKai/font.css')
+  // await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
   // words emoji
   function setupWord ({ priWord = '黃', secWord = '樂' }) {
-    let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
-    let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'cwTeXKai', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
+    let primaryWord2D = new TextCanvas(priWord, { fontFamily: 'Arial', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
+    let secondaryWord2D = new TextCanvas(secWord, { fontFamily: 'Arial', wordWrap: 300, textColor: 'black', textAlign: 'center' }, 32)
     let primaryWord = new THREE.CanvasTexture(primaryWord2D.render())
     let secondaryWord = new THREE.CanvasTexture(secondaryWord2D.render())
     primaryWord.needsUpdate = true

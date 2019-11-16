@@ -832,8 +832,7 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
       this.width = this.height = this.size
 
       this.maxAge = 64
-      this.radius = 0.1 * this.size
-      // this.radius = 0.15 * 1000
+      this.radius = 0.06 * this.size
 
       this.speed = 1 / this.maxAge
       // this.speed = 0.01

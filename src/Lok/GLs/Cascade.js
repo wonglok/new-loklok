@@ -338,8 +338,8 @@ export const mobileAndTabletcheck = () => {
 
 export const makeWords = async ({ api, mounter, vm, parent, camera, scene, texture }) => {
   let rID = getID()
-  require('../Fonts/cwTeXKai/font.css')
-  await waitForFont({ name: 'cwTeXKai' })
+  // require('../Fonts/cwTeXKai/font.css')
+  // await waitForFont({ name: 'cwTeXKai' })
   let TextCanvas = require('text-canvas')
   // font: cwTeXKai
   // words emoji
