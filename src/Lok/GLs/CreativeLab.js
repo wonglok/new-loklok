@@ -1071,6 +1071,12 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
   })
   var effectComposer = new THREE.EffectComposer(renderer)
 
+  let setter = () => {
+    effectComposer.setSize(window.innerWidth, window.innerHeight)
+    effectComposer.setPixelRatio(window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio)
+  }
+  window.addEventListener('resize', setter, false)
+
   var renderPass = new THREE.RenderPass(scene, camera)
 
   let shaderPass = new THREE.ShaderPass(material, 'tDiffuse')
@@ -1150,7 +1156,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   })
 
   renderer.setSize(rect.width, rect.height)
-  renderer.setPixelRatio(window.devicePixelRatio > 1.5 ? window.devicePixelRatio : 1.5)
+  renderer.setPixelRatio(window.devicePixelRatio < 1.5 ? 1.5 : window.devicePixelRatio)
   mounter.appendChild(renderer.domElement)
   renderer.domElement.style.marginBottom = '-6px'
 
