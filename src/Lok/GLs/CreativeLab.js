@@ -829,7 +829,13 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
       this.size = 128
       // this.width = window.innerWidth
       // this.height = window.innerHeight
-      this.width = this.height = this.size
+      let setter = () => {
+        this.aspect = window.innerWidth / window.innerHeight
+        this.width = this.size
+        this.height = this.size / this.aspect
+      }
+      window.addEventListener('resize', setter, false)
+      setter()
 
       this.maxAge = 64
       this.radius = 0.06 * this.size
@@ -849,6 +855,13 @@ export const setupBlurComposer = ({ api, scene, camera, renderer }) => {
       // document.body.appendChild(this.canvas)
       this.canvas.width = this.width
       this.canvas.height = this.height
+      window.addEventListener('resize', () => {
+        setTimeout(() => {
+          this.canvas.width = this.width
+          this.canvas.height = this.height
+        })
+      }, false)
+
       this.ctx = this.canvas.getContext('2d')
       this.ctx.fillStyle = 'black'
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
