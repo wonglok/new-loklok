@@ -28,7 +28,8 @@ let THREE = {
   ...require('three/examples/jsm/postprocessing/ShaderPass.js'),
   // ...require('three/examples/jsm/postprocessing/UnrealBloomPass.js'),
 
-  ...require('three/examples/jsm/loaders/GLTFLoader.js')
+  ...require('three/examples/jsm/loaders/GLTFLoader.js'),
+  ...require('three/examples/jsm/loaders/FBXLoader.js')
 }
 
 let glsl = require('glslify')
@@ -402,7 +403,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       // this.ctx.fillStyle = 'hsl(61, 100%, 100%)'
       // this.ctx.fillStyle = 'white'
 
-      this.ctx.fillStyle = 'white'
+      this.ctx.fillStyle = '#101777'
+      // this.ctx.fillStyle = 'white'
 
       // this.ctx.fillStyle = this.gradient
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
@@ -456,7 +458,8 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(intensity * 255).toFixed(0)}, 65%, 55%`
+      // color = `${(intensity * 255).toFixed(0)}, 65%, 55%`
+      color = `${(intensity * 360).toFixed(0)}, 65%, 94%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
@@ -502,40 +505,51 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
   ]
 
   let rAFID = 0
-  function runAI () {
-    let touchAdder = ({ pose, info, name }) => {
-      let pointer = pose.keypoints.find(k => k.part === name)
-      if (pointer && pointer.score > 0.15) {
-        for (var i = 0; i < 1; i++) {
-          t.addTouch({
-            x: (info.video.width - pointer.position.x) / info.video.width,
-            y: 1 - (pointer.position.y / info.video.height)
-          })
-        }
-      }
-    }
-    let loop = async () => {
+
+  // function runAI () {
+  //   let touchAdder = ({ pose, info, name }) => {
+  //     let pointer = pose.keypoints.find(k => k.part === name)
+  //     if (pointer && pointer.score > 0.15) {
+  //       for (var i = 0; i < 1; i++) {
+  //         t.addTouch({
+  //           x: (info.video.width - pointer.position.x) / info.video.width,
+  //           y: 1 - (pointer.position.y / info.video.height)
+  //         })
+  //       }
+  //     }
+  //   }
+  //   let loop = async () => {
+  //     t.addTouch({
+  //       x: Math.random(),
+  //       y: Math.random()
+  //     })
+
+  //     if (poserAPI) {
+  //       let info = await poserAPI.update()
+  //       if (info.poses) {
+  //         let poses = info.poses
+  //         if (poses[0]) {
+  //           touchAdder({ pose: poses[0], info, name: 'leftWrist' })
+  //           touchAdder({ pose: poses[0], info, name: 'nose' })
+  //           touchAdder({ pose: poses[0], info, name: 'rightWrist' })
+  //         }
+  //       }
+  //     }
+  //     rAFID = requestAnimationFrame(loop)
+  //   }
+  //   rAFID = requestAnimationFrame(loop)
+  // }
+  // runAI()
+  let loop = async () => {
+    rAFID = requestAnimationFrame(loop)
+    if (Math.random() < 0.058) {
       t.addTouch({
         x: Math.random(),
         y: Math.random()
       })
-
-      if (poserAPI) {
-        let info = await poserAPI.update()
-        if (info.poses) {
-          let poses = info.poses
-          if (poses[0]) {
-            touchAdder({ pose: poses[0], info, name: 'leftWrist' })
-            touchAdder({ pose: poses[0], info, name: 'nose' })
-            touchAdder({ pose: poses[0], info, name: 'rightWrist' })
-          }
-        }
-      }
-      rAFID = requestAnimationFrame(loop)
     }
-    rAFID = requestAnimationFrame(loop)
   }
-  runAI()
+  rAFID = requestAnimationFrame(loop)
 
   // function runDiff () {
   //   let loop = () => {
@@ -719,7 +733,7 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(width, height)
 
-  let text = 'Creative Code Lab'
+  let text = 'Jelly Fish Studio'
   let geo = await makeFontGeo({ text, width: min * 0.12 * 0.6 })
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
@@ -1126,6 +1140,70 @@ export const makeBallBg = ({ api, scene, camera, canvas }) => {
   scene.add(mesh)
 }
 
+export const loadFBX = ({ file }) => {
+  return new Promise((resolve) => {
+    var loader = new THREE.FBXLoader()
+    loader.load(file, (fbx) => {
+      resolve(fbx)
+      // let scene = fbx.scenes[0]
+      // resolve(scene)
+    })
+  })
+}
+
+export const makeFish = async ({ api, parent, cubeTexture, camera }) => {
+  let width = visibleWidthAtZDepth(camera.position.z, camera)
+  let height = visibleHeightAtZDepth(camera.position.z, camera)
+  let min = Math.min(height, width)
+
+  let base = new THREE.Vector3(0, 0, 0)
+  // eslint-disable-next-line
+  let fbx = await loadFBX({ file: require('file-loader!../Model/jelly/jellyfish.fbx') })
+  fbx.traverse(function (child) {
+    if (child.isMesh && child.type === 'SkinnedMesh') {
+      // child.material.color = new THREE.Color(0xffffffff)
+      // child.material.side = THREE.DoubleSide
+      child.material = new THREE.MeshBasicMaterial({
+        envMap: cubeTexture,
+        skinning: true,
+        transparent: true,
+        opacity: 0.4
+      })
+      // child.castShadow = true;
+      // child.receiveShadow = true;
+    }
+  })
+
+  let mixer = new THREE.AnimationMixer(fbx)
+
+  var action = mixer.clipAction(fbx.animations[ 0 ])
+  action.play()
+  let clock = new THREE.Clock()
+  api.tasks['jellyfish'] = () => {
+    var delta = clock.getDelta()
+    if (mixer) mixer.update(delta)
+
+    base.x = min * -0.1
+    base.y = min * 0.1
+    base.z = min * -0.1
+
+    let rad = 1
+
+    fbx.position.x = base.x + rad * Math.cos(3.14 + clock.getElapsedTime())
+    fbx.position.y = base.y + rad * Math.sin(3.14 + clock.getElapsedTime())
+    fbx.position.z = base.z + rad * Math.sin(3.14 + clock.getElapsedTime())
+
+    window.dispatchEvent(new Event('spark'))
+  }
+
+  console.log(fbx)
+  fbx.scale.x = 0.05
+  fbx.scale.y = 0.05
+  fbx.scale.z = 0.05
+
+  parent.add(fbx)
+}
+
 export const setupBase = async ({ api, mounter, vm }) => {
   let env = { api, mounter, vm }
   let rID = getID()
@@ -1208,6 +1286,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // scene.background = canvasCubeTexture // new THREE.Color('#fff')
   scene.background = canvasCubeTexture
 
+  makeFish({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })

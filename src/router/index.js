@@ -21,6 +21,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/VoyageBear.vue')
   },
   {
+    path: '/jelly',
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/JellyStudio.vue')
+  },
+  {
     path: '/cascade',
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Cascade.vue')
   },
