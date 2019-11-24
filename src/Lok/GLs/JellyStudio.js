@@ -540,6 +540,7 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
   //   rAFID = requestAnimationFrame(loop)
   // }
   // runAI()
+
   let loop = async () => {
     rAFID = requestAnimationFrame(loop)
     if (Math.random() < 0.15) {
@@ -838,7 +839,7 @@ export const setupCanvasDistortionComposer = ({ api, scene, camera, renderer }) 
   }
   class TouchTexture {
     constructor () {
-      this.size = 64
+      this.size = 50
       // this.width = window.innerWidth
       // this.height = window.innerHeight
       let setter = () => {
@@ -1151,7 +1152,7 @@ export const loadFBX = ({ file }) => {
   })
 }
 
-export const makeFish = async ({ api, parent, cubeTexture, camera }) => {
+export const makeJellyFish = async ({ api, parent, cubeTexture, camera }) => {
   let width = visibleWidthAtZDepth(camera.position.z, camera)
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(height, width)
@@ -1167,10 +1168,8 @@ export const makeFish = async ({ api, parent, cubeTexture, camera }) => {
         envMap: cubeTexture,
         skinning: true,
         transparent: true,
-        opacity: 0.4
+        opacity: 0.6
       })
-      // child.castShadow = true;
-      // child.receiveShadow = true;
     }
   })
 
@@ -1286,7 +1285,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // scene.background = canvasCubeTexture // new THREE.Color('#fff')
   scene.background = canvasCubeTexture
 
-  makeFish({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
+  makeJellyFish({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })

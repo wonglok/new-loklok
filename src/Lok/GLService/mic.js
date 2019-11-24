@@ -33,6 +33,7 @@ export const setup = () => {
     }
 
     return {
+      data: analyser.data,
       texture
     }
   }
