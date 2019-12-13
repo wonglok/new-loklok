@@ -12,20 +12,18 @@ let glsl = require('glslify')
 
 export const setupDepthPhoto = ({ api, mounter, parent }) => {
   let dimensions = new THREE.Vector2(1, 1)
-  let i1img = require('../Textures/depth-images/i1.jpg')
-  let i1depth = require('../Textures/depth-images/i1_depth.jpg')
   let loader = new THREE.TextureLoader()
   let mouse = new THREE.Vector2()
   let textures = [
     {
-      img: loader.load(i1img, (t) => {
+      img: loader.load(require('../Textures/depth-images/i2.jpg'), (t) => {
         dimensions.x = t.image.width
         dimensions.y = t.image.height
       }),
-      depth: loader.load(i1depth)
+      depth: loader.load(require('../Textures/depth-images/i2_depth.jpg'))
     }
   ]
-  let geo = new THREE.PlaneBufferGeometry(10, 13.5, 120, 128)
+  let geo = new THREE.PlaneBufferGeometry(10.0 * 2, 13.5 * 2, 120, 128)
   let mat = new THREE.ShaderMaterial({
     uniforms: {
       focus: { value: 0.5 },
