@@ -541,9 +541,9 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
   // }
   // runAI()
 
-  let loop = async () => {
+  let loop = () => {
     rAFID = requestAnimationFrame(loop)
-    if (Math.random() < 0.15) {
+    if (Math.random() < 0.1) {
       t.addTouch({
         x: Math.random(),
         y: Math.random()
