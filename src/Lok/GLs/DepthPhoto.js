@@ -14,13 +14,14 @@ export const setupDepthPhoto = ({ api, mounter, parent }) => {
   let dimensions = new THREE.Vector2(1, 1)
   let loader = new THREE.TextureLoader()
   let mouse = new THREE.Vector2()
+  // exiftool -b -MPImage2 i1.jpg > i1_depth.jpg
   let textures = [
     {
-      img: loader.load(require('../Textures/depth-images/i2.jpg'), (t) => {
+      img: loader.load(require('../Textures/depth-images/i6.jpg'), (t) => {
         dimensions.x = t.image.width
         dimensions.y = t.image.height
       }),
-      depth: loader.load(require('../Textures/depth-images/i2_depth.jpg'))
+      depth: loader.load(require('../Textures/depth-images/i6_depth.jpg'))
     }
   ]
   let geo = new THREE.PlaneBufferGeometry(10.0 * 2, 13.5 * 2, 120, 128)
@@ -30,7 +31,7 @@ export const setupDepthPhoto = ({ api, mounter, parent }) => {
       mouse: { value: mouse },
       dimensions: { value: dimensions },
       img: { value: textures[0].img },
-      scale: { value: 0.05 },
+      scale: { value: 0.025 },
       depth: { value: textures[0].depth }
     },
     vertexShader: glsl`
