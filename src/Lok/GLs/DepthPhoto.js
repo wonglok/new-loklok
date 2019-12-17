@@ -7,32 +7,33 @@ let THREE = {
   ...require('three/examples/jsm/controls/OrbitControls.js'),
   ...require('three/examples/jsm/loaders/SVGLoader.js')
 }
-
 let glsl = require('glslify')
 
-export const setupDepthPhoto = ({ api, mounter, parent }) => {
+export const setupDepthPhoto = async ({ api, mounter, parent }) => {
   let dimensions = new THREE.Vector2(1, 1)
   let loader = new THREE.TextureLoader()
   let mouse = new THREE.Vector2()
+  // let depthImage64 = await loadDepth(require('../Textures/depth-images/i6.jpg'))
   // exiftool -b -MPImage2 i1.jpg > i1_depth.jpg
   let textures = [
     {
-      img: loader.load(require('../Textures/depth-images/i6.jpg'), (t) => {
+      img: loader.load(require('../Textures/depth-images/i7.jpg'), (t) => {
         dimensions.x = t.image.width
         dimensions.y = t.image.height
       }),
-      depth: loader.load(require('../Textures/depth-images/i6_depth.jpg'))
+      depth: loader.load(require('../Textures/depth-images/i7_depth.jpg'))
     }
   ]
+  let photo = textures[0]
   let geo = new THREE.PlaneBufferGeometry(10.0 * 2, 13.5 * 2, 120, 128)
   let mat = new THREE.ShaderMaterial({
     uniforms: {
+      scale: { value: 0.025 },
       focus: { value: 0.5 },
       mouse: { value: mouse },
       dimensions: { value: dimensions },
-      img: { value: textures[0].img },
-      scale: { value: 0.025 },
-      depth: { value: textures[0].depth }
+      img: { value: photo.img },
+      depth: { value: photo.depth }
     },
     vertexShader: glsl`
     varying vec2 vUv;
@@ -63,7 +64,6 @@ export const setupDepthPhoto = ({ api, mounter, parent }) => {
       }
     `
   })
-  console.log(textures[0])
   let mesh = new THREE.Mesh(geo, mat)
   parent.add(mesh)
 

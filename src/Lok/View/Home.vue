@@ -3,6 +3,7 @@
     <div class=" text-teal-500 font-serif font-hairline text-xl p-5">
       <a class="block" href="/">Creative Code Lab</a>
       <a class="block" href="/depth-photo">Depth Photo</a>
+      <a class="block" href="/audio-visualisation">Audio Visualisation</a>
       <a class="block" href="/jelly">Jelly Fish Studio</a>
       <a class="block" href="/lok">Lok Lok</a>
       <a class="block" href="/bear">Voyage Bear</a>

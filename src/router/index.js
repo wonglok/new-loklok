@@ -17,6 +17,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/DepthPhoto.vue')
   },
   {
+    path: '/audio-visualisation',
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/AudioVisualisation.vue')
+  },
+  {
     path: '/',
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/CreativeLab.vue')
   },
