@@ -1,5 +1,6 @@
 <template>
   <div class="full" ref="mounter">
+    <button class="fixed bottom-0 right-0 p-3 text-2xl" @click="init">🎸</button>
   </div>
 </template>
 
@@ -10,6 +11,7 @@ export default {
   },
   data () {
     return {
+      init () {},
       rAPI: false
     }
   },

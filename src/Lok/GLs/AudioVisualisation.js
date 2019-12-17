@@ -10,7 +10,7 @@ let THREE = {
 let glsl = require('glslify')
 let mp3History = require('../GLService/mp3-history.js').setup
 
-export const setupAudioVisualisation = async ({ api, scene, renderer, camera, parent }) => {
+export const setupAudioVisualisation = async ({ api, vm, scene, mounter, renderer, camera, parent }) => {
   let rID = getID()
 
   let audio = false
@@ -57,20 +57,32 @@ export const setupAudioVisualisation = async ({ api, scene, renderer, camera, pa
   points.rotation.z = Math.PI * 1.5
   points.rotation.x = Math.PI * -0.25
   parent.add(points)
-  window.addEventListener('click', () => {
+  // eslint-disable-next-line
+
+  vm.init = () => {
     if (!audio) {
       // eslint-disable-next-line
       audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
-      audio.play()
+      setTimeout(() => {
+        audio.play()
+      })
     }
-  })
-  window.addEventListener('touchstart', () => {
-    if (!audio) {
-      // eslint-disable-next-line
-      audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
-      audio.play()
-    }
-  })
+  }
+
+  // mounter.addEventListener('click', () => {
+  //   if (!audio) {
+  //     // eslint-disable-next-line
+  //     audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
+  //     audio.play()
+  //   }
+  // })
+  // mounter.addEventListener('touchstart', () => {
+  //   if (!audio) {
+  //     // eslint-disable-next-line
+  //     audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
+  //     audio.play()
+  //   }
+  // })
   api.tasks[rID] = () => {
     if (controls) {
       controls.update()
