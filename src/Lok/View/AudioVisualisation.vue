@@ -1,6 +1,6 @@
 <template>
   <div class="full" ref="mounter">
-    <button class=" pointer-events-auto fixed bottom-0 right-0 p-3 text-2xl" @click="init()">🎸</button>
+    <button class=" pointer-events-auto fixed bottom-0 right-0 p-3 text-2xl toucher" @click="init()">🎸</button>
   </div>
 </template>
 
