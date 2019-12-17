@@ -63,6 +63,7 @@ export const setupAudioVisualisation = async ({ api, vm, scene, mounter, rendere
     if (!audio) {
       // eslint-disable-next-line
       audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
+      audio.play()
       setTimeout(() => {
         audio.play()
       })
