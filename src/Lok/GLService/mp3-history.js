@@ -2,16 +2,24 @@ import * as THREE from 'three'
 
 export const setup = ({ url }) => {
   var api = {}
-  var fftSize = 512 // up to 2048 with pow2
+
+  // var mediaElement = new Audio(url)
+  // mediaElement.autoplay = true
+  // mediaElement.loop = true
+
   var listener = new THREE.AudioListener()
-  listener.setMasterVolume(0.5)
   var audio = new THREE.Audio(listener)
+  // audio.setMediaElementSource(mediaElement)
+  // listener.setMasterVolume(1.0)
 
-  var mediaElement = new Audio(url)
-  mediaElement.loop = true
-  mediaElement.volume = 1.0
+  api.updateAudio = ({ url }) => {
+    api.mediaElement = new Audio(url)
+    api.mediaElement.autoplay = true
+    api.mediaElement.loop = true
+    audio.setMediaElementSource(api.mediaElement)
+  }
 
-  audio.setMediaElementSource(mediaElement)
+  var fftSize = 256 // up to 2048 with pow2
   var dataPerScan = fftSize / 2.0
   var maxHistory = 60 * 5
   var savedBits = new Uint8Array(new Array(dataPerScan * maxHistory))
@@ -24,19 +32,16 @@ export const setup = ({ url }) => {
   }
 
   var analyser = new THREE.AudioAnalyser(audio, fftSize)
-
-  console.log(analyser.data)
-
   let texture = new THREE.DataTexture(savedBits, dataPerScan, maxHistory, THREE.LuminanceFormat)
-  api.audio = mediaElement
+
   api.play = () => {
-    mediaElement.play()
+    api.mediaElement.play()
   }
   api.pause = () => {
-    mediaElement.pause()
+    api.mediaElement.pause()
   }
   api.stop = () => {
-    mediaElement.pause()
+    api.mediaElement.pause()
   }
 
   api.update = () => {

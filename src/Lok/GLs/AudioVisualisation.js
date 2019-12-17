@@ -8,16 +8,14 @@ let THREE = {
   ...require('three/examples/jsm/loaders/SVGLoader.js')
 }
 let glsl = require('glslify')
-let mp3History = require('../GLService/mp3-history.js').setup
+// let mp3History = require('../GLService/mp3-history.js').setup
 
 export const setupAudioVisualisation = async ({ api, vm, scene, mounter, renderer, camera, parent }) => {
-  let rID = getID()
-
-  let audio = false
   let uniforms = {
     tex: { value: null }
   }
   let mat = new THREE.ShaderMaterial({
+    transparent: true,
     uniforms,
     vertexShader: glsl`
     uniform sampler2D tex;
@@ -49,7 +47,7 @@ export const setupAudioVisualisation = async ({ api, vm, scene, mounter, rendere
   })
   scene.background = new THREE.Color('#bababa')
 
-  var controls = new THREE.OrbitControls(camera, renderer.domElement)
+  // var controls = new THREE.OrbitControls(camera, renderer.domElement)
 
   let geo = new THREE.PlaneBufferGeometry(15, 35, 128, 60 * 5)
 
@@ -57,44 +55,65 @@ export const setupAudioVisualisation = async ({ api, vm, scene, mounter, rendere
   points.rotation.z = Math.PI * 1.5
   points.rotation.x = Math.PI * -0.25
   parent.add(points)
-  // eslint-disable-next-line
 
-  vm.init = () => {
-    if (!audio) {
-      // eslint-disable-next-line
-      audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
-      audio.play()
-      setTimeout(() => {
-        audio.play()
-      })
-    }
-  }
+  let init = () => {
+    // eslint-disable-next-line
+    let url = require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a')
 
-  // mounter.addEventListener('click', () => {
-  //   if (!audio) {
-  //     // eslint-disable-next-line
-  //     audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
-  //     audio.play()
-  //   }
-  // })
-  // mounter.addEventListener('touchstart', () => {
-  //   if (!audio) {
-  //     // eslint-disable-next-line
-  //     audio = mp3History({ url: require('file-loader!../Audio/XiaoQiao/huan-mei-lu-120.m4a') })
-  //     audio.play()
-  //   }
-  // })
-  api.tasks[rID] = () => {
-    if (controls) {
-      controls.update()
+    let rID = getID()
+    let mediaElement = new Audio(url)
+    mediaElement.autoplay = true
+    mediaElement.loop = true
+    mediaElement.play()
+    mounter.appendChild(mediaElement)
+
+    var listener = new THREE.AudioListener()
+    var audioTHREE = new THREE.Audio(listener)
+    audioTHREE.setMediaElementSource(mediaElement)
+
+    var fftSize = 256 // up to 2048 with pow2
+    var dataPerScan = fftSize / 2.0
+    var maxHistory = 60 * 5
+    var savedBits = new Uint8Array(new Array(dataPerScan * maxHistory))
+    var historyArr = []
+
+    for (var i = 0; i < maxHistory; i++) {
+      historyArr.push(new Uint8Array(new Array(dataPerScan)))
     }
-    if (audio) {
-      let { texture } = audio.update()
+
+    var analyser = new THREE.AudioAnalyser(audioTHREE, fftSize)
+    let texture = new THREE.DataTexture(savedBits, dataPerScan, maxHistory, THREE.LuminanceFormat)
+    texture.needsUpdate = true
+    uniforms.tex.value = texture
+
+    api.tasks[rID] = () => {
+      analyser.getFrequencyData()
+
+      historyArr.pop()
+      historyArr.unshift(analyser.data.slice())
+
+      // savedBits = new Uint8Array(dataPerScan * maxHistory)
+
+      for (let ai = 0; ai < historyArr.length; ai++) {
+        let currnetAI = historyArr[ai]
+        for (let bi = 0; bi < currnetAI.length; bi++) {
+          let v = currnetAI[bi]
+          let idx = ai * dataPerScan + bi
+          savedBits[idx] = v
+        }
+      }
+
+      // analyser.getFrequencyData()
+      // analyser.getAverageFrequency()'
       uniforms.tex.value = texture
+      texture.needsUpdate = true
+    }
+    api.teardown[rID] = () => {
     }
   }
-  api.teardown[rID] = () => {
-    audio.pause()
+
+  api.initAudio = () => {
+    init()
   }
 }
 

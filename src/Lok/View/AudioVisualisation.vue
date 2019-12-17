@@ -1,6 +1,6 @@
 <template>
   <div class="full" ref="mounter">
-    <button class=" pointer-events-auto fixed bottom-0 right-0 p-3 text-2xl toucher" @click="init()">🎸</button>
+    <button v-if="rAPI" class="button toucher z-50 fixed bottom-0 right-0 p-3 text-2xl" @click="rAPI.initAudio">🎸</button>
   </div>
 </template>
 
@@ -11,7 +11,9 @@ export default {
   },
   data () {
     return {
-      init () {},
+      init () {
+        window.alert()
+      },
       rAPI: false
     }
   },
@@ -23,3 +25,9 @@ export default {
   }
 }
 </script>
+
+<style lang="postcss">
+.button{
+  z-index: 10000000;
+}
+</style>
