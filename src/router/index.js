@@ -9,6 +9,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
   {
+    path: '/doi',
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/GetDomain.vue')
+  },
+  {
     path: '/lok',
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Lok.vue')
   },
