@@ -85,7 +85,7 @@ export default {
       if (await this.hasLocal(doi)) {
         return false
       }
-      if (await this.removeDontHave(doi)) {
+      if (await this.remoteDontHave(doi)) {
         return true
       } else {
         return false
@@ -101,7 +101,7 @@ export default {
         return false
       }
     },
-    async removeDontHave (doi) {
+    async remoteDontHave (doi) {
       let data = (await axios({
         method: 'GET',
         url: `${bankBaseURL}dois?doi=${encodeURIComponent(doi)}`
