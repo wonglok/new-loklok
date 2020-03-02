@@ -27,8 +27,8 @@ export default {
   methods: {
     sleep: (v = 100) => new Promise(resolve => setTimeout(resolve, v)),
     async readCSVFile () {
-      this.$refs['file'].onchange = (ev) => {
-        let files = ev.target.files
+      this.$refs['file'].onchange = (evt) => {
+        let files = evt.target.files
         if (files && files[0]) {
           let file = files[0]
           if (file) {

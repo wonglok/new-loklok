@@ -5,8 +5,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/menu',
+    path: '/',
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
+  },
+  {
+    path: '/menu',
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Menu.vue')
   },
   {
     path: '/doi',
@@ -25,7 +29,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/AudioVisualisation.vue')
   },
   {
-    path: '/',
+    path: '/creative',
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/CreativeLab.vue')
   },
   {
