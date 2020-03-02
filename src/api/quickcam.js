@@ -94,7 +94,8 @@ export const uploadPhoto = async ({ name, blob, albumID }) => {
   let formData = new FormData()
   formData.append(`files.photo`, new File([blob], 'image.jpg'), 'image.jpg')
   formData.append(`data`, JSON.stringify({
-    album: albumID,
+    desc: 'desc',
+    albumID: albumID,
     deviceUUID: '12345',
     deviceDisplayName: name
   }))
