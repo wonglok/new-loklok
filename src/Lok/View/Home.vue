@@ -5,11 +5,10 @@
     <button class="p-2 border m-1" @click="login">login</button>
     <button class="p-2 border m-1" @click="getAlbumBySlug">getAlbumBySlug</button>
     <button class="p-2 border m-1" @click="setup">setup</button>
-    <button class="p-2 border m-1" @click="takePhoto">takePhoto</button>
+    <button class="p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
     <video playsinline ref="video"></video>
-    <canvas ref="canvas"></canvas>
-    <img ref="photo" />
+    <canvas ref="canvas" style="display: none"></canvas>
   </div>
 </template>
 
@@ -18,7 +17,7 @@ import * as API from '../../api/quickcam.js'
 export default {
   data () {
     return {
-      takePhoto () {}
+      takePhoto: false
     }
   },
   mounted () {
@@ -48,14 +47,13 @@ export default {
       console.log(data)
     },
     async setup () {
-      let height = 500
-      let width = 500
+      let height = 1024
+      let width = 1024
       let canvas = this.$refs['canvas']
       let video = this.$refs['video']
-      let photo = this.$refs['photo']
 
       let streaming = false
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1920 } }, audio: false })
         .then((stream) => {
           video.srcObject = stream
           video.play()
@@ -79,24 +77,18 @@ export default {
         var context = canvas.getContext('2d')
         context.fillStyle = '#AAA'
         context.fillRect(0, 0, canvas.width, canvas.height)
-
-        var data = canvas.toDataURL('image/png')
-        photo.setAttribute('src', data)
       }
-      this.takePhoto = () => {
+      this.takePhoto = async () => {
         var context = canvas.getContext('2d')
         if (width && height) {
           canvas.width = width
           canvas.height = height
           context.drawImage(video, 0, 0, width, height)
-
-          var data = canvas.toDataURL('image/jpeg')
+          let album = await API.getAlbumBySlug({ slug: 'wonglok831' })
           canvas.toBlob(async (blob) => {
-            let data = await API.uploadPhoto({ name: 'lok', blob, albumID: this.albumID })
+            let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
             console.log(data)
           }, 'image/jpeg', 1)
-
-          photo.setAttribute('src', data)
         } else {
           clearphoto()
         }
