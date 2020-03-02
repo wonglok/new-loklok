@@ -7,7 +7,7 @@
     <button class="p-2 border m-1" @click="setup">setup</button>
     <button class="p-2 border m-1" @click="takePhoto">takePhoto</button>
 
-    <video ref="video"></video>
+    <video playsinline ref="video"></video>
     <canvas ref="canvas"></canvas>
     <img ref="photo" />
   </div>
