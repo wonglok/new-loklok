@@ -78,13 +78,14 @@ export default {
         context.fillStyle = '#AAA'
         context.fillRect(0, 0, canvas.width, canvas.height)
       }
+      let album = await API.getAlbumBySlug({ slug: 'wonglok831' })
+
       this.takePhoto = async () => {
         var context = canvas.getContext('2d')
         if (width && height) {
           canvas.width = width
           canvas.height = height
           context.drawImage(video, 0, 0, width, height)
-          let album = await API.getAlbumBySlug({ slug: 'wonglok831' })
           canvas.toBlob(async (blob) => {
             let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
             console.log(data)
