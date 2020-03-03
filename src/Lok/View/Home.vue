@@ -61,20 +61,19 @@ export default {
       this.$forceUpdate()
     },
     async removeSelected () {
+      this.mode = 'normal'
+
       let photoSelected = this.photos.filter(e => e.selected).slice()
       this.photos.filter(e => e.selected).forEach((photo) => {
         let idx = this.photos.find(e => e._id === photo._id)
         this.photos.splice(idx, 1)
       })
 
-      let data = await API.removePhotosIn({
+      await API.removePhotosIn({
         photoIDs: photoSelected,
         slug: 'wonglok831',
         viewPassword: '123bbb'
       })
-
-      console.log(data)
-      this.cancelSelect()
     },
     async removePhoto ({ photo, photos }) {
       let idx = photos.find(e => e._id === photo._id)
