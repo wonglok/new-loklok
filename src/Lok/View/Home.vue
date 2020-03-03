@@ -1,6 +1,6 @@
 <template>
   <div>
-    home
+    {{ loading ? 'Loading....' : '' }}
     <button class="p-2 border m-1" @click="makeAlbum">makeAlbum</button>
     <button class="p-2 border m-1" @click="login">login</button>
     <button class="p-2 border m-1" @click="getAlbumBySlug">getAlbumBySlug</button>
@@ -28,6 +28,7 @@ import * as API from '../../api/quickcam.js'
 export default {
   data () {
     return {
+      loading: false,
       apiURL: API.apiURL,
       photos: [],
       takePhoto: false,
@@ -152,7 +153,9 @@ export default {
           context.drawImage(video, 0, 0, width, height)
           canvas.toBlob(async (blob) => {
             let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
-            this.getPhotosBySlug()
+            this.loading = true
+            await this.getPhotosBySlug()
+            this.loading = false
             console.log(data)
           }, 'image/jpeg', 1)
         }
