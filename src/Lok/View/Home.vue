@@ -70,14 +70,15 @@ export default {
       this.getPhotosBySlug()
     },
     async removePhoto ({ photo, photos }) {
+      let idx = photos.find(e => e._id === photo._id)
+      photos.splice(idx, 1)
+
       let data = await API.removePhotosIn({
         photoIDs: [photo._id],
         slug: 'wonglok831',
         viewPassword: '123bbb'
       })
 
-      let idx = photos.find(e => e._id === photo._id)
-      photos.splice(idx, 1)
       return data
     },
     async makeAlbum () {
