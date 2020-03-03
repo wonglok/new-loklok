@@ -1,23 +1,23 @@
 <template>
   <div>
     {{ loading ? 'Loading....' : '' }}
-    <button class="p-2 border m-1" @click="makeAlbum">makeAlbum</button>
-    <button class="p-2 border m-1" @click="login">login</button>
-    <button class="p-2 border m-1" @click="getAlbumBySlug">getAlbumBySlug</button>
-    <button class="p-2 border m-1" @click="getPhotosBySlug">getPhotosBySlug</button>
-    <button class="p-2 border m-1" @click="openCamera">openCamera</button>
-    <button class="p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" @click="makeAlbum">makeAlbum</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" @click="login">login</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" @click="getAlbumBySlug">getAlbumBySlug</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" @click="getPhotosBySlug">getPhotosBySlug</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" @click="openCamera">openCamera</button>
+    <button class="disable-dbl-tap-zoom p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
     <div class="">
-      <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
-      <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
-      <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
+      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
+      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
+      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
         <img class="h-32" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
         <img class="h-32" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
 
         <div v-if="photo.type !== 'fake'">
-          <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
+          <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
           <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
         </div>
       </div>
@@ -180,6 +180,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
 </style>
