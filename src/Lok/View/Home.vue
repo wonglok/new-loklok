@@ -8,7 +8,7 @@
     <button class="disable-dbl-tap-zoom p-2 border m-1" @click="openCamera">openCamera</button>
     <button class="disable-dbl-tap-zoom p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
-    <video class="h-64 w-64 object-cover" playsinline ref="video"></video>
+    <video v-show="takePhoto" class="h-64 w-64 object-cover" playsinline ref="video"></video>
 
     <div class="">
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
@@ -57,6 +57,13 @@ export default {
       this.mode = 'normal'
       this.photos.forEach((data) => {
         data.selected = false
+      })
+      this.$forceUpdate()
+    },
+    async selectAll () {
+      this.mode = 'selecting'
+      this.photos.forEach((data) => {
+        data.selected = true
       })
       this.$forceUpdate()
     },
