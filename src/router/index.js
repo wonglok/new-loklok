@@ -6,7 +6,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
+    redirect: '/menu'
+    // component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
   {
     path: '/menu',
