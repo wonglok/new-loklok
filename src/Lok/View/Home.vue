@@ -72,8 +72,8 @@ export default {
     async removeSelected () {
       this.mode = 'normal'
 
-      let photoSelected = this.photos.filter(e => e.selected).slice()
-      this.photos.filter(e => e.selected).forEach((photo) => {
+      let photoSelected = this.photos.filter(e => e.selected).filter(e => e.type !== 'uploading').slice()
+      this.photos.filter(e => e.selected).filter(e => e.type !== 'uploading').forEach((photo) => {
         let idx = this.photos.find(e => e._id === photo._id)
         this.photos.splice(idx, 1)
       })
@@ -192,7 +192,11 @@ export default {
 </script>
 
 <style scoped>
+.disable-dbl-tap-zoom:focus{
+  outline: none;
+}
 .disable-dbl-tap-zoom {
+  user-select: none;
   touch-action: manipulation;
 }
 </style>
