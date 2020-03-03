@@ -8,22 +8,23 @@
     <button class="disable-dbl-tap-zoom p-2 border m-1" @click="openCamera">openCamera</button>
     <button class="disable-dbl-tap-zoom p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
-    <video v-show="takePhoto" class="h-64 w-64 object-cover" playsinline ref="video"></video>
-
+    <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
+    <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="selectAll()">Select All</button>
+    <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
+    <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
     <div class="">
-      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
-      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="selectAll()">Select All</button>
-      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
-      <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
-      <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'uploading'" :src="`${apiURL}${photo.photo.url}`" alt="">
-        <img class="h-32 w-32 object-cover" v-if="photo.type === 'uploading'" :src="`${photo.blobURL}`" alt="">
-        <div v-if="photos.type === 'uploading'">
-          Loading
-        </div>
-        <div v-if="photo.type !== 'uploading'">
-          <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
-          <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
+      <video v-show="takePhoto" class="h-64 w-64 object-cover" playsinline ref="video"></video>
+      <div class="flex flex-wrap">
+        <div :key="photo._id" v-for="(photo) in photos.slice().reverse()" class="flex items-center">
+          <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'uploading'" :src="`${apiURL}${photo.photo.url}`" alt="">
+          <img class="h-32 w-32 object-cover" v-if="photo.type === 'uploading'" :src="`${photo.blobURL}`" alt="">
+          <div v-if="photos.type === 'uploading'">
+            Loading
+          </div>
+          <div v-if="photo.type !== 'uploading'">
+            <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
+            <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
+          </div>
         </div>
       </div>
     </div>
