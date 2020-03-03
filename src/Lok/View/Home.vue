@@ -13,7 +13,7 @@
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="w-64" :src="`${apiURL}${photo.photo.url}`" alt="">
+        <img class="w-64" v-if="photo.photo" :src="`${apiURL}${photo.photo.url}`" alt="">
         <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
         <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
       </div>
