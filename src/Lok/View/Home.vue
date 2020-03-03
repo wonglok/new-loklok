@@ -8,6 +8,8 @@
     <button class="disable-dbl-tap-zoom p-2 border m-1" @click="openCamera">openCamera</button>
     <button class="disable-dbl-tap-zoom p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
+    <video class="h-64 w-64 object-cover" playsinline ref="video"></video>
+
     <div class="">
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="startSelect()">Select</button>
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
@@ -24,7 +26,6 @@
         </div>
       </div>
     </div>
-    <video playsinline ref="video"></video>
     <canvas ref="canvas" style="display: none"></canvas>
   </div>
 </template>
@@ -120,13 +121,13 @@ export default {
       console.log(data)
     },
     async openCamera () {
-      let height = 1024
-      let width = 1024
+      let height = 512
+      let width = 512
       let canvas = this.$refs['canvas']
       let video = this.$refs['video']
 
       let streaming = false
-      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1024 }, height: { ideal: 1024 } }, audio: false })
+      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 512 }, height: { ideal: 512 } }, audio: false })
         .then((stream) => {
           video.srcObject = stream
           video.play()
