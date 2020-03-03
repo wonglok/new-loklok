@@ -1,6 +1,6 @@
 <template>
   <div>
-    Welcome To MadeForYouApp.com
+    Welcome :)
   </div>
 </template>
 
