@@ -5,7 +5,7 @@
     <button class="p-2 border m-1" @click="login">login</button>
     <button class="p-2 border m-1" @click="getAlbumBySlug">getAlbumBySlug</button>
     <button class="p-2 border m-1" @click="getPhotosBySlug">getPhotosBySlug</button>
-    <button class="p-2 border m-1" @click="setup">setup</button>
+    <button class="p-2 border m-1" @click="openCamera">openCamera</button>
     <button class="p-2 border m-1" v-if="takePhoto" @click="takePhoto">takePhoto</button>
 
     <div class="">
@@ -13,8 +13,8 @@
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="w-64" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
-        <img class="w-64" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
+        <img class="h-32" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
+        <img class="h-32" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
 
         <div v-if="photo.type !== 'fake'">
           <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
@@ -117,7 +117,7 @@ export default {
       this.albumID = data._id
       console.log(data)
     },
-    async setup () {
+    async openCamera () {
       let height = 1024
       let width = 1024
       let canvas = this.$refs['canvas']
