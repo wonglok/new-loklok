@@ -22,31 +22,31 @@ let BaBam = async (args) => {
     })
 }
 
-export const makeAlbum = async (input) => {
+export const makeAlbum = async ({ slug, description, adminPassword, viewPassword, enableViewPassword }) => {
   let output = await BaBam({
     method: 'POST',
     baseURL: apiURL,
     url: `/albums`,
     data: {
-      slug: input.slug,
-      description: input.description,
-      adminPassword: input.adminPassword,
-      viewPassword: input.viewPassword,
-      enableViewPassword: input.enableViewPassword,
+      slug: slug,
+      description: description,
+      adminPassword: adminPassword,
+      viewPassword: viewPassword,
+      enableViewPassword: enableViewPassword,
       date: new Date()
     }
   })
   return output
 }
 
-export const login = async (input) => {
+export const login = async ({ album, password }) => {
   let output = await BaBam({
     method: 'POST',
     baseURL: apiURL,
     url: `/albums/login`,
     data: {
-      album: input.album,
-      password: input.password
+      album,
+      password
     }
   })
   return output
@@ -108,6 +108,43 @@ export const uploadPhoto = async ({ name, blob, albumID }) => {
   })
   if (output) {
     return output[0]
+  } else {
+    return false
+  }
+}
+
+export const getPhotosBySlug = async ({ slug, viewPassword }) => {
+  let output = await BaBam({
+    method: 'POST',
+    baseURL: apiURL,
+    data: {
+      slug,
+      viewPassword
+    },
+    url: `/albums/getPhotosBySlug`
+  })
+
+  if (output) {
+    return output
+  } else {
+    return false
+  }
+}
+
+export const removePhotosIn = async ({ photoIDs, slug, viewPassword }) => {
+  let output = await BaBam({
+    method: 'POST',
+    baseURL: apiURL,
+    data: {
+      photoIDs,
+      slug,
+      viewPassword
+    },
+    url: `/albums/removePhotosIn`
+  })
+
+  if (output) {
+    return output
   } else {
     return false
   }
