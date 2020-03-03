@@ -159,6 +159,7 @@ export default {
 
         console.log('123')
       }
+      this.takePhoto = takePhoto
     }
   }
 }
