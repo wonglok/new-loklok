@@ -719,7 +719,7 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
   let height = visibleHeightAtZDepth(camera.position.z, camera)
   let min = Math.min(width, height)
 
-  let text = 'Creative Code Lab'
+  let text = 'With Lok Lok'
   let geo = await makeFontGeo({ text, width: min * 0.12 * 0.6 })
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
@@ -1021,7 +1021,7 @@ export const setupCanvasDistortionComposer = ({ api, scene, camera, renderer }) 
   }
 
   window.addEventListener('mousemove', on.onMouseMove, { passive: false })
-  window.addEventListener('touchmove', on.onTouchMove, { passive: false })
+  window.addEventListener('touchmove', on.onTouchMove, { passive: true })
 
   let material = new THREE.ShaderMaterial({
     uniforms: {
@@ -1126,6 +1126,20 @@ export const makeBallBg = ({ api, scene, camera, canvas }) => {
   scene.add(mesh)
 }
 
+export const makeBall = async ({ api, scene, cubeTexture }) => {
+  var geometry = new THREE.SphereBufferGeometry(500, 60, 40)
+  // invert the geometry on the x-axis so that all of the faces point inward
+  geometry.scale(-1, 1, 1)
+  let canvasTex = new THREE.CanvasTexture(cubeTexture.image[0])
+  api.tasks[getID()] = () => {
+    canvasTex.needsUpdate = true
+  }
+  var material = new THREE.MeshBasicMaterial({ map: canvasTex, side: THREE.DoubleSide })
+
+  let mesh = new THREE.Mesh(geometry, material)
+  scene.add(mesh)
+}
+
 export const setupBase = async ({ api, mounter, vm }) => {
   let env = { api, mounter, vm }
   let rID = getID()
@@ -1206,7 +1220,9 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // makeBallBg({ ...env, api, scene, canvas: canvasCubeTexture.images[0], camera })
 
   // scene.background = canvasCubeTexture // new THREE.Color('#fff')
-  scene.background = canvasCubeTexture
+  // scene.background = canvasCubeTexture
+
+  makeBall({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
 
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
   makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })

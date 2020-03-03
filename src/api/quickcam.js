@@ -90,7 +90,7 @@ export const getAlbumBySlug = async (input) => {
 //   return new Blob([ab], { type: mimeString })
 // }
 
-export const uploadPhoto = async ({ name, blob, albumID }) => {
+export const uploadPhoto = async ({ name, blob, albumID, progress = () => {} }) => {
   let formData = new FormData()
   formData.append(`files.photo`, new File([blob], 'image.jpg'), 'image.jpg')
   formData.append(`data`, JSON.stringify({
@@ -104,7 +104,11 @@ export const uploadPhoto = async ({ name, blob, albumID }) => {
     method: 'POST',
     baseURL: apiURL,
     url: `/photos`,
-    data: formData
+    data: formData,
+    onUploadProgress: (progressEvent) => {
+      var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+      progress(percentCompleted)
+    }
   })
   if (output) {
     return output

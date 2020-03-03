@@ -6,12 +6,18 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/menu'
+    beforeEnter: (to, from, next) => {
+      next('/welcome')
+    }
     // component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
   {
+    path: '/welcome',
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Welcome.vue')
+  },
+  {
     path: '/cam',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Cam.vue')
   },
   {
     path: '/menu',
@@ -62,10 +68,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "words" */ '../Lok/View/WordsGlowing.vue')
   }
 ]
+
 let mode = 'history'
+
 // if (process.env.NODE_ENV === 'development') {
 //   mode = 'hash'
 // }
+
 const router = new VueRouter({
   mode,
   base: process.env.BASE_URL,

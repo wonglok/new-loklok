@@ -173,8 +173,8 @@ export default {
               blobURL: URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }))
             }
             this.photos.push(obj)
-
-            let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
+            let progress = (v) => console.log(v)
+            let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id, progress })
             this.loading = true
             let idx = this.photos.findIndex(p => p._id === obj._id)
             this.photos[idx] = data
