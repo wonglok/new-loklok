@@ -13,8 +13,8 @@
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="h-32" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
-        <img class="h-32" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
+        <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
+        <img class="h-32 w-32 object-cover" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
 
         <div v-if="photo.type !== 'fake'">
           <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
@@ -124,7 +124,7 @@ export default {
       let video = this.$refs['video']
 
       let streaming = false
-      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1920 } }, audio: false })
+      navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1024 }, height: { ideal: 1024 } }, audio: false })
         .then((stream) => {
           video.srcObject = stream
           video.play()
