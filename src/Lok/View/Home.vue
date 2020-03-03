@@ -13,9 +13,13 @@
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
       <button class="p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="w-64" v-if="photo.photo" :src="`${apiURL}${photo.photo.url}`" alt="">
-        <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
-        <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
+        <img class="w-64" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
+        <img class="w-64" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
+
+        <div v-if="photo.type !== 'fake'">
+          <button class="p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
+          <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
+        </div>
       </div>
     </div>
     <video playsinline ref="video"></video>
@@ -150,10 +154,19 @@ export default {
           canvas.width = width
           canvas.height = height
           context.drawImage(video, 0, 0, width, height)
+
           canvas.toBlob(async (blob) => {
+            let obj = {
+              type: 'fake',
+              _id: Math.random(),
+              fakeurl: URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }))
+            }
+            this.photos.push(obj)
+
             let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
             this.loading = true
-            this.photos.push(data)
+            let idx = this.photos.findIndex(p => p._id === obj._id)
+            this.photos[idx] = data
             // await this.getPhotosBySlug()
             this.loading = false
           }, 'image/jpeg', 1)
