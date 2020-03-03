@@ -13,10 +13,12 @@
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="cancelSelect()">Cancel Select</button>
       <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'selecting'" @click="removeSelected()">Remove Selected</button>
       <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
-        <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'fake'" :src="`${apiURL}${photo.photo.url}`" alt="">
-        <img class="h-32 w-32 object-cover" v-if="photo.type === 'fake'" :src="`${photo.fakeurl}`" alt="">
-
-        <div v-if="photo.type !== 'fake'">
+        <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'uploading'" :src="`${apiURL}${photo.photo.url}`" alt="">
+        <img class="h-32 w-32 object-cover" v-if="photo.type === 'uploading'" :src="`${photo.blobURL}`" alt="">
+        <div v-if="photos.type === 'uploading'">
+          Loading
+        </div>
+        <div v-if="photo.type !== 'uploading'">
           <button class="disable-dbl-tap-zoom p-2 m-2 border" v-if="mode === 'normal'" @click="removePhoto({ photo, photos })">Delete</button>
           <input type="checkbox" v-model="photo.selected" v-if="mode === 'selecting'" @input="$nextTick($forceUpdate)">
         </div>
@@ -157,9 +159,9 @@ export default {
 
           canvas.toBlob(async (blob) => {
             let obj = {
-              type: 'fake',
+              type: 'uploading',
               _id: Math.random(),
-              fakeurl: URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }))
+              blobURL: URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }))
             }
             this.photos.push(obj)
 
