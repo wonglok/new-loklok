@@ -68,7 +68,6 @@ export default {
 
       console.log(data)
       this.cancelSelect()
-      this.getPhotosBySlug()
     },
     async removePhoto ({ photo, photos }) {
       let idx = photos.find(e => e._id === photo._id)
@@ -154,9 +153,9 @@ export default {
           canvas.toBlob(async (blob) => {
             let data = await API.uploadPhoto({ name: 'lok lok', blob, albumID: album._id })
             this.loading = true
-            await this.getPhotosBySlug()
+            this.photos.push(data)
+            // await this.getPhotosBySlug()
             this.loading = false
-            console.log(data)
           }, 'image/jpeg', 1)
         }
 

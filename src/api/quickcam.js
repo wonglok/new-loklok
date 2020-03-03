@@ -107,7 +107,7 @@ export const uploadPhoto = async ({ name, blob, albumID }) => {
     data: formData
   })
   if (output) {
-    return output[0]
+    return output
   } else {
     return false
   }
