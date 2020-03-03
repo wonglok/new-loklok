@@ -15,7 +15,7 @@
     <div class="">
       <video v-show="takePhoto" class="h-64 w-64 object-cover" playsinline ref="video"></video>
       <div class="flex flex-wrap">
-        <div :key="photo._id" v-for="(photo) in photos.slice().reverse()" class="flex items-center">
+        <div :key="photo._id" v-for="(photo) in photos" class="flex items-center">
           <img class="h-32 w-32 object-cover" v-if="photo.photo && photo.type !== 'uploading'" :src="`${apiURL}${photo.photo.url}`" alt="">
           <img class="h-32 w-32 object-cover" v-if="photo.type === 'uploading'" :src="`${photo.blobURL}`" alt="">
           <div v-if="photos.type === 'uploading'">
