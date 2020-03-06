@@ -12,7 +12,7 @@ server.listen(2329)
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 
-const uuid = require('uuid').v4
+// const uuid = require('uuid').v4
 
 const adapter = new FileSync(path.join(__dirname, '../data/db.json'))
 const db = low(adapter)
@@ -25,9 +25,11 @@ db.defaults({ objects: [] })
 // const BUS = new EventEmitter()
 let NOOP = () => {}
 
-let getID = () => {
-  return uuid()
-}
+// let getID = () => {
+//   return uuid()
+// }
+
+let getID = () => '_' + (Math.random() * 1000000).toFixed(0) + ''
 
 io.on('connection', function (socket) {
   // socket.emit('news', { hello: 'world' })
@@ -36,40 +38,57 @@ io.on('connection', function (socket) {
   // })
 
   socket.on('up-add', (src) => {
-    let id = getID()
-    let adder = {
-      ...src,
-      id
-    }
-    db.get('objects').push(adder).write()
+    try {
+      let id = getID()
+      let adder = {
+        ...src,
+        group: src.group || getID(),
+        id
+      }
+      db.get('objects').push(adder).write()
 
-    io.emit('down-add', adder)
+      io.emit('down-add', adder)
+    } catch (e) {
+
+    }
   })
 
   socket.on('up-remove', (obj) => {
-    db.get('objects')
-      .remove({ id: obj.id })
-      .write()
+    try {
+      db.get('objects')
+        .remove({ id: obj.id })
+        .write()
 
-    io.emit('down-remove', obj)
+      io.emit('down-remove', obj)
+    } catch (e) {
+
+    }
   })
 
   socket.on('up-update', ({ updater, editor }) => {
-    console.log('on update', editor)
-    db.get('objects')
-      .find({ id: updater.id })
-      .assign(updater)
-      .write()
+    try {
+      console.log('on update', editor)
+      db.get('objects')
+        .find({ id: updater.id })
+        .assign(updater)
+        .write()
 
-    io.emit('down-update', { updater, editor })
+      io.emit('down-update', { updater, editor })
+    } catch (e) {
+
+    }
   })
 
   socket.on('up-update-saveonly', ({ updater, editor }) => {
-    console.log('on update', editor)
-    db.get('objects')
-      .find({ id: updater.id })
-      .assign(updater)
-      .write()
+    try {
+      console.log('on update', editor)
+      db.get('objects')
+        .find({ id: updater.id })
+        .assign(updater)
+        .write()
+    } catch (e) {
+
+    }
   })
 
   socket.on('up-update-nosave', ({ updater, editor }) => {

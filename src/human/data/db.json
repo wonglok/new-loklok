@@ -3,23 +3,23 @@
     {
       "group": "group1",
       "key": "k1",
-      "happy": 123,
-      "notHappy": "13",
-      "id": "eefadbfb-33ed-4296-a561-4707f642035d"
+      "type": "number",
+      "value": 68,
+      "id": "_607438"
     },
     {
       "group": "group1",
       "key": "k2",
-      "happy": 123,
-      "notHappy": "57",
-      "id": "eca51e8b-625b-4f9a-9597-035a7a38378e"
+      "type": "number",
+      "value": 0,
+      "id": "_862967"
     },
     {
       "group": "group1",
       "key": "k3",
-      "happy": 123,
-      "notHappy": "48",
-      "id": "11a5cbd5-690b-4135-bcbe-7d613b93039c"
+      "type": "unknown",
+      "value": null,
+      "id": "_538996"
     }
   ]
 }

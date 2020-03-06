@@ -108,6 +108,5 @@ export const makeSDK = async () => {
       }
     }
   }
-
   return sdk
 }

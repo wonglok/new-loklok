@@ -7,15 +7,16 @@
 
 var path = require('path')
 
-const exporter = module.exports
-
 function importAll (r) {
+  let exporter = {}
   r.keys().forEach(key => {
     let filename = path.basename(key).replace('.vue', '')
     exporter[filename] = () => new Promise((resolve) => {
       resolve(r(key).default)
     })
   })
+
+  return exporter
 }
 
-importAll(require.context('./UIs', true, /\.vue$/))
+export default importAll(require.context('./UIs', true, /\.vue$/))

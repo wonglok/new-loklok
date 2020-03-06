@@ -20,16 +20,17 @@ export default {
     this.sdk.pulse('group1.k2', this.log)
     this.sdk.pulse('group1.k3', this.log)
 
-    let groupOne = this.sdk.getGroup('group1')
-    let k1 = groupOne.get('k1')
-    this.log(k1)
-    groupOne.pulse('k1', () => {
-      console.log(groupOne.get('k1'))
-    })
+    // let groupOne = this.sdk.getGroup('group1')
+    // let k1 = groupOne.get('k1')
+    // this.log(k1)
+    // groupOne.pulse('k1', () => {
+    //   this.log(groupOne.get('k1'))
+    // })
   },
   methods: {
     log (v) {
       this.logs.unshift(v)
+      this.logs = this.logs.slice(0, 250)
     }
   }
 }
