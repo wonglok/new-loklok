@@ -1,0 +1,25 @@
+{
+  "objects": [
+    {
+      "group": "group1",
+      "key": "k1",
+      "happy": 123,
+      "notHappy": "k1",
+      "id": "eefadbfb-33ed-4296-a561-4707f642035d"
+    },
+    {
+      "group": "group1",
+      "key": "k2",
+      "happy": 123,
+      "notHappy": "k2",
+      "id": "eca51e8b-625b-4f9a-9597-035a7a38378e"
+    },
+    {
+      "group": "group1",
+      "key": "k3",
+      "happy": 123,
+      "notHappy": "k3",
+      "id": "11a5cbd5-690b-4135-bcbe-7d613b93039c"
+    }
+  ]
+}

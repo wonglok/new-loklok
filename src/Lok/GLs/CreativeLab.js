@@ -327,9 +327,9 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 128
-      this.width = 128
-      this.height = 128
+      this.size = 32
+      this.width = 32
+      this.height = 32
       this.width = this.height = this.size
 
       this.maxAge = 350
@@ -456,13 +456,13 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
       let color = `${((point.vx + 1) / 2) * 255}, ${((point.vy + 1) / 2) *
         255}, ${intensity * 255}`
 
-      color = `${(intensity * 255).toFixed(0)}, 65%, 55%`
+      // color = `${(((point.vx + 1) / 2) * intensity * 255).toFixed(0)}, 65%, 55%`
 
       let offset = this.size * 5
       ctx.shadowOffsetX = offset // (default 0)
       ctx.shadowOffsetY = offset // (default 0)
       ctx.shadowBlur = radius // (default 0)
-      ctx.shadowColor = `hsla(${color},${0.35 * intensity})` // (default transparent black)
+      ctx.shadowColor = `rgba(${color},${0.5 * intensity})` // (default transparent black)
 
       this.ctx.beginPath()
       this.ctx.fillStyle = 'rgba(255,0,0,1)'
@@ -575,6 +575,52 @@ export const makeCanvasCubeTexture = async ({ poserAPI, api, mounter }) => {
     t.canvas
   ])
   return cubeTexture
+}
+
+export const makeRustFontGeo = ({ text, width }) => {
+  return new Promise(async (resolve) => {
+    // var loader = new THREE.FontLoader()
+    // loader.load(, function (font) {
+    // eslint-disable-next-line
+    var font = await import('../Fonts/rust/rust-script.json');
+    font = new THREE.Font(font)
+    var geometry = new THREE.TextGeometry(text, {
+      font: font,
+      size: width,
+      height: 1.75,
+      curveSegments: 16,
+      bevelEnabled: true,
+      bevelThickness: 0.2,
+      bevelSize: 0.11,
+      bevelOffset: 0,
+      bevelSegments: 2
+    })
+    resolve(geometry)
+    // })
+  })
+}
+
+export const makeResortFont = ({ text, width }) => {
+  return new Promise(async (resolve) => {
+    // var loader = new THREE.FontLoader()
+    // loader.load(, function (font) {
+    // eslint-disable-next-line
+    var font = await import('../Fonts/resort-display.json');
+    font = new THREE.Font(font)
+    var geometry = new THREE.TextGeometry(text, {
+      font: font,
+      size: width,
+      height: 1.75,
+      curveSegments: 16,
+      bevelEnabled: true,
+      bevelThickness: 0.2,
+      bevelSize: 0.11,
+      bevelOffset: 0,
+      bevelSegments: 2
+    })
+    resolve(geometry)
+    // })
+  })
 }
 
 export const makeFontGeo = ({ text, width }) => {
@@ -720,7 +766,8 @@ export const makeCenterText = async ({ cubeTexture, parent, scene, camera }) => 
   let min = Math.min(width, height)
 
   let text = 'With Lok Lok'
-  let geo = await makeFontGeo({ text, width: min * 0.12 * 0.6 })
+  let geo = await makeResortFont({ text, width: min * 0.12 * 0.6 })
+
   // let light = new THREE.PointLight(0xda2865, 1, 100)
   // light.position.z = 10
   // scene.add(light)
@@ -1145,6 +1192,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   let rID = getID()
   let exited = false
   let poserAPI = false
+
   // if (!mobileAndTabletcheck()) {
   //   try {
   //     let poserMod = await import('../GLService/cam-pose.js')
@@ -1209,7 +1257,7 @@ export const setupBase = async ({ api, mounter, vm }) => {
   setInterval(() => {
     ct.needsUpdate = true
   }, 0)
-  let composer = setupCanvasDistortionComposer({ ...env, scene, camera, renderer, texture: ct })
+  // let composer = setupCanvasDistortionComposer({ ...env, scene, camera, renderer, texture: ct })
 
   // parent.add(makeSphereBG({ canvasCubeTexture }))
 
@@ -1222,11 +1270,11 @@ export const setupBase = async ({ api, mounter, vm }) => {
   // scene.background = canvasCubeTexture // new THREE.Color('#fff')
   // scene.background = canvasCubeTexture
 
-  makeBall({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
+  // makeBall({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
 
   makeCenterText({ ...env, scene, camera, parent: parent, cubeTexture: canvasCubeTexture })
-  makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
-  makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
+  // makeFloatingBalls({ ...env, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
+  // makeEmoji({ ...env, mapper: canvasCubeTexture, scene, parent: parent, renderer, camera, cubeTexture: canvasCubeTexture })
   // parent.scale.x = -1
   scene.add(parent)
 
@@ -1240,10 +1288,12 @@ export const setupBase = async ({ api, mounter, vm }) => {
     }
     // renderer.render(scene, camera)
 
-    if (composer) {
-      composer.render()
-    } else {
-    }
+    // if (composer) {
+    //   composer.render()
+    // } else {
+    // }
+
+    renderer.render(scene, camera)
   }
 
   api.teardown[rID] = () => {

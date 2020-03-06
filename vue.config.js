@@ -1,6 +1,4 @@
-// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-
-// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+require('./src/human/vue-entrty')
 
 module.exports = {
   devServer: {
