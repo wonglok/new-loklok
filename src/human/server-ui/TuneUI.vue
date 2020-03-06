@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <button class="p-2 m-2 border bg-gray-300" @click="add">Add</button>
+  <div class="full">
+    <!-- <button class="p-2 m-2 border bg-gray-300" @click="add">Add</button>
     <div :key="item.id" v-for="item in app.list">
       Group:
       <input type="text" v-model="item.group" @input="updateNow(item)">
@@ -10,8 +10,7 @@
       <input type="range" v-model="item.notHappy" @input="updateLater(item)">
       <button class="p-2 m-2 border bg-gray-300 bg-red-200" @click="remove(item)">X</button>
     </div>
-    <pre>{{ app.data }}</pre>
-    <!-- {{ sdk.list }} -->
+    <pre>{{ app.data }}</pre> -->
   </div>
 </template>
 
@@ -19,17 +18,16 @@
 import { makeAPI } from './uilogic'
 // import { makeSDK } from '../index'
 export default {
+  components: {
+    ...require('./uis')
+  },
   data () {
     return {
       app: false
     }
   },
   async mounted () {
-    // this.sdk = await makeSDK()
     this.app = await makeAPI({ ui: this })
-    // this.sdk.pulse('group1.k1', console.log)
-    // this.sdk.pulse('group1.k2', console.log)
-    // this.sdk.pulse('group1.k3', console.log)
   },
   methods: {
     updateNow (item) {

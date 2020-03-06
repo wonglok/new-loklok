@@ -92,5 +92,22 @@ export const makeSDK = async () => {
     surge(gpkn, streamFn)
   }
 
+  sdk.get = (gpkn) => {
+    let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
+    return obj
+  }
+
+  sdk.getGroup = (group) => {
+    return {
+      get: (kn) => {
+        let groupItems = sdk.list.filter(e => e.group === group)
+        return groupItems.find(t => t.key === kn)
+      },
+      pulse: (kn, streamFn) => {
+        return sdk.pulse(`${group}.${kn}`, streamFn)
+      }
+    }
+  }
+
   return sdk
 }

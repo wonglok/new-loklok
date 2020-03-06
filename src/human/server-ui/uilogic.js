@@ -51,7 +51,7 @@ export const makeAPI = async ({ ui }) => {
     socket.emit('up-update-nosave', { editor: app.editor, updater })
     clearTimeout(tout)
     tout = setTimeout(() => {
-      socket.emit('up-update', { editor: app.editor, updater })
+      socket.emit('up-update-saveonly', { editor: app.editor, updater })
     }, 100)
   }
   app.updateNow = (updater) => {
@@ -68,6 +68,28 @@ export const makeAPI = async ({ ui }) => {
       ui.$forceUpdate()
     }
   })
+
+  function uniq (value, index, arr) {
+    return arr.indexOf(value) === index
+  }
+  app.getGroupNames = (group) => {
+    return app.list.filter(e => (e.group) === group).map(e => e.group).filter(uniq)
+  }
+  app.changeGroupName = (oldname, newname) => {
+    let items = app.list.filter(e => e.group === oldname)
+    items.forEach((item) => {
+      item.group = newname
+      app.updateNow(item)
+    })
+  }
+  app.cloneGroupAndRename = (oldname, newname) => {
+    let items = app.list.filter(e => e.group === oldname)
+    let cloned = JSON.parse(JSON.stringify(items))
+    cloned.forEach((item) => {
+      item.group = newname
+      app.updateNow(item)
+    })
+  }
 
   return app
 }

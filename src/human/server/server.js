@@ -64,6 +64,14 @@ io.on('connection', function (socket) {
     io.emit('down-update', { updater, editor })
   })
 
+  socket.on('up-update-saveonly', ({ updater, editor }) => {
+    console.log('on update', editor)
+    db.get('objects')
+      .find({ id: updater.id })
+      .assign(updater)
+      .write()
+  })
+
   socket.on('up-update-nosave', ({ updater, editor }) => {
     io.emit('down-update', { updater, editor })
   })
