@@ -16,9 +16,13 @@ export default {
   },
   async mounted () {
     this.sdk = await makeSDK()
-    this.sdk.pulse('group1.k1', this.log)
-    this.sdk.pulse('group1.k2', this.log)
-    this.sdk.pulse('group1.k3', this.log)
+    let group = this.sdk.getGroup('test')
+    group.autoPulse('k1', console.log)
+    group.autoPulse('k2', console.log)
+    group.autoPulse('k3', console.log)
+    group.autoPulse('k4', console.log)
+    group.autoPulse('k5', console.log)
+    group.autoPulse('k6', console.log)
 
     // let groupOne = this.sdk.getGroup('group1')
     // let k1 = groupOne.get('k1')

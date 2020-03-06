@@ -82,6 +82,9 @@ export const makeSDK = async () => {
   }
 
   let transformer = (obj) => {
+    if (!obj || typeof obj.value === 'undefined') {
+      return
+    }
     let val = obj.value
     if (obj.type === 'vec3') {
       return new Vector3(val.x, val.y, val.z)
@@ -90,7 +93,7 @@ export const makeSDK = async () => {
     } else if (obj.type === 'color') {
       return new Color(val.r / 255, val.g / 255, val.b / 255)
     } else {
-      return val.value
+      return val
     }
   }
 
@@ -98,6 +101,7 @@ export const makeSDK = async () => {
     let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
     if (auto) {
       streamFn(transformer(obj))
+      return
     }
     streamFn(obj)
   }
@@ -109,6 +113,10 @@ export const makeSDK = async () => {
     surge(gpkn, streamFn, auto)
   }
 
+  sdk.autoPulse = (gpkn, streamFn) => {
+    sdk.pulse(gpkn, streamFn, true)
+  }
+
   sdk.get = (gpkn) => {
     let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
     return obj
@@ -117,16 +125,21 @@ export const makeSDK = async () => {
   sdk.getGroup = (group) => {
     return {
       autoGet: (kn) => {
-        let groupItems = sdk.list.filter(e => e.group === group)
-        let obj = groupItems.find(t => t.key === kn)
+        // let groupItems = sdk.list.filter(e => e.group === group)
+        let obj = sdk.get(`${group}.${kn}`)
         return transformer(obj)
       },
       get: (kn) => {
-        let groupItems = sdk.list.filter(e => e.group === group)
-        return groupItems.find(t => t.key === kn)
+        let obj = sdk.get(`${group}.${kn}`)
+        return obj
+        // let groupItems = sdk.list.filter(e => e.group === group)
+        // return groupItems.find(t => t.key === kn)
       },
-      pulse: (kn, streamFn, { auto = false } = {}) => {
-        return sdk.pulse(`${group}.${kn}`, streamFn, auto)
+      pulse: (kn, streamFn) => {
+        return sdk.pulse(`${group}.${kn}`, streamFn, false)
+      },
+      autoPulse: (kn, streamFn) => {
+        return sdk.pulse(`${group}.${kn}`, streamFn, true)
       }
     }
   }

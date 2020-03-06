@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     update (item, $event) {
-      item.value = ($event.target.value) + ''
+      // item.value = ($event.target.value) + ''
       this.app.updateNow(item)
     }
   }

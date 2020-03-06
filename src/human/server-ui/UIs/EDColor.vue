@@ -2,17 +2,17 @@
   <div class="p-3">
     <div>
       R
-      <input type="range" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.r" @input="update(item, $event, 'r')" />
+      <input type="range" step="0.01" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.r" @input="update(item, $event, 'r')" />
       <input type="text" class="m-2 p-2 border border-gray-400 px-3 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.r" @input="update(item, $event, 'r')" />
     </div>
     <div>
       G
-      <input type="range" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.g" @input="update(item, $event, 'g')" />
+      <input type="range" step="0.01" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.g" @input="update(item, $event, 'g')" />
       <input type="text" class="m-2 p-2 border border-gray-400 px-3 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.g" @input="update(item, $event, 'g')" />
     </div>
     <div>
       B
-      <input type="range" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.b" @input="update(item, $event, 'b')" />
+      <input type="range" step="0.01" class="m-2 border border-gray-400 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.b" @input="update(item, $event, 'b')" />
       <input type="text" class="m-2 p-2 border border-gray-400 px-3 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.b" @input="update(item, $event, 'b')" />
     </div>
     <div>
@@ -21,7 +21,7 @@
       <input type="text" class="m-2 p-2 border border-gray-400 px-3 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.a" @input="update(item, $event, 'a')" />
     </div>
     <div>
-      <Chrome ref="chrome" v-model="item.value" @input="onUpdateColor"></Chrome>
+      <Chrome ref="chrome" v-model="color" @input="onUpdateColor"></Chrome>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@ export default {
   },
   data () {
     return {
+      color: this.item.value
     }
   },
   methods: {

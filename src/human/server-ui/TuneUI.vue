@@ -35,7 +35,7 @@
                 <span class="p-1 rounded-lg text-red-600 bg-red-100" @click="remove(gi)">❌</span>
               </div>
             </div>
-            <div class="details h-full overflow-y-auto overflow-x-hidden">
+            <div class="details h-full overflow-y-auto overflow-x-hidden" v-if="app.selected.groupItem">
               <Chooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'unknown'"></Chooser>
               <UndoChooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type !== 'unknown'"></UndoChooser>
               <EDNumber :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'number'"></EDNumber>
@@ -176,6 +176,7 @@ export default {
     },
     remove (item) {
       if (this.alt || window.confirm('remove?')) {
+        this.app.selectGroupItem(false)
         this.app.remove(item)
       }
     }
