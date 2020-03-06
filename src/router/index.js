@@ -11,6 +11,7 @@ const routes = [
     }
     // component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
+
   {
     path: '/welcome',
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Welcome.vue')
@@ -26,6 +27,28 @@ const routes = [
   {
     path: '/doi',
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/GetDomain.vue')
+  },
+  {
+    path: '/pdf',
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Layout.vue'),
+    children: [
+      {
+        path: '',
+        redirect: '/pdf/home'
+      },
+      {
+        path: 'home',
+        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Home.vue')
+      },
+      {
+        path: 'login',
+        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Login.vue')
+      },
+      {
+        path: 'dash',
+        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Dashboard.vue')
+      }
+    ]
   },
   {
     path: '/lok',

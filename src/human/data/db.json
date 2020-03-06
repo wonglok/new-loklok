@@ -5,9 +5,9 @@
       "key": "k1",
       "type": "vec3",
       "value": {
-        "x": 40,
-        "y": 32,
-        "z": 40
+        "x": 41,
+        "y": 44,
+        "z": 30
       },
       "id": "_160237"
     },
@@ -48,7 +48,7 @@
       "group": "test",
       "key": "k5",
       "type": "string",
-      "value": "wonglok\n\nrols",
+      "value": "wonglok wahahahaha",
       "id": "_92786"
     },
     {

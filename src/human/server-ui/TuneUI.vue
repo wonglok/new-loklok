@@ -2,7 +2,7 @@
   <div class="full" v-if="app">
     <div class="full flex">
       <div class="group-col w-56 border-r h-full">
-        <div class="group p-2 border-b text-lg justify-center flex items-ceneter cursor-pointer" @click="addGroup">
+        <div class="group p-2 bg-gray-100 border-b text-lg justify-center flex items-ceneter cursor-pointer" @click="addGroup">
           ➕ Add Group
         </div>
         <div class="group p-2 border-b text-sm flex items-ceneter justify-between cursor-pointer hover:bg-gray-200" :class="{ 'bg-green-200': app.isSelected(gp) }" @click="app.select(gp)" :key="gpi" v-for="(gp, gpi) in app.groupNames">
@@ -15,7 +15,7 @@
       </div>
       <div class="main-col full">
         <div v-if="app.selected.groupItems" class="full flex flex-col">
-          <div class="p-2 border-b flex justify-between items-center">
+          <div class="p-2 border-b bg-gray-200 flex justify-between items-center">
             <div class="text-4xl pl-1">👑 {{ app.selected.group }}</div>
             <div class="pr-2">
               <div v-if="alt" class="mx-1 p-2 inline-block rounded-lg text-teal-600 bg-blue-100 select-none">Quick Remove ⚡️</div>
@@ -26,7 +26,7 @@
           </div>
           <div class="full flex flex-row">
             <div class="key-col w-56 border-r">
-              <div class="group p-2 border-b text-sm flex items-ceneter justify-center cursor-pointer hover:bg-gray-200" @click="add({ groupName: app.selected.group })">
+              <div class="group p-2 border-b text-sm flex items-ceneter justify-center cursor-pointer bg-gray-100 hover:bg-gray-200" @click="add({ groupName: app.selected.group })">
                 <span class="p-1">➕ Add Item</span>
                 <!-- <span class="p-1 rounded-lg text-red-600 bg-red-100" @click="remove(gi)">❌</span> -->
               </div>
@@ -165,10 +165,6 @@ export default {
         }
         return
       }
-      if (gp === '') {
-        this.app.removeGroup(gp)
-        return
-      }
       let name = window.prompt('type this group name to remove it: ' + gp)
       if (name === gp) {
         this.app.removeGroup(gp)
@@ -176,8 +172,8 @@ export default {
     },
     remove (item) {
       if (this.alt || window.confirm('remove?')) {
-        this.app.selectGroupItem(false)
         this.app.remove(item)
+        this.app.selectGroupItem(false)
       }
     }
   }

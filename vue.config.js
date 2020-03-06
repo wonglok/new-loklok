@@ -19,5 +19,11 @@ module.exports = {
     plugins: [
       // new MonacoWebpackPlugin()
     ]
+  },
+  pages: {
+    index: 'src/main.js',
+    runner: {
+      entry: 'src/runner.js'
+    }
   }
 }
