@@ -2,12 +2,13 @@
   <div>
     <button @click="$refs['pdf'].click()" class="px-5 py-2 text-xl bg-teal-200 text-teal-600 border-teal-600 rounded-lg">Upload PDF</button>
     <input v-show="false" type="file" ref="pdf" @change="onChangeFileSelector" multiple accept="application/pdf" name="pdf">
-    <input type="text" v-model="term" class="px-5 py-2 text-xl bg-gray-200 text-gray-600 border-gray-600 rounded-lg mx-2" />
+    <input @keyup.enter="analyseFiles" type="text" v-model="term" class="px-5 py-2 text-xl bg-gray-200 text-gray-600 border-gray-600 rounded-lg mx-2" />
     <button @click="analyseFiles" class="px-5 py-2 text-xl bg-teal-200 text-teal-600 border-teal-600 rounded-lg mx-2">Analyse PDF</button>
     <p :key="li" v-for="(log, li) in logs">
       {{ JSON.stringify(log) }}
     </p>
     <p :key="li" v-for="(row, li) in table">
+      <!-- <pre>{{ row }}</pre> -->
       Frequency: [{{ row.result }}]
       <a class="underline inline-block px-3 py-1" target="_blank" :href="row.pdf.url">{{ row.pdf.name.slice(0, 30) }}...</a>
     </p>
