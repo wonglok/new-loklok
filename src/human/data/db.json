@@ -5,7 +5,7 @@
       "key": "k1",
       "type": "vec3",
       "value": {
-        "x": 32,
+        "x": 40,
         "y": 32,
         "z": 40
       },
@@ -16,7 +16,7 @@
       "key": "k2",
       "type": "vec3",
       "value": {
-        "x": 33,
+        "x": 63,
         "y": 31,
         "z": 52
       },
@@ -37,9 +37,9 @@
       "key": "k4",
       "type": "color",
       "value": {
-        "r": 191,
-        "g": 36,
-        "b": 36,
+        "r": 68.16,
+        "g": 40.75,
+        "b": 30.93,
         "a": 0
       },
       "id": "_339325"
@@ -48,7 +48,7 @@
       "group": "test",
       "key": "k5",
       "type": "string",
-      "value": "wonglok",
+      "value": "wonglok\n\nrols",
       "id": "_92786"
     },
     {
@@ -56,10 +56,17 @@
       "key": "k6",
       "type": "vec2",
       "value": {
-        "x": 40,
+        "x": 52,
         "y": 31
       },
       "id": "_128913"
+    },
+    {
+      "group": "test",
+      "key": "k0",
+      "type": "number",
+      "value": 57.151,
+      "id": "_950196"
     }
   ]
 }

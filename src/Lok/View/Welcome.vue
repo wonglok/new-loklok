@@ -17,6 +17,7 @@ export default {
   async mounted () {
     this.sdk = await makeSDK()
     let group = this.sdk.getGroup('test')
+    group.autoPulse('k0', console.log)
     group.autoPulse('k1', console.log)
     group.autoPulse('k2', console.log)
     group.autoPulse('k3', console.log)
