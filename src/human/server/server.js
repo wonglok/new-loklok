@@ -64,6 +64,10 @@ io.on('connection', function (socket) {
     io.emit('down-update', { updater, editor })
   })
 
+  socket.on('up-update-nosave', ({ updater, editor }) => {
+    io.emit('down-update', { updater, editor })
+  })
+
   socket.on('init-request', (req, fn = NOOP) => {
     let data = db.read().getState()
     fn(data)

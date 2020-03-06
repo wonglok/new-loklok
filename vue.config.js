@@ -1,4 +1,4 @@
-if (process.env.NOD_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   require('./src/human/vue-entrty')
 }
 

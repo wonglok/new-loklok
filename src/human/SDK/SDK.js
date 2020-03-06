@@ -36,7 +36,8 @@ export const makeSDK = async () => {
   // code shake
   if (process.env.NODE_ENV === 'development') {
     let io = require('socket.io-client')
-    let socket = io('http://localhost:2329')
+    let hostname = location.hostname
+    let socket = io(`http://${hostname}:2329`)
     sdk.socket = socket
 
     socket.emit('init-request', {}, (data) => {

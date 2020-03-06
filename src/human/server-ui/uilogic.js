@@ -17,7 +17,8 @@ export const makeAPI = async ({ ui }) => {
     editor: (Math.random() * 1000000).toFixed(0) + ''
   }
 
-  let socket = io('http://localhost:2329')
+  let hostname = location.hostname
+  let socket = io(`http://${hostname}:2329`)
   app.socket = socket
 
   socket.emit('init-request', {}, (data) => {
@@ -47,10 +48,11 @@ export const makeAPI = async ({ ui }) => {
   // UPDATE
   let tout = 0
   app.updateLater = (updater) => {
+    socket.emit('up-update-nosave', { editor: app.editor, updater })
     clearTimeout(tout)
     tout = setTimeout(() => {
       socket.emit('up-update', { editor: app.editor, updater })
-    }, 50)
+    }, 100)
   }
   app.updateNow = (updater) => {
     socket.emit('up-update', { editor: app.editor, updater })

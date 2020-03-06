@@ -7,30 +7,29 @@
       Key:
       <input type="text" v-model="item.key" @input="updateNow(item)">
       Later:
-      <input type="text" v-model="item.notHappy" @input="updateLater(item)">
+      <input type="range" v-model="item.notHappy" @input="updateLater(item)">
       <button class="p-2 m-2 border bg-gray-300 bg-red-200" @click="remove(item)">X</button>
     </div>
     <pre>{{ app.data }}</pre>
-    {{ sdk.list }}
+    <!-- {{ sdk.list }} -->
   </div>
 </template>
 
 <script>
 import { makeAPI } from './uilogic'
-import { makeSDK } from '../index'
+// import { makeSDK } from '../index'
 export default {
   data () {
     return {
-      sdk: false,
       app: false
     }
   },
   async mounted () {
-    this.sdk = await makeSDK()
+    // this.sdk = await makeSDK()
     this.app = await makeAPI({ ui: this })
-    this.sdk.pulse('group1.k1', console.log)
-    this.sdk.pulse('group1.k2', console.log)
-    this.sdk.pulse('group1.k3', console.log)
+    // this.sdk.pulse('group1.k1', console.log)
+    // this.sdk.pulse('group1.k2', console.log)
+    // this.sdk.pulse('group1.k3', console.log)
   },
   methods: {
     updateNow (item) {
