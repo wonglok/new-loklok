@@ -30,7 +30,7 @@ export default {
   methods: {
     log (v) {
       this.logs.unshift(v)
-      this.logs = this.logs.slice(0, 250)
+      this.logs = this.logs.slice(0, 50)
     }
   }
 }

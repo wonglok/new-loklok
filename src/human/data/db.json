@@ -3,23 +3,75 @@
     {
       "group": "group1",
       "key": "k1",
-      "type": "number",
-      "value": 68,
+      "type": "color",
+      "value": {
+        "hsl": {
+          "h": 15.44117647058823,
+          "s": 0.42200000000000004,
+          "l": 0.3685,
+          "a": 1
+        },
+        "hex": "#864B36",
+        "hex8": "#864B36FF",
+        "rgba": {
+          "r": 134,
+          "g": 75,
+          "b": 54,
+          "a": 1
+        },
+        "hsv": {
+          "h": 15.44117647058823,
+          "s": 0.5935302390998594,
+          "v": 0.524007,
+          "a": 1
+        },
+        "oldHue": 15.441176470588234,
+        "source": "hsl",
+        "a": 1,
+        "r": 134,
+        "g": 75,
+        "b": 54
+      },
       "id": "_607438"
     },
     {
       "group": "group1",
       "key": "k2",
-      "type": "number",
-      "value": 0,
+      "type": "vec3",
+      "value": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
       "id": "_862967"
     },
     {
       "group": "group1",
       "key": "k3",
-      "type": "unknown",
-      "value": null,
+      "type": "vec2",
+      "value": {
+        "x": 54,
+        "y": 55
+      },
       "id": "_538996"
+    },
+    {
+      "group": "group1",
+      "key": "k4",
+      "type": "vec3",
+      "value": {
+        "x": 46,
+        "y": 67,
+        "z": 67
+      },
+      "id": "_467181"
+    },
+    {
+      "group": "group1",
+      "key": "k5",
+      "type": "string",
+      "value": "wonglok",
+      "id": "_381164"
     }
   ]
 }

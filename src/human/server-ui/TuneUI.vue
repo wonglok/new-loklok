@@ -16,12 +16,12 @@
       <div class="main-col full">
         <div v-if="app.selected.groupItems" class="full flex flex-col">
           <div class="p-2 border-b flex justify-between items-center">
-            <div class="text-4xl">{{ app.selected.group }}</div>
+            <div class="text-4xl pl-1">👑 {{ app.selected.group }}</div>
             <div class="pr-2">
               <div v-if="alt" class="mx-1 p-2 inline-block rounded-lg text-teal-600 bg-blue-100 select-none">Quick Remove ⚡️</div>
               <button class="mx-1 p-2 rounded-lg text-teal-600 bg-yellow-100"  @click="clone(app.selected.group)">🐑 Clone</button>
               <button class="mx-1 p-2 rounded-lg text-teal-600 bg-teal-100"  @click="changeName(app.selected.group)">✍🏼 Rename</button>
-              <button class="mx-1 p-2 rounded-lg text-red-600 bg-red-100" @click="removeGroup(app.selected.group)">🗑 Remove</button>
+              <button class="mx-1 p-2 roundd-lg text-red-600 bg-red-100" @click="removeGroup(app.selected.group)">🗑 Remove</button>
             </div>
           </div>
           <div class="full flex flex-row">
@@ -39,6 +39,10 @@
               <Chooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'unknown'"></Chooser>
               <UndoChooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type !== 'unknown'"></UndoChooser>
               <EDNumber :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'number'"></EDNumber>
+              <EDVector3 :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'vec3'"></EDVector3>
+              <EDVector2 :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'vec2'"></EDVector2>
+              <EDColor :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'color'"></EDColor>
+              <EDString :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'string'"></EDString>
               <!-- <pre>{{ app.selected.groupItem }}</pre> -->
             </div>
           </div>

@@ -2,6 +2,10 @@
   <div>
     <div class="p-2 text-3xl">Please Choose Your Data Type</div>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'number')">Numbers</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'vec3')">Vector 3</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'vec2')">Vector 2</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'color')">Color</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'string')">String</button>
   </div>
 </template>
 
@@ -16,6 +20,38 @@ export default {
       if (type === 'number') {
         item.type = 'number'
         item.value = 0
+        this.app.updateNow(item)
+      }
+      if (type === 'color') {
+        item.type = 'color'
+        item.value = {
+          r: 0,
+          g: 0,
+          b: 0,
+          a: 0
+        }
+        this.app.updateNow(item)
+      }
+      if (type === 'vec3') {
+        item.type = 'vec3'
+        item.value = {
+          x: 0,
+          y: 0,
+          z: 0
+        }
+        this.app.updateNow(item)
+      }
+      if (type === 'vec2') {
+        item.type = 'vec2'
+        item.value = {
+          x: 0,
+          y: 0
+        }
+        this.app.updateNow(item)
+      }
+      if (type === 'string') {
+        item.type = 'string'
+        item.value = ''
         this.app.updateNow(item)
       }
     }

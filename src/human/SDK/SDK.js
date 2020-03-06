@@ -1,3 +1,4 @@
+import { Vector3, Vector2, Color } from 'three'
 let waitGet = ({ getter }) => {
   return new Promise((resolve) => {
     let tout = setInterval(() => {
@@ -80,16 +81,32 @@ export const makeSDK = async () => {
     sdk.ready = true
   }
 
-  let surge = (gpkn, streamFn) => {
+  let transformer = (obj) => {
+    let val = obj.value
+    if (obj.type === 'vec3') {
+      return new Vector3(val.x, val.y, val.z)
+    } else if (obj.type === 'vec2') {
+      return new Vector2(val.x, val.y)
+    } else if (obj.type === 'color') {
+      return new Color(val.r / 255, val.g / 255, val.b / 255)
+    } else {
+      return val.value
+    }
+  }
+
+  let surge = (gpkn, streamFn, auto) => {
     let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
+    if (auto) {
+      streamFn(transformer(obj))
+    }
     streamFn(obj)
   }
 
-  sdk.pulse = (gpkn, streamFn) => {
+  sdk.pulse = (gpkn, streamFn, auto) => {
     sdk._.pulses[gpkn] = () => {
-      surge(gpkn, streamFn)
+      surge(gpkn, streamFn, auto)
     }
-    surge(gpkn, streamFn)
+    surge(gpkn, streamFn, auto)
   }
 
   sdk.get = (gpkn) => {
@@ -99,12 +116,17 @@ export const makeSDK = async () => {
 
   sdk.getGroup = (group) => {
     return {
+      autoGet: (kn) => {
+        let groupItems = sdk.list.filter(e => e.group === group)
+        let obj = groupItems.find(t => t.key === kn)
+        return transformer(obj)
+      },
       get: (kn) => {
         let groupItems = sdk.list.filter(e => e.group === group)
         return groupItems.find(t => t.key === kn)
       },
-      pulse: (kn, streamFn) => {
-        return sdk.pulse(`${group}.${kn}`, streamFn)
+      pulse: (kn, streamFn, { auto = false } = {}) => {
+        return sdk.pulse(`${group}.${kn}`, streamFn, auto)
       }
     }
   }
