@@ -75,7 +75,7 @@ export const makeSDK = async () => {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    sdk.data.objects = require('../data/db.json')
+    sdk.data = require('../data/db.json')
     sdk.ready = true
   }
 
