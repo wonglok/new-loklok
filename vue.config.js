@@ -1,4 +1,6 @@
-require('./src/human/vue-entrty')
+if (process.env.NOD_ENV === 'development') {
+  require('./src/human/vue-entrty')
+}
 
 module.exports = {
   devServer: {
