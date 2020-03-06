@@ -185,7 +185,7 @@ export const analyseFiles = async ({ term }) => {
 
   res.forEach((item) => {
     if (item.pdf && item.pdf.provider === 'local') {
-      item.pdf.url = apiURL + item.pdf.url
+      item.pdf.url = apiURL + item.pdf.url.reaplce('/', '')
     }
   })
 
