@@ -8,7 +8,7 @@
       <O3D :visible="visible">
         <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
         <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
-        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'lifeSaverFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
       </O3D>
     </Scene>
 
@@ -28,8 +28,8 @@
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'skydome2D'"></CanvasTexture>
 
     <!-- Font -->
-    <!-- <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort> -->
-    <MakeFontLifeSaver v-if="base" :sdk="sdk" :base="base" :kn="'lifeSaverFont'"></MakeFontLifeSaver>
+    <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort>
+    <!-- <MakeFontLifeSaver v-if="base" :sdk="sdk" :base="base" :kn="'lifeSaverFont'"></MakeFontLifeSaver> -->
 
     <!-- Welcome :D
     <pre :key="kn" v-for="(log, kn) in logs">{{ JSON.stringify(log) }}</pre> -->

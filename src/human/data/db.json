@@ -35,14 +35,14 @@
       "group": "resort-font",
       "key": "depth",
       "type": "number",
-      "value": 5.24,
+      "value": 1.37,
       "id": "_573371"
     },
     {
       "group": "resort-font",
       "key": "curveSegments",
       "type": "number",
-      "value": 7.26,
+      "value": 0,
       "id": "_17130"
     },
     {
@@ -56,14 +56,14 @@
       "group": "resort-font",
       "key": "bevelThickness",
       "type": "number",
-      "value": 17.54,
+      "value": 5.92,
       "id": "_92237"
     },
     {
       "group": "resort-font",
       "key": "bevelSize",
       "type": "number",
-      "value": 11.69,
+      "value": 0,
       "id": "_19623"
     },
     {
@@ -84,7 +84,7 @@
       "group": "resort-font",
       "key": "width",
       "type": "number",
-      "value": 8,
+      "value": 35.61,
       "id": "_346921"
     },
     {

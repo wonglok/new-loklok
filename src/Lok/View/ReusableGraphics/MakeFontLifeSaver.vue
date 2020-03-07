@@ -66,10 +66,9 @@ export default {
             var geometry = new TextGeometry(text, params)
             onReady({ geo: geometry })
           }
-        }, 150)
+        }, 50)
       }
       this.base.onResize(setup)
-
       group.autoPulse('width', setup)
       group.autoPulse('depth', setup)
       group.autoPulse('curveSegments', setup)

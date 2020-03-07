@@ -74,7 +74,7 @@ export default {
       // mesh.position.z = camera.position.z * 0.75
       mesh.needsUpdate = true
 
-      mesh.rotation.x = -0.08
+      // mesh.rotation.x = -0.08
 
       console.log('geo font')
 

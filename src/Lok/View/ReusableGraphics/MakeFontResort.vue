@@ -50,7 +50,7 @@ export default {
           // let min = Math.min(swidth, sheight)
           let params = {
             font: font,
-            size: (width || (group.proxy.width / 100)) + swidth / text.length,
+            size: (width || (group.proxy.width / 100) * 2) * swidth / text.length,
             height: height || (group.proxy.depth / 100 * 5),
             curveSegments: group.proxy.curveSegments / 100 * 100,
             bevelEnabled: group.proxy.bevelEnabled,
@@ -66,7 +66,7 @@ export default {
             var geometry = new TextGeometry(text, params)
             onReady({ geo: geometry })
           }
-        }, 150)
+        }, 50)
       }
       this.base.onResize(setup)
       group.autoPulse('width', setup)
