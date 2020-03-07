@@ -8,7 +8,7 @@
 <script>
 export default {
   components: {
-    ...require('../all.js').default
+    ...require('../kit.js').default
   }
 }
 </script>

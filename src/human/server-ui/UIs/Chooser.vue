@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="p-2 text-3xl">Please Choose Your Data Type</div>
-    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'number')">Numbers</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'boolean')">Boolean</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'number')">Number</button>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'vec3')">Vector 3</button>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'vec2')">Vector 2</button>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'color')">Color</button>
@@ -20,6 +21,11 @@ export default {
       if (type === 'number') {
         item.type = 'number'
         item.value = 0
+        this.app.updateNow(item)
+      }
+      if (type === 'boolean') {
+        item.type = 'boolean'
+        item.value = true
         this.app.updateNow(item)
       }
       if (type === 'color') {

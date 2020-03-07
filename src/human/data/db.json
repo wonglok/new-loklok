@@ -1,72 +1,122 @@
 {
   "objects": [
     {
-      "group": "test",
-      "key": "k1",
-      "type": "vec3",
-      "value": {
-        "x": 41,
-        "y": 44,
-        "z": 30
-      },
+      "group": "paint-canvas",
+      "key": "hue-spread",
+      "type": "number",
+      "value": 100,
       "id": "_160237"
     },
     {
-      "group": "test",
-      "key": "k2",
-      "type": "vec3",
+      "group": "paint-canvas",
+      "key": "canvas-texture-dot",
+      "type": "color",
       "value": {
-        "x": 63,
-        "y": 31,
-        "z": 52
+        "r": 226,
+        "g": 255,
+        "b": 155,
+        "a": 0.74
       },
       "id": "_929803"
     },
     {
-      "group": "test",
-      "key": "k3",
-      "type": "vec2",
-      "value": {
-        "x": 38,
-        "y": 61
-      },
-      "id": "_344090"
-    },
-    {
-      "group": "test",
-      "key": "k4",
+      "group": "paint-canvas",
+      "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 68.16,
-        "g": 40.75,
-        "b": 30.93,
-        "a": 0
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.74
       },
-      "id": "_339325"
+      "id": "_959545"
     },
     {
-      "group": "test",
-      "key": "k5",
-      "type": "string",
-      "value": "wonglok wahahahaha",
-      "id": "_92786"
-    },
-    {
-      "group": "test",
-      "key": "k6",
-      "type": "vec2",
-      "value": {
-        "x": 52,
-        "y": 31
-      },
-      "id": "_128913"
-    },
-    {
-      "group": "test",
-      "key": "k0",
+      "group": "resort-font",
+      "key": "depth",
       "type": "number",
-      "value": 57.151,
-      "id": "_950196"
+      "value": 7.35,
+      "id": "_573371"
+    },
+    {
+      "group": "resort-font",
+      "key": "curveSegments",
+      "type": "number",
+      "value": 34.43,
+      "id": "_17130"
+    },
+    {
+      "group": "resort-font",
+      "key": "bevelEnabled",
+      "type": "boolean",
+      "value": true,
+      "id": "_395861"
+    },
+    {
+      "group": "resort-font",
+      "key": "bevelThickness",
+      "type": "number",
+      "value": 12.01,
+      "id": "_92237"
+    },
+    {
+      "group": "resort-font",
+      "key": "bevelSize",
+      "type": "number",
+      "value": 3.92,
+      "id": "_19623"
+    },
+    {
+      "group": "resort-font",
+      "key": "bevelOffset",
+      "type": "number",
+      "value": 0,
+      "id": "_11645"
+    },
+    {
+      "group": "resort-font",
+      "key": "bevelSegments",
+      "type": "number",
+      "value": 43.08,
+      "id": "_525024"
+    },
+    {
+      "group": "resort-font",
+      "key": "width",
+      "type": "number",
+      "value": 6.99,
+      "id": "_346921"
+    },
+    {
+      "group": "paint-canvas-purple",
+      "key": "hue-spread",
+      "type": "number",
+      "value": 0,
+      "id": "_67763"
+    },
+    {
+      "group": "paint-canvas-purple",
+      "key": "canvas-texture-dot",
+      "type": "color",
+      "value": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.74
+      },
+      "id": "_932962"
+    },
+    {
+      "group": "paint-canvas-purple",
+      "key": "canvas-texture-bg",
+      "type": "color",
+      "value": {
+        "r": 164,
+        "g": 235,
+        "b": 255,
+        "a": 0.74
+      },
+      "id": "_388738"
     }
   ]
 }

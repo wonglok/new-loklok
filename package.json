@@ -23,6 +23,7 @@
     "depth-reader": "^1.4.1",
     "exiftool-vendored": "^9.4.0",
     "fontfaceobserver": "^2.1.0",
+    "gifshot": "^0.4.5",
     "glslify": "^7.0.0",
     "glslify-loader": "^2.0.0",
     "iphone-inline-video": "^2.2.2",

@@ -91,7 +91,10 @@ export const makeSDK = async () => {
     } else if (obj.type === 'vec2') {
       return new Vector2(val.x, val.y)
     } else if (obj.type === 'color') {
-      return new Color(val.r / 255, val.g / 255, val.b / 255)
+      let color = new Color(val.r / 255, val.g / 255, val.b / 255)
+      color.a = val.a
+      color.opacity = val.a
+      return color
     } else {
       return val
     }
@@ -123,10 +126,22 @@ export const makeSDK = async () => {
   }
 
   sdk.getGroup = (group) => {
+    if (!sdk.list.some(e => e.group === group)) {
+      console.error(group, 'group not found')
+    }
     return {
+      proxy: new Proxy({}, {
+        get (tempObj, kn) {
+          let obj = sdk.get(`${group}.${kn}`)
+          return transformer(obj)
+        }
+      }),
       autoGet: (kn) => {
         // let groupItems = sdk.list.filter(e => e.group === group)
         let obj = sdk.get(`${group}.${kn}`)
+        if (!obj) {
+          console.error(`not found ${group}.${kn}`)
+        }
         return transformer(obj)
       },
       get: (kn) => {

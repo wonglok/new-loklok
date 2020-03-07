@@ -21,7 +21,7 @@
       <input type="text" class="m-2 p-2 border border-gray-400 px-3 bg-gray-100 rounded-lg text-gray-700" v-model="item.value.a" @input="update(item, $event, 'a')" />
     </div>
     <div>
-      <Chrome ref="chrome" v-model="color" @input="onUpdateColor"></Chrome>
+      <Chrome ref="chrome" v-if="picker" v-model="color" @input="onUpdateColor"></Chrome>
     </div>
   </div>
 </template>
@@ -38,7 +38,8 @@ export default {
   },
   data () {
     return {
-      color: this.item.value
+      picker: true,
+      color: JSON.parse(JSON.stringify(this.item.value))
     }
   },
   methods: {
@@ -52,6 +53,12 @@ export default {
     update (item, $event, key) {
       item.value[key] = Number($event.target.value)
       this.app.updateLater(item)
+
+      this.picker = false
+      this.color = JSON.parse(JSON.stringify(this.item.value))
+      this.$nextTick(() => {
+        this.picker = true
+      })
     }
   }
 }
