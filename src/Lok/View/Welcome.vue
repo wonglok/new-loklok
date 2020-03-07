@@ -3,6 +3,10 @@
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
+    <!-- Controls -->
+    <OrbitControls v-if="useOribt && base" :base="base" :kn="'orbitControls'"></OrbitControls>
+
+    <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
       <O3D :base="base" :kn="'tunnel'">
@@ -13,22 +17,20 @@
       </O3D>
     </Scene>
 
-    <!-- Computed Intese Resources -->
-    <!-- Controls -->
-    <OrbitControls v-if="useOribt && base" :base="base" :kn="'orbitControls'"></OrbitControls>
+    <!-- Compute Intese Resources -->
 
-    <!-- Canvas2D -->
+    <!-- Canvas2D Resource -->
     <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paleCanvas'" :settings="'paint-canvas'"></PaintCanvas>
     <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom>
 
-    <!-- Cube Texture -->
+    <!-- Cube Texture Resource -->
     <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
     <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
 
-    <!-- Plane Texture -->
+    <!-- Plane Texture Resource -->
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'skydome2D'"></CanvasTexture>
 
-    <!-- Font -->
+    <!-- Font Resource -->
     <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort>
     <!-- <MakeFontLifeSaver v-if="base" :sdk="sdk" :base="base" :kn="'lifeSaverFont'"></MakeFontLifeSaver> -->
 

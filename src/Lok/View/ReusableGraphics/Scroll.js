@@ -15,13 +15,13 @@ export const makeScroller = ({ base, touchTarget }) => {
       return this.dampedVal
     }
   }
-  let scroller = document.querySelector('.scroller-area')
+  let browserScrollBox = document.querySelector('.broswer-scroll-box')
   let scrollAmount = 0
   let SmoothY = new ValueDamper(-0.2)
   SmoothY.value = 0.0
-  if (scroller) {
-    scroller.addEventListener('scroll', () => {
-      let value = (scroller.scrollTop) / window.innerHeight
+  if (browserScrollBox) {
+    browserScrollBox.addEventListener('scroll', () => {
+      let value = (browserScrollBox.scrollTop) / window.innerHeight
       if (value < 0) {
         value = 0
       }
@@ -31,8 +31,10 @@ export const makeScroller = ({ base, touchTarget }) => {
     touchTarget.addEventListener('wheel', (evt) => {
       evt.preventDefault()
       scrollAmount += evt.deltaY
-      if (scrollAmount < 0) {
-        scrollAmount = 0
+      if (scrollAmount <= 0) {
+        scrollAmount -= evt.deltaY
+      } else if (scrollAmount >= 0) {
+        scrollAmount -= evt.deltaY
       }
       SmoothY.value = scrollAmount / window.innerHeight
     }, { passive: false })
