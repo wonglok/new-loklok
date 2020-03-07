@@ -43,9 +43,16 @@ export default {
       }
     }
 
-    var plane = new PlaneBufferGeometry(0.0000000001, 0.0000000001)
+    let makeGeo = () => {
+      let width = visibleWidthAtZDepth(camera.position.z, camera)
+      let height = visibleHeightAtZDepth(camera.position.z, camera)
+      let max = Math.max(width, height)
+      let geo = new PlaneBufferGeometry(max * 0.5, max * 0.5, 2, 2)
+      return geo
+    }
+    // var plane = new PlaneBufferGeometry(0.0000000001, 0.0000000001)
 
-    let mesh = new Refractor(plane, {
+    let mesh = new Refractor(makeGeo(), {
       color: 0x999999,
       textureWidth: 1024,
       textureHeight: 1024,
@@ -57,11 +64,7 @@ export default {
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
     base.onResize(() => {
-      let width = visibleWidthAtZDepth(camera.position.z, camera)
-      let height = visibleHeightAtZDepth(camera.position.z, camera)
-      let max = Math.max(width, height)
-      let geo = new PlaneBufferGeometry(max * 0.5, max * 0.5, 2, 2)
-      mesh.geometry = geo
+      mesh.geometry = makeGeo()
       mesh.needsUpdate = true
     })
 
