@@ -5,7 +5,7 @@
 
     <Scene v-if="base" :base="base" :kn="'scene'">
       <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
-      <O3D :base="base" :kn="'landing'">
+      <O3D :base="base" :kn="'tunnel'">
         <O3D :base="base" :kn="'ball1'">
           <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
         </O3D>
@@ -72,7 +72,7 @@ export default {
       let group = this.sdk.getGroup('page1-layout')
       base.loop(() => {
         base.ball1.position.z = group.autoGet('ball-pos').z - 50
-        base.landing.position.z = (-scroller.value) * 200.0
+        base.tunnel.position.z = (-scroller.value) * 200.0
 
         // base.ball1.rotation.x = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.rotation.y = Math.max((1.0 - scroller.value), 0.0) / 1
