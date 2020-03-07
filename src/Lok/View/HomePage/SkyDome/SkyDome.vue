@@ -30,7 +30,6 @@ export default {
   },
   async mounted () {
     let base = this.base
-    // let scene = await base.waitKN('scene')
     let camera = await base.waitKN('camera')
     let texture = await base.waitKN(this.texture)
     let glProxy = this.glProxy = {

@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <BaseAPI @ready="base = $event; onReady({ base })"></BaseAPI>
+  <div class="full" ref="mounter">
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <O3D :visible="visible">
+      <O3D :visible="visible" :base="base" :kn="'page1'">
         <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
         <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
         <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
@@ -38,13 +37,17 @@
 
 <script>
 import { makeSDK } from '../../human'
+import { makeScroller } from './ReusableGraphics/Scroll.js'
+import { makeBase } from './ReusableGraphics/BaseAPI.js'
+
 export default {
   components: {
     ...require('./graphics').default
   },
   data () {
     return {
-      visible: false,
+      scroller: false,
+      visible: true,
       isDev: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
@@ -52,53 +55,38 @@ export default {
     }
   },
   async mounted () {
+    this.base = await makeBase({ mounter: this.$refs['mounter'] })
     this.sdk = await makeSDK()
-
-    // this.camera.asdasd
-
-    // let group = this.sdk.getGroup('test')
-
-    // let assign = (obj, key) => (val) => {
-    //   obj[key] = val
-    // }
-
-    // group.autoPulse('k0', console.log)
-    // group.autoPulse('k1', console.log)
-    // group.autoPulse('k2', console.log)
-    // group.autoPulse('k3', console.log)
-    // group.autoPulse('k4', console.log)
-    // group.autoPulse('k5', console.log)
-    // group.autoPulse('k6', console.log)
-
-    // let groupOne = this.sdk.getGroup('group1')
-    // let k1 = groupOne.get('k1')
-    // this.log(k1)
-    // groupOne.pulse('k1', () => {
-    //   this.log(groupOne.get('k1'))
-    // })
+    this.$nextTick(this.onReady)
   },
   methods: {
-    async onReady ({ base }) {
-      let renderer = await base.waitKN('renderer')
-      let scene = await base.waitKN('scene')
-      let camera = await base.waitKN('camera')
+    onReady () {
+      let base = this.base
+      let renderer = base.renderer
+      let scene = base.scene
+      let camera = base.camera
       camera.position.z = 20
+
+      this.scroller = makeScroller({ touchTarget: renderer.domElement })
 
       base.loop(() => {
         renderer.render(scene, camera)
       })
-
-      await base.waitKN('centerText')
-      this.visible = true
     },
     log (v) {
       this.logs.unshift(v)
       this.logs = this.logs.slice(0, 50)
     }
+  },
+  beforeDestroy () {
+    this.base.destroy()
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+.full{
+  width: 100%;
+  height: 100%;
+}
 </style>

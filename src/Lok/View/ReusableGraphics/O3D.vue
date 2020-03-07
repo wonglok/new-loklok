@@ -8,6 +8,8 @@
 import { Object3D } from 'three'
 export default {
   props: {
+    kn: {},
+    base: {},
     visible: {}
   },
   created () {
@@ -31,6 +33,7 @@ export default {
     }
   },
   mounted () {
+    this.base[this.kn] = this.object3D
     this.$parent.$emit('add', this.object3D)
   },
   beforeDestroy () {

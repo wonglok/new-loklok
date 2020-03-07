@@ -1,5 +1,4 @@
-export const makeScroller = async ({ base }) => {
-  let renderer = await base.waitKN('renderer')
+export const makeScroller = ({ touchTarget }) => {
   class ValueDamper {
     constructor (v = 0) {
       this.latestVal = v
@@ -17,7 +16,7 @@ export const makeScroller = async ({ base }) => {
     }
   }
   let scroller = document.querySelector('.scroller-area')
-  let canvasArea = renderer.domElement
+  let canvasArea = touchTarget
   let scrollAmount = 0
   let SmoothY = new ValueDamper(-0.2)
   SmoothY.value = 0.0
@@ -30,7 +29,7 @@ export const makeScroller = async ({ base }) => {
       SmoothY.value = value
     }, true)
   } else {
-    renderer.domElement.addEventListener('wheel', (evt) => {
+    touchTarget.addEventListener('wheel', (evt) => {
       evt.preventDefault()
       scrollAmount += evt.deltaY
       if (scrollAmount < 0) {

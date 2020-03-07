@@ -1,6 +1,7 @@
-export default async () => {
+export const makeBase = async ({ mounter }) => {
   let getID = () => '_' + (100000000.0 * Math.random()).toFixed(0) + ''
   let env = {
+    mounter,
     waitKN: (kn) => {
       return new Promise((resolve) => {
         let tout = 0
