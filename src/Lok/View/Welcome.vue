@@ -95,6 +95,8 @@ export default {
         // base.ball1.rotation.z = -scroller.value
         renderer.render(scene, camera)
       })
+
+      window.dispatchEvent(new Event('resize'))
     },
     log (v) {
       this.logs.unshift(v)
