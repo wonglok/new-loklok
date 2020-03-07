@@ -36,9 +36,6 @@ export default {
     var font = await import('../../Fonts/resort-display.json')
     var camera = await this.base.waitKN('camera')
     font = new Font(font)
-    let width = visibleWidthAtZDepth(camera.position.z, camera)
-    let height = visibleHeightAtZDepth(camera.position.z, camera)
-    let min = Math.min(width, height)
 
     this.base[this.kn] = async ({ text, width = false, height = false, onReady }) => {
       // eslint-disable-next-line
@@ -48,9 +45,12 @@ export default {
       let setup = () => {
         clearTimeout(tout)
         setTimeout(() => {
+          let swidth = visibleWidthAtZDepth(camera.position.z, camera)
+          let sheight = visibleHeightAtZDepth(camera.position.z, camera)
+          let min = Math.min(swidth, sheight)
           let params = {
             font: font,
-            size: (width || (group.proxy.width / 100)) * min,
+            size: (width || (group.proxy.width / 100)) * min * text.length,
             height: height || (group.proxy.depth / 100 * 5),
             curveSegments: group.proxy.curveSegments / 100 * 100,
             bevelEnabled: group.proxy.bevelEnabled,
@@ -68,6 +68,7 @@ export default {
           }
         }, 150)
       }
+      group.onResize(setup)
       group.autoPulse('width', setup)
       group.autoPulse('depth', setup)
       group.autoPulse('curveSegments', setup)

@@ -35,21 +35,21 @@
       "group": "resort-font",
       "key": "depth",
       "type": "number",
-      "value": 14.1,
+      "value": 5.24,
       "id": "_573371"
     },
     {
       "group": "resort-font",
       "key": "curveSegments",
       "type": "number",
-      "value": 6.43,
+      "value": 7.26,
       "id": "_17130"
     },
     {
       "group": "resort-font",
       "key": "bevelEnabled",
       "type": "boolean",
-      "value": true,
+      "value": false,
       "id": "_395861"
     },
     {
@@ -84,7 +84,7 @@
       "group": "resort-font",
       "key": "width",
       "type": "number",
-      "value": 7.28,
+      "value": 8,
       "id": "_346921"
     },
     {
