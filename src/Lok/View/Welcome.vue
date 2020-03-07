@@ -5,10 +5,10 @@
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <O3D>
-        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'lifeSaverFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+      <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+      <O3D :visible="visible">
         <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
-        <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'lifeSaverFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
       </O3D>
     </Scene>
 
@@ -44,6 +44,7 @@ export default {
   },
   data () {
     return {
+      visible: false,
       isDev: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
@@ -83,15 +84,12 @@ export default {
       let camera = await base.waitKN('camera')
       camera.position.z = 20
 
-      // let paintCanvas = await base.waitKN('paleCanvas')
-
-      // scene.background = paintCanvas
-
       base.loop(() => {
         renderer.render(scene, camera)
       })
 
-      console.log('Running')
+      await base.waitKN('centerText')
+      this.visible = true
     },
     log (v) {
       this.logs.unshift(v)

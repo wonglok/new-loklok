@@ -33,12 +33,9 @@ export default {
     }
   },
   async mounted () {
-    var font = await import('../../Fonts/life-saver-bold.json')
+    var font = require('../../Fonts/life-saver-bold.json')
     var camera = await this.base.waitKN('camera')
     font = new Font(font)
-    let width = visibleWidthAtZDepth(camera.position.z, camera)
-    let height = visibleHeightAtZDepth(camera.position.z, camera)
-    let min = Math.min(width, height)
 
     this.base[this.kn] = async ({ text, width = false, height = false, onReady }) => {
       // eslint-disable-next-line
@@ -48,6 +45,9 @@ export default {
       let setup = () => {
         clearTimeout(tout)
         tout = setTimeout(() => {
+          let swidth = visibleWidthAtZDepth(camera.position.z, camera)
+          let sheight = visibleHeightAtZDepth(camera.position.z, camera)
+          let min = Math.min(swidth, sheight)
           let params = {
             font: font,
             size: (width || (group.proxy.width / 100)) * min,
