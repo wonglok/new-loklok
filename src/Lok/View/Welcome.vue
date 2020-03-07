@@ -9,12 +9,20 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
-      <O3D :base="base" :kn="'tunnel'">
-        <O3D :base="base" :kn="'ball1'">
-          <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+      <O3D :base="base" :kn="'displaySpace'">
+        <O3D :base="base" :kn="'heroSection'">
+          <O3D :base="base" :kn="'ball1'">
+            <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+          </O3D>
+          <!-- <O3D :base="base" :kn="'text1'"> -->
+            <CenterText :text="`WithLokLok.com`" v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+          <!-- </O3D> -->
         </O3D>
-        <O3D :base="base" :kn="'ball1'">
-          <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        <O3D :base="base" :kn="'page2'">
+          <O3D :base="base" :kn="'underRefractorPosition'" :pz="2">
+            <CenterText :text="`Happily Made...`" v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
+          </O3D>
+          <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
         </O3D>
       </O3D>
     </Scene>
@@ -43,6 +51,7 @@
 import { makeSDK } from '../../human'
 import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
+import { getScreen } from './ReusableGraphics/GetScreen.js'
 
 export default {
   components: {
@@ -70,11 +79,16 @@ export default {
       let camera = base.camera
       camera.position.z = 20
 
-      let scroller = makeScroller({ base, touchTarget: renderer.domElement })
+      let pageCount = 2
+      // can scroll how many pages = limit.y
+      let scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { y: pageCount } })
       let group = this.sdk.getGroup('page1-layout')
       base.loop(() => {
+        let myscreen = getScreen({ camera, depth: camera.position.z })
+        base.heroSection.position.z = (-scroller.value) * 30
         base.ball1.position.z = group.autoGet('ball-pos').z - 50
-        base.tunnel.position.z = (-scroller.value) * 200.0
+
+        base.page2.position.y = myscreen.height * (scroller.value - 1)// * group.autoGet('y1') / 100.0 * 10.0
 
         // base.ball1.rotation.x = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.rotation.y = Math.max((1.0 - scroller.value), 0.0) / 1

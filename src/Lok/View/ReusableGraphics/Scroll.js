@@ -1,4 +1,5 @@
-export const makeScroller = ({ base, touchTarget }) => {
+// can scroll how many pages = limit.y
+export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
   class ValueDamper {
     constructor (v = 0) {
       this.latestVal = v
@@ -32,6 +33,8 @@ export const makeScroller = ({ base, touchTarget }) => {
       evt.preventDefault()
       scrollAmount += evt.deltaY
       if (scrollAmount < 0) {
+        scrollAmount -= evt.deltaY
+      } else if (scrollAmount > (limit.y * window.innerHeight)) {
         scrollAmount -= evt.deltaY
       }
       SmoothY.value = scrollAmount / window.innerHeight
@@ -76,7 +79,7 @@ export const makeScroller = ({ base, touchTarget }) => {
 
       if (state.taY <= 0) {
         state.taY += delta
-      } else if (state.taY >= 1) {
+      } else if (state.taY >= limit.y) {
         state.taY += delta
       } else {
       }

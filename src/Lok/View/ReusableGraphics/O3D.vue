@@ -8,9 +8,14 @@
 import { Object3D } from 'three'
 export default {
   props: {
+    pz: {
+      default: 0
+    },
     kn: {},
     base: {},
-    visible: {}
+    visible: {
+      default: true
+    }
   },
   created () {
     this.$on('add', (v) => {
@@ -23,11 +28,15 @@ export default {
   watch: {
     visible () {
       this.object3D.visible = this.visible
+    },
+    pz () {
+      this.object3D.position.z = this.pz
     }
   },
   data () {
     let object3D = new Object3D()
     object3D.visible = this.visible
+    object3D.position.z = this.pz
     return {
       object3D
     }

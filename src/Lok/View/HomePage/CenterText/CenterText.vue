@@ -24,6 +24,9 @@ export const visibleWidthAtZDepth = (depth, camera) => {
 
 export default {
   props: {
+    text: {
+      default: 'With Lok Lok .com'
+    },
     kn: {},
     base: {},
     font: {},
@@ -80,8 +83,8 @@ export default {
 
       glProxy.add(mesh)
     }
-    let text = 'withloklok.com'
-    makeFont({ text, onReady })
+    // let text = 'withloklok.com'
+    makeFont({ text: this.text, onReady })
   },
   async beforeDestroy () {
     let glProxy = this.glProxy

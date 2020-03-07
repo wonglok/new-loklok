@@ -81,20 +81,36 @@ export const makeSDK = async () => {
     sdk.ready = true
   }
 
-  let transformer = (obj) => {
+  let HolderCache = {}
+  let transformer = (obj, cacheKey) => {
     if (!obj || typeof obj.value === 'undefined') {
       return
     }
     let val = obj.value
     if (obj.type === 'vec3') {
-      return new Vector3(val.x, val.y, val.z)
+      HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector3(val.x, val.y, val.z)
+      HolderCache[cacheKey].x = val.x
+      HolderCache[cacheKey].y = val.y
+      HolderCache[cacheKey].z = val.z
+      return HolderCache[cacheKey]
     } else if (obj.type === 'vec2') {
-      return new Vector2(val.x, val.y)
+      HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector2(val.x, val.y)
+      HolderCache[cacheKey].x = val.x
+      HolderCache[cacheKey].y = val.y
+
+      return HolderCache[cacheKey]
     } else if (obj.type === 'color') {
-      let color = new Color(val.r / 255, val.g / 255, val.b / 255)
-      color.a = val.a
-      color.opacity = val.a
-      return color
+      // let color = new Color(val.r / 255, val.g / 255, val.b / 255)
+      // color.a = val.a
+      // color.opacity = val.a
+
+      HolderCache[cacheKey] = HolderCache[cacheKey] || new Color(val.r / 255, val.g / 255, val.b / 255)
+      HolderCache[cacheKey].r = val.r / 255
+      HolderCache[cacheKey].g = val.g / 255
+      HolderCache[cacheKey].b = val.b / 255
+      HolderCache[cacheKey].a = val.a
+      HolderCache[cacheKey].opacity = val.a
+      return HolderCache[cacheKey]
     } else {
       return val
     }
@@ -103,7 +119,7 @@ export const makeSDK = async () => {
   let surge = (gpkn, streamFn, auto) => {
     let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
     if (auto) {
-      streamFn(transformer(obj))
+      streamFn(transformer(obj, gpkn))
       return
     }
     streamFn(obj)
@@ -133,7 +149,7 @@ export const makeSDK = async () => {
       proxy: new Proxy({}, {
         get (tempObj, kn) {
           let obj = sdk.get(`${group}.${kn}`)
-          return transformer(obj)
+          return transformer(obj, `${group}.${kn}`)
         }
       }),
       autoGet: (kn) => {
@@ -142,7 +158,7 @@ export const makeSDK = async () => {
         if (!obj) {
           console.error(`not found ${group}.${kn}`)
         }
-        return transformer(obj)
+        return transformer(obj, `${group}.${kn}`)
       },
       get: (kn) => {
         let obj = sdk.get(`${group}.${kn}`)
