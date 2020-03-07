@@ -4,9 +4,11 @@
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <O3D :visible="visible" :base="base" :kn="'page1'">
-        <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+      <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+      <O3D :visible="visible" :base="base" :kn="'ball1'">
         <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+      </O3D>
+      <O3D :visible="visible" :base="base" :kn="'page1'">
         <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
       </O3D>
     </Scene>
@@ -46,7 +48,6 @@ export default {
   },
   data () {
     return {
-      scroller: false,
       visible: true,
       isDev: false && process.env.NODE_ENV === 'development',
       logs: [],
@@ -67,9 +68,13 @@ export default {
       let camera = base.camera
       camera.position.z = 20
 
-      this.scroller = makeScroller({ touchTarget: renderer.domElement })
+      let scroller = makeScroller({ base, touchTarget: renderer.domElement })
 
       base.loop(() => {
+        base.page1.position.y = scroller.value * 20.0
+        // base.ball1.scale.x = Math.max((1.0 - scroller.value), 0.0) / 1
+        // base.ball1.scale.y = Math.max((1.0 - scroller.value), 0.0) / 1
+        // base.ball1.scale.z = Math.max((1.0 - scroller.value), 0.0) / 1
         renderer.render(scene, camera)
       })
     },

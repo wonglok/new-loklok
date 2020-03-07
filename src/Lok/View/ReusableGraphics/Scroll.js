@@ -1,4 +1,4 @@
-export const makeScroller = ({ touchTarget }) => {
+export const makeScroller = ({ base, touchTarget }) => {
   class ValueDamper {
     constructor (v = 0) {
       this.latestVal = v
@@ -16,7 +16,6 @@ export const makeScroller = ({ touchTarget }) => {
     }
   }
   let scroller = document.querySelector('.scroller-area')
-  let canvasArea = touchTarget
   let scrollAmount = 0
   let SmoothY = new ValueDamper(-0.2)
   SmoothY.value = 0.0
@@ -44,14 +43,14 @@ export const makeScroller = ({ touchTarget }) => {
       taY: 0,
       inertiaY: 1
     }
-    canvasArea.addEventListener('touchstart', (evt) => {
+    touchTarget.addEventListener('touchstart', (evt) => {
       evt.preventDefault()
       let t1 = evt.touches[0]
       console.log(t1)
       state.tsY = t1.pageY
       state.tD = true
     }, { passive: false })
-    canvasArea.addEventListener('touchmove', (evt) => {
+    touchTarget.addEventListener('touchmove', (evt) => {
       evt.preventDefault()
       if (state.tD) {
         let t1 = evt.touches[0]
@@ -61,17 +60,17 @@ export const makeScroller = ({ touchTarget }) => {
         state.inertiaY = 1.0
       }
     }, { passive: false })
-    canvasArea.addEventListener('touchend', (evt) => {
+    touchTarget.addEventListener('touchend', (evt) => {
       state.tsY = 0
       state.tD = false
     }, { passive: false })
-    canvasArea.addEventListener('touchcancel', (evt) => {
+    touchTarget.addEventListener('touchcancel', (evt) => {
       state.tsY = 0
       state.tD = false
     }, { passive: false })
 
-    setInterval(() => {
-      state.inertiaY *= 0.9
+    base.loop(() => {
+      state.inertiaY *= 0.97
       state.taY -= state.inertiaY * state.tdY * (3 / 1000)
 
       if (state.taY < -0.1) {
@@ -83,7 +82,7 @@ export const makeScroller = ({ touchTarget }) => {
       if (state.inertiaY > 0.03) {
         SmoothY.value = state.taY
       }
-    }, 1000 / 60)
+    })
   }
 
   return SmoothY
