@@ -5,8 +5,8 @@
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
       <O3D :visible="visible">
+        <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
         <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
         <CenterText v-if="base" :sdk="sdk" :base="base" :font="'lifeSaverFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
       </O3D>
