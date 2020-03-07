@@ -5,12 +5,8 @@
 
     <Scene v-if="base" :base="base" :kn="'scene'">
       <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
-      <O3D :visible="visible" :base="base" :kn="'ball1'">
-        <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
-      </O3D>
-      <O3D :visible="visible" :base="base" :kn="'page1'">
-        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
-      </O3D>
+      <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+      <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
     </Scene>
 
     <!-- Computed Intese Resources -->
@@ -39,7 +35,7 @@
 
 <script>
 import { makeSDK } from '../../human'
-import { makeScroller } from './ReusableGraphics/Scroll.js'
+// import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 
 export default {
@@ -68,10 +64,10 @@ export default {
       let camera = base.camera
       camera.position.z = 20
 
-      let scroller = makeScroller({ base, touchTarget: renderer.domElement })
+      // let scroller = makeScroller({ base, touchTarget: renderer.domElement })
 
       base.loop(() => {
-        base.page1.position.y = scroller.value * 20.0
+        // base.page1.position.y = scroller.value * 20.0
         // base.ball1.scale.x = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.scale.y = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.scale.z = Math.max((1.0 - scroller.value), 0.0) / 1
