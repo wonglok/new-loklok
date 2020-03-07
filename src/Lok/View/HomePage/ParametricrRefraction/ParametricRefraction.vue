@@ -163,11 +163,13 @@ export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) =>
   obj3d.add(mesh)
   glProxy.add(obj3d)
 
-  group.autoPulse('position', (v) => {
-    obj3d.position.x = v.x - 50.0
-    obj3d.position.y = v.y - 50.0
-    obj3d.position.z = v.z - 50.0
-  })
+  // mesh.position.z = 34.0 - 50
+
+  // group.autoPulse('position', (v) => {
+  //   mesh.position.x = v.x - 50.0
+  //   mesh.position.y = v.y - 50.0
+  //   mesh.position.z = v.z - 50.0
+  // })
 
   console.log('parametric installed')
   let clean = async () => {

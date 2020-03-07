@@ -5,8 +5,12 @@
 
     <Scene v-if="base" :base="base" :kn="'scene'">
       <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
-      <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
-      <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+      <O3D :base="base" :kn="'landing'">
+        <O3D :base="base" :kn="'ball1'">
+          <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+        </O3D>
+        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+      </O3D>
     </Scene>
 
     <!-- Computed Intese Resources -->
@@ -35,7 +39,7 @@
 
 <script>
 import { makeSDK } from '../../human'
-// import { makeScroller } from './ReusableGraphics/Scroll.js'
+import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 
 export default {
@@ -45,7 +49,7 @@ export default {
   data () {
     return {
       visible: true,
-      useOribt: true && process.env.NODE_ENV === 'development',
+      useOribt: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
       sdk: false
@@ -57,20 +61,22 @@ export default {
     this.$nextTick(this.onReady)
   },
   methods: {
-    onReady () {
+    async onReady () {
       let base = this.base
       let renderer = base.renderer
       let scene = base.scene
       let camera = base.camera
       camera.position.z = 20
 
-      // let scroller = makeScroller({ base, touchTarget: renderer.domElement })
-
+      let scroller = makeScroller({ base, touchTarget: renderer.domElement })
+      let group = this.sdk.getGroup('page1-layout')
       base.loop(() => {
-        // base.page1.position.y = scroller.value * 20.0
-        // base.ball1.scale.x = Math.max((1.0 - scroller.value), 0.0) / 1
-        // base.ball1.scale.y = Math.max((1.0 - scroller.value), 0.0) / 1
-        // base.ball1.scale.z = Math.max((1.0 - scroller.value), 0.0) / 1
+        base.ball1.position.z = group.autoGet('ball-pos').z - 50
+        base.landing.position.z = (-scroller.value) * 200.0
+
+        // base.ball1.rotation.x = Math.max((1.0 - scroller.value), 0.0) / 1
+        // base.ball1.rotation.y = Math.max((1.0 - scroller.value), 0.0) / 1
+        // base.ball1.rotation.z = -scroller.value
         renderer.render(scene, camera)
       })
     },

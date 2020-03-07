@@ -155,17 +155,6 @@
     },
     {
       "group": "parametric-1",
-      "key": "position",
-      "type": "vec3",
-      "value": {
-        "x": 50,
-        "y": 50,
-        "z": 34
-      },
-      "id": "_931168"
-    },
-    {
-      "group": "parametric-1",
       "key": "baseOpacity",
       "type": "number",
       "value": 68.75,
@@ -226,6 +215,17 @@
       "type": "number",
       "value": 7.28,
       "id": "_437053"
+    },
+    {
+      "group": "page1-layout",
+      "key": "ball-pos",
+      "type": "vec3",
+      "value": {
+        "x": 50,
+        "y": 47,
+        "z": 38
+      },
+      "id": "_646564"
     }
   ]
 }

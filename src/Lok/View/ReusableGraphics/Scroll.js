@@ -3,10 +3,10 @@ export const makeScroller = ({ base, touchTarget }) => {
     constructor (v = 0) {
       this.latestVal = v
       this.dampedVal = v
-      setInterval(() => {
+      base.loop(() => {
         let diff = (this.latestVal - this.dampedVal) * (60 / 1000)
         this.dampedVal += diff
-      }, 1000 / 60)
+      })
     }
     set value (v) {
       this.latestVal = v
