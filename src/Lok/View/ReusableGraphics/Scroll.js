@@ -46,7 +46,7 @@ export const makeScroller = ({ base, touchTarget }) => {
     touchTarget.addEventListener('touchstart', (evt) => {
       evt.preventDefault()
       let t1 = evt.touches[0]
-      console.log(t1)
+      // console.log(t1)
       state.tsY = t1.pageY
       state.tD = true
     }, { passive: false })
@@ -54,7 +54,7 @@ export const makeScroller = ({ base, touchTarget }) => {
       evt.preventDefault()
       if (state.tD) {
         let t1 = evt.touches[0]
-        console.log(t1)
+        // console.log(t1)
         state.tdY = t1.pageY - state.tsY
         state.tsY = t1.pageY
         state.inertiaY = 1.0
@@ -71,13 +71,14 @@ export const makeScroller = ({ base, touchTarget }) => {
 
     base.loop(() => {
       state.inertiaY *= 0.97
-      state.taY -= state.inertiaY * state.tdY * (3 / 1000)
+      let delta = state.inertiaY * state.tdY * (2.75 / 1000)
+      state.taY -= delta
 
-      if (state.taY < -0.1) {
-        state.taY = -0.1
-      }
-      if (state.taY > 1.2) {
-        state.taY = 1.2
+      if (state.taY <= 0) {
+        state.taY += delta
+      } else if (state.taY >= 1) {
+        state.taY += delta
+      } else {
       }
       if (state.inertiaY > 0.03) {
         SmoothY.value = state.taY
