@@ -27,8 +27,8 @@ export const makeBase = async ({ mounter }) => {
       }
     },
     onResize: (fn) => {
-      env._.resize[getID()] = fn
       fn()
+      env._.resize[getID()] = fn
     },
     onClean: (fn) => {
       env._.clean[getID()] = fn
@@ -61,17 +61,21 @@ export const makeBase = async ({ mounter }) => {
       for (var resizeKN in env._.resize) {
         env._.resize[resizeKN]()
       }
-    }, 50)
+    }, 100)
   }
   window.addEventListener('resize', resize, false)
   env.onClean(() => {
     window.removeEventListener('resize', resize, false)
   })
 
-  window.dispatchEvent(new Event('resize'))
-  setTimeout(() => {
+  // window.dispatchEvent(new Event('resize'))
+  // setTimeout(() => {
+  //   window.dispatchEvent(new Event('resize'))
+  // }, 100)
+
+  env.systemReady = () => {
     window.dispatchEvent(new Event('resize'))
-  }, 100)
+  }
 
   return env
 }

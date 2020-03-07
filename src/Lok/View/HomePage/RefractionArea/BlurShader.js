@@ -49,7 +49,7 @@ let fragmentShader = glsl`
 
     // vec4 base = texture2DProj(tDiffuse, uv);
 
-    vec4 base = blurProj5(tDiffuse, uv, vec4(1024.0), vec4(250.0, -250.0, 250.0, -250.0));
+    vec4 base = blurProj5(tDiffuse, uv, vec4(1024.0), vec4(50.0, -50.0, 50.0, -50.0));
 
     gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );
     // gl_FragColor = vec4(base.rgb, 1.0);

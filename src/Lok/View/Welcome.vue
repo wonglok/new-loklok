@@ -88,15 +88,18 @@ export default {
         base.heroSection.position.z = (-scroller.value) * 30
         base.ball1.position.z = group.autoGet('ball-pos').z - 50
 
-        base.page2.position.y = myscreen.height * (scroller.value - 1)// * group.autoGet('y1') / 100.0 * 10.0
+        base.page2.position.y = myscreen.max * (scroller.value - 1)
+
+        // * group.autoGet('y1') / 100.0 * 10.0
 
         // base.ball1.rotation.x = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.rotation.y = Math.max((1.0 - scroller.value), 0.0) / 1
         // base.ball1.rotation.z = -scroller.value
+
         renderer.render(scene, camera)
       })
 
-      window.dispatchEvent(new Event('resize'))
+      base.systemReady()
     },
     log (v) {
       this.logs.unshift(v)
