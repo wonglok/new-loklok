@@ -1,23 +1,23 @@
 precision highp float;
 
-varying vec3 vNormal;
-varying vec2 vUv;
-varying vec3 vViewPosition;
+// varying vec3 vNormal;
+// varying vec2 vUv;
+// varying vec3 vViewPosition;
 
 // uniform vec3 baseColor;
-uniform float time;
-uniform float animateRadius;
-uniform float animateStrength;
+// uniform float time;
+// uniform float animateRadius;
+// uniform float animateStrength;
 
 
 // uniform vec3 baseColor;
 uniform float baseOpacity;
 
-varying vec3 vPos;
+// varying vec3 vPos;
 
 uniform samplerCube tCube;
-uniform sampler2D tDudv;
-// uniform float time;
+// uniform sampler2D tDudv;
+uniform float time;
 
 varying vec3 vReflect;
 varying vec3 vRefract[3];

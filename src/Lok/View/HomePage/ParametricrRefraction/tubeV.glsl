@@ -18,10 +18,10 @@ uniform float thickness;
 uniform float spread;
 // uniform float maxLines;
 
-// pass a few things along to the vertex shader
-varying vec2 vUv;
-varying vec3 vViewPosition;
-varying vec3 vNormal;
+// // pass a few things along to the vertex shader
+// varying vec2 vUv;
+// varying vec3 vViewPosition;
+// varying vec3 vNormal;
 
 // -----
 uniform float mRefractionRatio;
@@ -36,8 +36,8 @@ varying vec3 vRefract[3];
 varying float vReflectionFactor;
 // varying vec2 vUv;
 
-varying vec3 vPos;
-varying vec3 vColor;
+// varying vec3 vPos;
+// varying vec3 vColor;
 // -----
 
 mat3 rotateQ (vec3 axis, float rad) {
@@ -243,16 +243,16 @@ void main (void) {
 
   // pass the normal and UV along
   vec3 transformedNormal = normalMatrix * objectNormal;
-  vNormal = normalize(transformedNormal);
-  vUv = uv.xy; // swizzle this to match expectations
+  // vNormal = normalize(transformedNormal);
+  // vUv = uv.xy; // swizzle this to match expectations
 
   vec4 newObjPos = flowerSpread * offsetSpread * vec4(transformed, 1.0);
   // project our vertex position
   vec4 mvPosition = modelViewMatrix * newObjPos;
-  vViewPosition = -mvPosition.xyz;
+  // vViewPosition = -mvPosition.xyz;
   gl_Position = projectionMatrix * mvPosition;
 
-  vec3 newNormal = vNormal;
+  vec3 newNormal = transformedNormal;
   vec3 worldNormal = normalize(mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * newNormal.xyz );
   vec4 worldPosition = modelMatrix * newObjPos;
   vec3 I = worldPosition.xyz - cameraPosition;
@@ -263,5 +263,5 @@ void main (void) {
   vRefract[2] = refract( normalize( I ), worldNormal, mRefractionRatio * 0.98 );
   vReflectionFactor = mFresnelBias + mFresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), mFresnelPower );
 
-  vPos = normalize(gl_Position.xyz);
+  // vPos = normalize(gl_Position.xyz);
 }
