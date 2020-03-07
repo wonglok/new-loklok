@@ -11,7 +11,7 @@
 
     <!-- Computed Intese Resources -->
     <!-- Controls -->
-    <OrbitControls v-if="isDev && base" :base="base" :kn="'orbitControls'"></OrbitControls>
+    <OrbitControls v-if="useOribt && base" :base="base" :kn="'orbitControls'"></OrbitControls>
 
     <!-- Canvas2D -->
     <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paleCanvas'" :settings="'paint-canvas'"></PaintCanvas>
@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       visible: true,
-      isDev: false && process.env.NODE_ENV === 'development',
+      useOribt: true && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
       sdk: false
