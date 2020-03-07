@@ -7,6 +7,9 @@
 <script>
 import { Object3D } from 'three'
 export default {
+  props: {
+    visible: {}
+  },
   created () {
     this.$on('add', (v) => {
       this.object3D.add(v)
@@ -15,9 +18,16 @@ export default {
       this.object3D.remove(v)
     })
   },
+  watch: {
+    visible () {
+      this.object3D.visible = this.visible
+    }
+  },
   data () {
+    let object3D = new Object3D()
+    object3D.visible = this.visible
     return {
-      object3D: new Object3D()
+      object3D
     }
   },
   mounted () {

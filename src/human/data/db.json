@@ -143,27 +143,15 @@
       "group": "parametric-1",
       "key": "spread",
       "type": "number",
-      "value": 5.95,
+      "value": 4.67,
       "id": "_234245"
     },
     {
       "group": "parametric-1",
       "key": "thickness",
       "type": "number",
-      "value": 9.65,
+      "value": 9.99,
       "id": "_159234"
-    },
-    {
-      "group": "parametric-1",
-      "key": "baseColor",
-      "type": "color",
-      "value": {
-        "r": 34,
-        "g": 198,
-        "b": 255,
-        "a": 0.831
-      },
-      "id": "_911927"
     },
     {
       "group": "parametric-1",
@@ -172,7 +160,7 @@
       "value": {
         "x": 50,
         "y": 50,
-        "z": 23
+        "z": 34
       },
       "id": "_931168"
     },
@@ -180,7 +168,7 @@
       "group": "parametric-1",
       "key": "baseOpacity",
       "type": "number",
-      "value": 100,
+      "value": 84.13,
       "id": "_904040"
     },
     {

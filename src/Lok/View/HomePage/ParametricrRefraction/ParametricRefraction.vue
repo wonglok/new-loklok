@@ -135,7 +135,7 @@ export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) =>
     uniforms.spread.value = group.autoGet('spread') / 10.0
     uniforms.thickness.value = group.autoGet('thickness') / 1000.0
 
-    uniforms.baseOpacity.value = group.autoGet('baseOpacity')
+    uniforms.baseOpacity.value = group.autoGet('baseOpacity') / 100.0
     // uniforms.baseColor.value = group.autoGet('baseColor')
     uniforms.time.value = window.performance.now() * 0.001
   })

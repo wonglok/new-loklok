@@ -44,7 +44,7 @@ export default {
       let json = ''
       let setup = () => {
         clearTimeout(tout)
-        setTimeout(() => {
+        tout = setTimeout(() => {
           let swidth = visibleWidthAtZDepth(camera.position.z, camera)
           let sheight = visibleHeightAtZDepth(camera.position.z, camera)
           let min = Math.min(swidth, sheight)

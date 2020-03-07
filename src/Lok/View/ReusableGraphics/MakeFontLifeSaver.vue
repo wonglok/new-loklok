@@ -47,7 +47,7 @@ export default {
       let json = ''
       let setup = () => {
         clearTimeout(tout)
-        setTimeout(() => {
+        tout = setTimeout(() => {
           let params = {
             font: font,
             size: (width || (group.proxy.width / 100)) * min,
