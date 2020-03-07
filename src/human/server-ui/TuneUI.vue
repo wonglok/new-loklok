@@ -5,7 +5,7 @@
         <div class="group p-2 bg-gray-100 border-b text-lg justify-center flex items-ceneter cursor-pointer" @click="addGroup">
           ➕ Add Group
         </div>
-        <div class="group p-2 border-b text-sm flex items-ceneter justify-between cursor-pointer hover:bg-gray-200" :class="{ 'bg-green-200': app.isSelected(gp) }" @click="app.select(gp)" :key="gpi" v-for="(gp, gpi) in app.groupNames">
+        <div class="group p-2 border-b text-sm flex items-ceneter justify-between cursor-pointer hover:bg-gray-200" :class="{ 'bg-green-200': app.isSelected(gp) }" @click="app.select(gp)" :key="gpi" v-for="(gp, gpi) in app.groupNames.slice().sort(byAlphabet)">
           <span>💎 {{ gp }}</span>
           <div>
             <span class="" @click="clone(gp)">🐑</span>
@@ -97,6 +97,15 @@ export default {
     })
   },
   methods: {
+    byAlphabet (a, b) {
+      if (a > b) {
+        return 1
+      } else if (a < b) {
+        return -1
+      } else {
+        return 0
+      }
+    },
     addGroup () {
       let name = window.prompt('new group name')
       if (this.app.groupNames.includes(name)) {

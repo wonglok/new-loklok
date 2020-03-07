@@ -29,7 +29,7 @@ export default {
     kn: {},
     base: {},
     setting: {
-      default: 'resort-font'
+      default: 'font-resort'
     }
   },
   async mounted () {

@@ -4,7 +4,7 @@
       "group": "paint-canvas",
       "key": "hue-spread",
       "type": "number",
-      "value": 31.22,
+      "value": 23.82,
       "id": "_160237"
     },
     {
@@ -32,56 +32,56 @@
       "id": "_959545"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "depth",
       "type": "number",
       "value": 1.37,
       "id": "_573371"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "curveSegments",
       "type": "number",
       "value": 0,
       "id": "_17130"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "bevelEnabled",
       "type": "boolean",
       "value": false,
       "id": "_395861"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "bevelThickness",
       "type": "number",
       "value": 5.92,
       "id": "_92237"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "bevelSize",
       "type": "number",
       "value": 0,
       "id": "_19623"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "bevelOffset",
       "type": "number",
       "value": 0,
       "id": "_11645"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "bevelSegments",
       "type": "number",
       "value": 28.43,
       "id": "_525024"
     },
     {
-      "group": "resort-font",
+      "group": "font-resort",
       "key": "width",
       "type": "number",
       "value": 35.61,
@@ -122,7 +122,7 @@
       "group": "parametric-1",
       "key": "maxLines",
       "type": "number",
-      "value": 63.94,
+      "value": 66.41,
       "id": "_150565"
     },
     {
@@ -172,56 +172,56 @@
       "id": "_904040"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "depth",
       "type": "number",
       "value": 14.1,
       "id": "_2343"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "curveSegments",
       "type": "number",
       "value": 6.43,
       "id": "_582504"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "bevelEnabled",
       "type": "boolean",
       "value": false,
       "id": "_536655"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "bevelThickness",
       "type": "number",
       "value": 17.54,
       "id": "_536875"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "bevelSize",
       "type": "number",
       "value": 11.69,
       "id": "_705924"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "bevelOffset",
       "type": "number",
       "value": 0,
       "id": "_2800"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "bevelSegments",
       "type": "number",
       "value": 28.43,
       "id": "_987257"
     },
     {
-      "group": "life-saver-regular-font",
+      "group": "font-life-saver",
       "key": "width",
       "type": "number",
       "value": 7.28,
