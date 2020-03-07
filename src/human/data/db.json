@@ -4,7 +4,7 @@
       "group": "paint-canvas",
       "key": "hue-spread",
       "type": "number",
-      "value": 100,
+      "value": 31.22,
       "id": "_160237"
     },
     {
@@ -12,8 +12,8 @@
       "key": "canvas-texture-dot",
       "type": "color",
       "value": {
-        "r": 199,
-        "g": 150,
+        "r": 0,
+        "g": 250,
         "b": 255,
         "a": 0.74
       },
@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 198,
-        "g": 255,
-        "b": 234,
+        "r": 17,
+        "g": 5,
+        "b": 154,
         "a": 0.74
       },
       "id": "_959545"
@@ -91,7 +91,7 @@
       "group": "paint-canvas-purple",
       "key": "hue-spread",
       "type": "number",
-      "value": 100,
+      "value": 14.42,
       "id": "_67763"
     },
     {
@@ -100,8 +100,8 @@
       "type": "color",
       "value": {
         "r": 255,
-        "g": 44,
-        "b": 44,
+        "g": 0,
+        "b": 190,
         "a": 0.74
       },
       "id": "_932962"
@@ -112,8 +112,8 @@
       "type": "color",
       "value": {
         "r": 0,
-        "g": 172,
-        "b": 220,
+        "g": 240,
+        "b": 255,
         "a": 0.74
       },
       "id": "_388738"
