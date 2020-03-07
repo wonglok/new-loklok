@@ -13,7 +13,9 @@
         <O3D :base="base" :kn="'ball1'">
           <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
         </O3D>
-        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        <O3D :base="base" :kn="'ball1'">
+          <CenterText v-if="base" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        </O3D>
       </O3D>
     </Scene>
 
