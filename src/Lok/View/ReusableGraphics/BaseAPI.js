@@ -4,13 +4,13 @@ export const makeBase = async ({ mounter }) => {
     mounter,
     waitKN: (kn) => {
       return new Promise((resolve) => {
-        let tout = 0
-        setInterval(() => {
+        let key = getID()
+        env._.loop[key] = () => {
           if (env[kn]) {
-            clearInterval(tout)
+            env._.loop[key] = () => {}
             resolve(env[kn])
           }
-        })
+        }
       })
     },
     getID,
