@@ -31,7 +31,16 @@ export default {
   },
   async mounted () {
     let base = this.base
-    let scene = await base.waitKN('scene')
+    let glProxy = this.glProxy = {
+      add: (v) => {
+        this.$parent.$emit('add', v)
+      },
+      remove: (v) => {
+        this.$parent.$emit('remove', v)
+      }
+    }
+    // let scene = await base.waitKN('scene')
+    // let camera = await base.waitKN('camera')
     // let camera = await base.waitKN('camera')
     let makeFont = await base.waitKN(this.font)
     let texture = await base.waitKN(this.texture)
@@ -47,11 +56,12 @@ export default {
 
     let onReady = ({ geo }) => {
       if (mesh) {
-        scene.remove(mesh)
+        mesh.geometry.dispose()
+        glProxy.remove(mesh)
       }
       mesh = new Mesh(geo, mat)
       base[this.kn] = mesh
-      scene.add(mesh)
+
       mesh.scale.x = 0.5
       mesh.scale.y = 0.5
       mesh.scale.z = 0.5
@@ -60,15 +70,22 @@ export default {
       geo.computeBoundingBox()
 
       mesh.position.x = geo.boundingSphere.radius * -0.5
+      mesh.position.y = (geo.boundingBox.min.y + geo.boundingBox.max.y) * -0.25
+      // mesh.position.z = camera.position.z * 0.75
       mesh.needsUpdate = true
+
+      mesh.rotation.x = -0.08
+
       console.log('geo font')
+
+      glProxy.add(mesh)
     }
-    let text = 'With Lok Lok'
+    let text = 'withloklok.com'
     makeFont({ text, onReady })
   },
   async beforeDestroy () {
-    let scene = await this.base.waitKN('scene')
-    scene.remove(this.base[this.kn])
+    let glProxy = this.glProxy
+    glProxy.remove(this.base[this.kn])
   }
 }
 </script>

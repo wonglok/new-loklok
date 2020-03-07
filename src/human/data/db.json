@@ -12,9 +12,9 @@
       "key": "canvas-texture-dot",
       "type": "color",
       "value": {
-        "r": 226,
-        "g": 255,
-        "b": 155,
+        "r": 199,
+        "g": 150,
+        "b": 255,
         "a": 0.74
       },
       "id": "_929803"
@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 255,
+        "r": 198,
         "g": 255,
-        "b": 255,
+        "b": 234,
         "a": 0.74
       },
       "id": "_959545"
@@ -35,14 +35,14 @@
       "group": "resort-font",
       "key": "depth",
       "type": "number",
-      "value": 7.35,
+      "value": 14.1,
       "id": "_573371"
     },
     {
       "group": "resort-font",
       "key": "curveSegments",
       "type": "number",
-      "value": 34.43,
+      "value": 6.43,
       "id": "_17130"
     },
     {
@@ -56,14 +56,14 @@
       "group": "resort-font",
       "key": "bevelThickness",
       "type": "number",
-      "value": 12.01,
+      "value": 17.54,
       "id": "_92237"
     },
     {
       "group": "resort-font",
       "key": "bevelSize",
       "type": "number",
-      "value": 3.92,
+      "value": 11.69,
       "id": "_19623"
     },
     {
@@ -77,21 +77,21 @@
       "group": "resort-font",
       "key": "bevelSegments",
       "type": "number",
-      "value": 43.08,
+      "value": 28.43,
       "id": "_525024"
     },
     {
       "group": "resort-font",
       "key": "width",
       "type": "number",
-      "value": 6.99,
+      "value": 7.28,
       "id": "_346921"
     },
     {
       "group": "paint-canvas-purple",
       "key": "hue-spread",
       "type": "number",
-      "value": 0,
+      "value": 100,
       "id": "_67763"
     },
     {
@@ -99,9 +99,9 @@
       "key": "canvas-texture-dot",
       "type": "color",
       "value": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 255,
+        "g": 44,
+        "b": 44,
         "a": 0.74
       },
       "id": "_932962"
@@ -111,12 +111,133 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 164,
-        "g": 235,
-        "b": 255,
+        "r": 0,
+        "g": 172,
+        "b": 220,
         "a": 0.74
       },
       "id": "_388738"
+    },
+    {
+      "group": "parametric-1",
+      "key": "maxLines",
+      "type": "number",
+      "value": 44.54,
+      "id": "_150565"
+    },
+    {
+      "group": "parametric-1",
+      "key": "animateStrength",
+      "type": "number",
+      "value": 46.97,
+      "id": "_185962"
+    },
+    {
+      "group": "parametric-1",
+      "key": "animateRadius",
+      "type": "number",
+      "value": 51.89,
+      "id": "_799315"
+    },
+    {
+      "group": "parametric-1",
+      "key": "spread",
+      "type": "number",
+      "value": 5.95,
+      "id": "_234245"
+    },
+    {
+      "group": "parametric-1",
+      "key": "thickness",
+      "type": "number",
+      "value": 9.65,
+      "id": "_159234"
+    },
+    {
+      "group": "parametric-1",
+      "key": "baseColor",
+      "type": "color",
+      "value": {
+        "r": 34,
+        "g": 198,
+        "b": 255,
+        "a": 0.831
+      },
+      "id": "_911927"
+    },
+    {
+      "group": "parametric-1",
+      "key": "position",
+      "type": "vec3",
+      "value": {
+        "x": 50,
+        "y": 50,
+        "z": 23
+      },
+      "id": "_931168"
+    },
+    {
+      "group": "parametric-1",
+      "key": "baseOpacity",
+      "type": "number",
+      "value": 100,
+      "id": "_904040"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "depth",
+      "type": "number",
+      "value": 14.1,
+      "id": "_2343"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "curveSegments",
+      "type": "number",
+      "value": 6.43,
+      "id": "_582504"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "bevelEnabled",
+      "type": "boolean",
+      "value": true,
+      "id": "_536655"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "bevelThickness",
+      "type": "number",
+      "value": 17.54,
+      "id": "_536875"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "bevelSize",
+      "type": "number",
+      "value": 11.69,
+      "id": "_705924"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "bevelOffset",
+      "type": "number",
+      "value": 0,
+      "id": "_2800"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "bevelSegments",
+      "type": "number",
+      "value": 28.43,
+      "id": "_987257"
+    },
+    {
+      "group": "life-saver-regular-font",
+      "key": "width",
+      "type": "number",
+      "value": 7.28,
+      "id": "_437053"
     }
   ]
 }

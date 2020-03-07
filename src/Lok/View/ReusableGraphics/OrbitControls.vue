@@ -14,10 +14,11 @@ export default {
     let camera = await this.base.waitKN('camera')
     let renderer = await this.base.waitKN('renderer')
     let controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+    // controls.enableDamping = true
     base.loop(() => {
       controls.update()
     })
+
     // let ct = await this.base.waitKN(this.canvas)
     // let texture = new CanvasTexture(ct)
     // this.base.loop(() => {

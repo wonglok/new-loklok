@@ -3,15 +3,33 @@
     <BaseAPI @ready="base = $event; onReady({ base })"></BaseAPI>
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
-    <Scene v-if="base" :base="base" :kn="'scene'"></Scene>
-    <OrbitControls v-if="base" :base="base" :kn="'orbitControls'"></OrbitControls>
-    <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paintCanvas'" :settings="'paint-canvas'"></PaintCanvas>
-    <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paintCanvasPurple'" :settings="'paint-canvas-purple'"></PaintCanvasCustom>
-    <CubeTexture v-if="base" :base="base" :canvas="'paintCanvasPurple'" :kn="'paintingCubeTexture'"></CubeTexture>
-    <CanvasTexture v-if="base" :base="base" :canvas="'paintCanvas'" :kn="'paintingTexture'"></CanvasTexture>
-    <SphereSkyDome v-if="base" :base="base" :texture="'paintingTexture'" :kn="'skydome'"></SphereSkyDome>
-    <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'makeFontResort'"></MakeFontResort>
-    <CenterText v-if="base" :sdk="sdk" :base="base" :font="'makeFontResort'" :texture="'paintingCubeTexture'" :kn="'centerText'"></CenterText>
+
+    <Scene v-if="base" :base="base" :kn="'scene'">
+      <O3D>
+        <CenterText v-if="base" :sdk="sdk" :base="base" :font="'lifeSaverFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+        <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+      </O3D>
+    </Scene>
+
+    <!-- Computed Intese Resources -->
+    <!-- Controls -->
+    <OrbitControls v-if="isDev && base" :base="base" :kn="'orbitControls'"></OrbitControls>
+
+    <!-- Canvas2D -->
+    <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paleCanvas'" :settings="'paint-canvas'"></PaintCanvas>
+    <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom>
+
+    <!-- Cube Texture -->
+    <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
+    <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
+
+    <!-- Plane Texture -->
+    <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'skydome2D'"></CanvasTexture>
+
+    <!-- Font -->
+    <!-- <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort> -->
+    <MakeFontLifeSaver v-if="base" :sdk="sdk" :base="base" :kn="'lifeSaverFont'"></MakeFontLifeSaver>
 
     <!-- Welcome :D
     <pre :key="kn" v-for="(log, kn) in logs">{{ JSON.stringify(log) }}</pre> -->
@@ -26,6 +44,7 @@ export default {
   },
   data () {
     return {
+      isDev: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
       sdk: false
@@ -33,6 +52,7 @@ export default {
   },
   async mounted () {
     this.sdk = await makeSDK()
+
     // this.camera.asdasd
 
     // let group = this.sdk.getGroup('test')
@@ -63,7 +83,7 @@ export default {
       let camera = await base.waitKN('camera')
       camera.position.z = 20
 
-      // let paintCanvas = await base.waitKN('paintCanvas')
+      // let paintCanvas = await base.waitKN('paleCanvas')
 
       // scene.background = paintCanvas
 

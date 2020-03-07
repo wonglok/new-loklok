@@ -30,9 +30,17 @@ export default {
   },
   async mounted () {
     let base = this.base
-    let scene = await base.waitKN('scene')
+    // let scene = await base.waitKN('scene')
     let camera = await base.waitKN('camera')
     let texture = await base.waitKN(this.texture)
+    let glProxy = this.glProxy = {
+      add: (v) => {
+        this.$parent.$emit('add', v)
+      },
+      remove: (v) => {
+        this.$parent.$emit('remove', v)
+      }
+    }
 
     let mat = new MeshBasicMaterial({ map: texture, side: BackSide })
     let mesh = new Mesh(undefined, mat)
@@ -40,16 +48,21 @@ export default {
     base.onResize(() => {
       let width = visibleWidthAtZDepth(camera.position.z, camera)
       let height = visibleHeightAtZDepth(camera.position.z, camera)
-      let max = Math.max(width, height) * 0.5
-      let geo = new SphereBufferGeometry(max, 64, 64)
+      let max = Math.max(width, height) * 100.0
+      let geo = new SphereBufferGeometry(max, 16, 16)
       mesh.geometry = geo
       mesh.needsUpdate = true
     })
 
     base[this.kn] = mesh
 
-    scene.add(mesh)
+    glProxy.add(mesh)
     console.log('done', this.kn)
+  },
+  async beforeDestroy () {
+    // let scene = await this.base.waitKN('scene')
+    let mesh = await this.base.waitKN(this.kn)
+    this.glProxy.remove(mesh)
   }
 }
 </script>

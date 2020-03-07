@@ -33,7 +33,7 @@ export default {
     }
   },
   async mounted () {
-    var font = await import('../../Fonts/resort-display.json')
+    var font = await import('../../Fonts/life-saver-bold.json')
     var camera = await this.base.waitKN('camera')
     font = new Font(font)
     let width = visibleWidthAtZDepth(camera.position.z, camera)

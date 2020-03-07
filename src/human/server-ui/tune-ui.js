@@ -143,6 +143,7 @@ export const makeAPI = async ({ ui }) => {
 
   app.select = (gp) => {
     app._.selected.group = gp
+    app._.selected.groupItem = false
   }
   app.isSelected = (gp) => {
     return app._.selected.group === gp

@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div><slot></slot></div>
 </template>
 <script>
 import { Scene } from 'three'
@@ -8,10 +8,21 @@ export default {
     kn: {},
     base: {}
   },
+  created () {
+    this.$on('add', (v) => {
+      this.scene.add(v)
+    })
+    this.$on('remove', (v) => {
+      this.scene.remove(v)
+    })
+  },
+  data () {
+    return {
+      scene: new Scene()
+    }
+  },
   mounted () {
-    let scene = new Scene()
-    this.$emit('scene', scene)
-    this.base[this.kn] = scene
+    this.base[this.kn] = this.scene
   }
 }
 </script>

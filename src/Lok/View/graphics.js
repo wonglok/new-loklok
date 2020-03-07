@@ -6,9 +6,9 @@
 // export const EffortsAndLove = () => import(/* webpackChunkName: "EffortsAndLove" */ './Home/EffortsAndLove.vue')
 
 var path = require('path')
+let exporter = {}
 
 function importAll (r) {
-  let exporter = {}
   r.keys().forEach(key => {
     let filename = path.basename(key).replace('.vue', '')
     exporter[filename] = () => new Promise((resolve) => {
@@ -18,4 +18,7 @@ function importAll (r) {
   return exporter
 }
 
-export default importAll(require.context('./ReusableGraphics', true, /\.vue$/))
+importAll(require.context('./ReusableGraphics', true, /\.vue$/))
+importAll(require.context('./HomePage', true, /\.vue$/))
+
+export default exporter
