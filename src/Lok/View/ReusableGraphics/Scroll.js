@@ -31,9 +31,7 @@ export const makeScroller = ({ base, touchTarget }) => {
     touchTarget.addEventListener('wheel', (evt) => {
       evt.preventDefault()
       scrollAmount += evt.deltaY
-      if (scrollAmount <= 0) {
-        scrollAmount -= evt.deltaY
-      } else if (scrollAmount >= 0) {
+      if (scrollAmount < 0) {
         scrollAmount -= evt.deltaY
       }
       SmoothY.value = scrollAmount / window.innerHeight
