@@ -88,7 +88,7 @@ export default {
         base.heroSection.position.z = (-scroller.value) * 30
         base.ball1.position.z = group.autoGet('ball-pos').z - 50
 
-        base.page2.position.y = myscreen.max * (scroller.value - 1)
+        base.page2.position.y = myscreen.height * 0.5 * (scroller.value - 1)
 
         renderer.render(scene, camera)
       })
