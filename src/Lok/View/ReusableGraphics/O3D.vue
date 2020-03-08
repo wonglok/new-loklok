@@ -104,9 +104,50 @@ export default {
       this.object3D.scale.z = this.sz
     }
   },
+  computed: {
+    padding () {
+      let val = 0
+      try {
+        val = Parser.evaluate(`0.005 * screen.min`, this)
+      } catch (e) {
+        console.log(e)
+      }
+      return val
+    },
+    right () {
+      let val = 0
+      try {
+        val = Parser.evaluate(`screen.width * 0.25 - scaleX * width * 0.5 - padding`, this)
+      } catch (e) {
+        console.log(e)
+      }
+      return val
+    },
+    left () {
+      let val = 0
+      try {
+        val = Parser.evaluate(`screen.width * -0.25 + scaleX * width * 0.5 + padding`, this)
+      } catch (e) {
+        console.log(e)
+      }
+      return val
+    },
+    top () {
+      let val = 0
+      try {
+        val = Parser.evaluate(`screen.height * 0.25 + scaleY * height * -0.5 - padding`, this)
+      } catch (e) {
+        console.log(e)
+      }
+      return val
+    }
+  },
   data () {
     let object3D = new Object3D()
     return {
+      scaleX: 1,
+      scaleY: 1,
+      scaleZ: 1,
       width: 1,
       height: 1,
       depth: 1,
@@ -126,6 +167,10 @@ export default {
         }
       }
       if (this.layout) {
+        run(() => { this.scaleX = object3D.scale.x = Parser.evaluate(this.layout.fsx || '1', this) })
+        run(() => { this.scaleY = object3D.scale.y = Parser.evaluate(this.layout.fsy || '1', this) })
+        run(() => { this.scaleZ = object3D.scale.z = Parser.evaluate(this.layout.fsz || '1', this) })
+
         run(() => { object3D.position.x = Parser.evaluate(this.layout.fpx || '0', this) })
         run(() => { object3D.position.y = Parser.evaluate(this.layout.fpy || '0', this) })
         run(() => { object3D.position.z = Parser.evaluate(this.layout.fpz || '0', this) })
@@ -133,10 +178,6 @@ export default {
         run(() => { object3D.rotation.x = Parser.evaluate(this.layout.frx || '0', this) })
         run(() => { object3D.rotation.y = Parser.evaluate(this.layout.fry || '0', this) })
         run(() => { object3D.rotation.z = Parser.evaluate(this.layout.frz || '0', this) })
-
-        run(() => { object3D.scale.x = Parser.evaluate(this.layout.fsx || '1', this) })
-        run(() => { object3D.scale.y = Parser.evaluate(this.layout.fsy || '1', this) })
-        run(() => { object3D.scale.z = Parser.evaluate(this.layout.fsz || '1', this) })
 
         console.log(this.kn, JSON.stringify(this.layout))
       } else {

@@ -235,12 +235,12 @@
         "fx": "1",
         "fy": 0,
         "fz": 0,
-        "fpx": "screen.width * 0.25 - 0.3 * width * 0.5 - 0.005 * screen.min",
+        "fpx": "right",
         "fpz": "0",
-        "fpy": "screen.height * 0.25 +  0.3 * height * -0.5 - 0.005 * screen.min",
-        "fsx": "0.3",
-        "fsy": "0.3",
-        "fsz": "0.3",
+        "fpy": "top",
+        "fsx": "0.4",
+        "fsy": "0.4",
+        "fsz": "0.4",
         "frx": "0",
         "fry": "0",
         "frz": "0"
@@ -252,15 +252,15 @@
       "key": "nav-withloklok",
       "type": "layout",
       "value": {
-        "fpx": "screen.width * -0.25 + 0.3 * width * 0.5 + 0.005 * screen.min",
-        "fpy": "screen.height * 0.25 +  0.3 * height * -0.5 - 0.005 * screen.min",
+        "fpx": "left",
+        "fpy": "top",
         "fpz": "0",
         "frx": 0,
         "fry": 0,
         "frz": 0,
-        "fsx": "0.3",
-        "fsy": "0.3",
-        "fsz": "0.3"
+        "fsx": "0.4",
+        "fsy": "0.4",
+        "fsz": "0.4"
       },
       "id": "_843090"
     }
