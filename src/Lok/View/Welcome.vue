@@ -29,7 +29,7 @@
         <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
-        <MirrorText :base="base" :font="'resortFont'" :text="`Content & Communication`" :kn="'mirrorText'"></MirrorText>
+        <MirrorText :base="base" :font="'resortFont'" :text="`Gospel Content & Communication`" :kn="'mirrorText'"></MirrorText>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
@@ -39,6 +39,7 @@
         </O3D>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
+
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
         <O3D :base="base" :kn="'belowFold'" :py="screen.height * -0.5">
           <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
