@@ -28,6 +28,7 @@ export const visibleWidthAtZDepth = (depth, camera) => {
 
 export default {
   props: {
+    pageHeight: {},
     kn: {},
     base: {}
   },

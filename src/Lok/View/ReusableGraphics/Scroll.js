@@ -60,7 +60,7 @@ export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
         // console.log(t1)
         state.tdY = t1.pageY - state.tsY
         state.tsY = t1.pageY
-        state.inertiaY = 1
+        state.inertiaY = 3
       }
     }, { passive: false })
     touchTarget.addEventListener('touchend', (evt) => {
@@ -73,8 +73,8 @@ export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
     }, { passive: false })
 
     base.loop(() => {
-      state.inertiaY *= 0.97
-      let delta = state.inertiaY * state.tdY * (1.4 / 1000)
+      state.inertiaY *= 0.96
+      let delta = state.inertiaY * state.tdY * (1.0 / 1000)
       state.taY -= delta
 
       if (state.taY <= 0) {

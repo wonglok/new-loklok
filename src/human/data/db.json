@@ -229,10 +229,17 @@
     },
     {
       "group": "page1-layout",
-      "key": "y1",
+      "key": "nav-withloklok",
       "type": "number",
-      "value": 4.04,
-      "id": "_985180"
+      "value": 6.29,
+      "id": "_264625"
+    },
+    {
+      "group": "page1-layout",
+      "key": "nav-ohmydear",
+      "type": "number",
+      "value": 5.54,
+      "id": "_485008"
     }
   ]
 }

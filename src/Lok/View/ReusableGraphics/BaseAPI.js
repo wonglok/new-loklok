@@ -80,7 +80,7 @@ export const makeBase = async ({ mounter }) => {
   // }, 100)
 
   env.systemReady = () => {
-    runLoop()
+    // runLoop()
     runResize()
   }
 

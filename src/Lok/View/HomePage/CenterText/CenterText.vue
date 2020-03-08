@@ -79,7 +79,7 @@ export default {
 
       // mesh.rotation.x = -0.08
 
-      console.log('geo font')
+      console.log('geo font', this.text)
 
       glProxy.add(mesh)
     }

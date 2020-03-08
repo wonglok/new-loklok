@@ -16,7 +16,8 @@ export const makeSDK = async () => {
   let sdk = {
     ready: false,
     _: {
-      pulses: {}
+      pulses: {},
+      stubs: {}
     },
     data: {
       objects: []
@@ -29,9 +30,14 @@ export const makeSDK = async () => {
     },
     // editor: getID(),
     sendPulse: (gp, kn) => {
-      let all = sdk._.pulses
-      let fn = all[gp + '.' + kn] || (() => {})
-      fn()
+      let allPulses = sdk._.pulses
+      let allStubs = sdk._.stubs
+      let fn1 = allPulses[gp + '.' + kn] || (() => {})
+      fn1()
+
+      for (let skn in allStubs) {
+        allStubs[skn]()
+      }
     }
   }
   // code shake
@@ -139,6 +145,31 @@ export const makeSDK = async () => {
   sdk.get = (gpkn) => {
     let obj = sdk.list.find(e => (e.group + '.' + e.key) === gpkn)
     return obj
+  }
+  sdk.autoGet = (gpkn) => {
+    let obj = sdk.get(gpkn)
+    return transformer(obj, gpkn)
+  }
+
+  sdk.onStubGroup = (group, onStubReady) => {
+    if (!sdk.list.some(e => e.group === group)) {
+      console.error(group, 'group not found')
+    }
+
+    let makeStub = () => {
+      let stub = {}
+      let items = sdk.list.filter(e => e.group === group)
+      items.forEach((item) => {
+        let gpkn = `${item.group}.${item.key}`
+        Object.defineProperty(stub, item.key, { get: () => transformer(item, gpkn) })
+      })
+      return stub
+    }
+
+    sdk._.stubs[group] = () => {
+      onStubReady(makeStub())
+    }
+    onStubReady(makeStub())
   }
 
   sdk.getGroup = (group) => {
