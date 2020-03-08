@@ -30,7 +30,9 @@
         <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
-        <MirrorText :base="base" :font="'resortFont'" :text="`Gospel Content & Communication`" :kn="'mirrorText'"></MirrorText>
+        <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
+
+        <!-- <MirrorText :base="base" :font="'resortFont'" :text="`Gospel & Communication`" :kn="'mirrorText'"></MirrorText> -->
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
