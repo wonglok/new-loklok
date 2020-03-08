@@ -76,9 +76,9 @@ export default {
     /* eslint-enable */
 
     let makeGeo = () => {
-      let screen = this.screen
-      let width = screen.width * 0.3
-      let height = screen.width * 0.3 * (texture.image.height) / (texture.image.width * 0.5)
+      // let screen = this.screen
+      let width = texture.image.width * 0.0075
+      let height = texture.image.width * 0.0075 * (texture.image.height) / (texture.image.width)
       let geo = new PlaneBufferGeometry(width, height, 2, 2)
 
       geo.computeBoundingSphere()
@@ -87,23 +87,26 @@ export default {
       // mirror.position.x = geo.boundingSphere.radius * -0.5
       // mirror.position.y = (geo.boundingBox.min.y + geo.boundingBox.max.y) * -0.25
       // mirror.needsUpdate = true
+
       let sizing = {
         radius: width * 0.5,
         width: width,
         height: height,
         depth: 0
       }
+
       console.log(this.text, 'sizing', sizing)
       this.$parent.$emit('size', sizing)
 
       return geo
     }
     let sprite = new Mesh(makeGeo(), material)
-    this.textObj = sprite
     sprite.position.z = 1.0
+
+    this.sprite = sprite
     texture.redraw()
-    sprite.scale
-      .set(texture.image.width / texture.image.height, 1, 1)
+    // sprite.scale
+    //   .set(texture.image.width / texture.image.height, 1, 1)
 
     glProxy.add(sprite)
 
@@ -111,13 +114,18 @@ export default {
       texture.fontFamily = 'Arial, Helvetica, sans-serif'
       texture.text = this.text
       texture.redraw()
-      sprite.scale
-        .set(texture.image.width / texture.image.height, 1, 1)
+      sprite.geometry = makeGeo()
+      sprite.needsUpdate = true
+      // sprite.scale
+      //   .set(texture.image.width / texture.image.height, 1, 1)
     }
 
     update()
 
     this.$watch('text', () => {
+      update()
+    })
+    base.onResize(() => {
       update()
     })
 
@@ -174,7 +182,7 @@ export default {
   },
   async beforeDestroy () {
     let glProxy = this.glProxy
-    glProxy.remove(this.textObj)
+    glProxy.remove(this.sprite)
   }
 }
 </script>

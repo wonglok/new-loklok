@@ -47,10 +47,10 @@
 
             <O3D v-if="screen" :screen="screen" :layout="layout['bible']">
               <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
-                <TextureText :screen="screen" :text="`Love is patient, love is kind.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+                <TextureText :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
               </O3D>
 
-              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
+              <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
                 <TextureText :screen="screen" :text="`Love is not easily angered.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
               </O3D>
 
@@ -60,7 +60,7 @@
 
               <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel4']">
                 <TextureText :screen="screen" :text="`Love always hopes, always perseveres.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-              </O3D>
+              </O3D> -->
             </O3D>
 
             <!--
@@ -103,6 +103,10 @@ export default {
   },
   data () {
     return {
+      favouriteVerses: `Love is patience. Love is kind.
+Love is not easily angered.
+Love always protects, always trusts.
+Love always hopes, always perseveres.`,
       layout: false,
       screen: false,
       ready: false,
