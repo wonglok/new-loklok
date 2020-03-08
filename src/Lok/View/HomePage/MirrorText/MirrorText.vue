@@ -55,6 +55,14 @@ export default {
       mirror.position.x = geo.boundingSphere.radius * -0.5
       mirror.position.y = (geo.boundingBox.min.y + geo.boundingBox.max.y) * -0.25
       mirror.needsUpdate = true
+
+      this.$parent.$emit('size', {
+        radius: geo.boundingSphere.radius * 0.5,
+        width: geo.boundingSphere.radius,
+        height: (geo.boundingBox.min.y + geo.boundingBox.max.y) * 0.5,
+        depth: 0
+      })
+
       return mirror
     }
 

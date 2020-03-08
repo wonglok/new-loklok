@@ -74,6 +74,14 @@ export default {
 
       mesh.position.x = geo.boundingSphere.radius * -0.5
       mesh.position.y = (geo.boundingBox.min.y + geo.boundingBox.max.y) * -0.25
+
+      this.$parent.$emit('size', {
+        radius: geo.boundingSphere.radius * 0.5,
+        width: geo.boundingSphere.radius,
+        height: (geo.boundingBox.min.y + geo.boundingBox.max.y) * 0.5,
+        depth: 0
+      })
+
       // mesh.position.z = camera.position.z * 0.75
       mesh.needsUpdate = true
 

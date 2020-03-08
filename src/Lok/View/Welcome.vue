@@ -24,12 +24,12 @@
 
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <O3D :base="base" :kn="'topnav'" :px="screen.width * -0.25 + layout['nav-withloklok']" :py="screen.height * 0.25 - 1 - 0.25" :sx="0.3" :sy="0.3" :sz="0.3">
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']" :base="base" :kn="'topnav-l'">
         <!-- <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirror'"></MirrorText> -->
-        <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText>
+        <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
       </O3D>
-      <O3D :base="base" :kn="'topnav'" :px="screen.width * 0.25 - layout['nav-ohmydear']" :py="screen.height * 0.25 - 1 - 0.25" :sx="0.3" :sy="0.3" :sz="0.3">
-        <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirror'"></MirrorText>
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
+        <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirrorText'"></MirrorText>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
@@ -97,6 +97,7 @@ export default {
       let scene = await base.waitKN('scene')
       let camera = await base.waitKN('camera')
       camera.position.z = 20
+
       this.screen = getScreen({ camera, depth: camera.position.z })
       base.onResize(() => {
         this.screen = getScreen({ camera, depth: camera.position.z })
@@ -118,6 +119,7 @@ export default {
       })
 
       base.systemReady()
+
       setTimeout(() => {
         this.ready = true
       })

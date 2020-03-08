@@ -24,7 +24,7 @@
               <button class="mx-1 p-2 roundd-lg text-red-600 bg-red-100" @click="removeGroup(app.selected.group)">🗑 Remove</button>
             </div>
           </div>
-          <div class="full flex flex-row">
+          <div class="w-full flex flex-row">
             <div class="key-col w-56 border-r">
               <div class="group p-2 border-b text-sm flex items-ceneter justify-center cursor-pointer bg-gray-100 hover:bg-gray-200" @click="add({ groupName: app.selected.group })">
                 <span class="p-1">➕ Add Item</span>
@@ -36,7 +36,7 @@
               </div>
             </div>
             <keep-alive>
-              <div class="details h-full overflow-y-auto overflow-x-hidden" v-if="app.selected.groupItem" :key="app.selected.groupItem.id">
+              <div class="details h-full inputsarea overflow-x-hidden" v-if="app.selected.groupItem" :key="app.selected.groupItem.id">
                 <Chooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'unknown'"></Chooser>
                 <UndoChooser :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type !== 'unknown'"></UndoChooser>
                 <EDNumber :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'number'"></EDNumber>
@@ -45,6 +45,7 @@
                 <EDColor :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'color'"></EDColor>
                 <EDBoolean :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'boolean'"></EDBoolean>
                 <EDString :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'string'"></EDString>
+                <EDLayout :app="app" :item="app.selected.groupItem" v-if="app.selected.groupItem.type === 'layout'"></EDLayout>
                 <!-- <pre>{{ app.selected.groupItem }}</pre> -->
               </div>
             </keep-alive>
@@ -194,4 +195,8 @@ export default {
 
 <style scoped>
 @import url(./tailwind.css);
+
+.inputsarea{
+  width: calc(100% - 400px);
+}
 </style>

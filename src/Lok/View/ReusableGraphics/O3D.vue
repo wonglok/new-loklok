@@ -6,8 +6,16 @@
 
 <script>
 import { Object3D } from 'three'
+import { Parser } from 'expr-eval'
+// npm install expr-eval
+
+// import * as THREE from 'three'
 export default {
   props: {
+    mode: {},
+    screen: {},
+    layout: {},
+
     px: {
       default: 0
     },
@@ -45,6 +53,13 @@ export default {
     }
   },
   created () {
+    this.$on('size', (v) => {
+      this.width = v.width
+      this.height = v.height
+      this.depth = v.depth
+      this.radius = v.radius
+      this.sync(this.object3D)
+    })
     this.$on('add', (v) => {
       this.object3D.add(v)
     })
@@ -56,6 +71,11 @@ export default {
     visible () {
       this.object3D.visible = this.visible
     },
+
+    layout () {
+      this.sync(this.object3D)
+    },
+
     px () {
       this.object3D.position.x = this.px
     },
@@ -65,7 +85,6 @@ export default {
     pz () {
       this.object3D.position.z = this.pz
     },
-
     rx () {
       this.object3D.rotation.x = this.rx
     },
@@ -87,23 +106,56 @@ export default {
   },
   data () {
     let object3D = new Object3D()
-    object3D.visible = this.visible
-    object3D.position.x = this.px
-    object3D.position.y = this.py
-    object3D.position.z = this.pz
-
-    object3D.scale.x = this.sx
-    object3D.scale.y = this.sy
-    object3D.scale.z = this.sz
-
-    object3D.rotation.x = this.rx
-    object3D.rotation.y = this.ry
-    object3D.rotation.z = this.rz
     return {
+      width: 1,
+      height: 1,
+      depth: 1,
+      radius: 1,
       object3D
     }
   },
+  methods: {
+    sync (object3D) {
+      object3D.visible = this.visible
+
+      let run = (fnc) => {
+        try {
+          fnc()
+        } catch (e) {
+          console.log(e)
+        }
+      }
+      if (this.layout) {
+        run(() => { object3D.position.x = Parser.evaluate(this.layout.fpx || '0', this) })
+        run(() => { object3D.position.y = Parser.evaluate(this.layout.fpy || '0', this) })
+        run(() => { object3D.position.z = Parser.evaluate(this.layout.fpz || '0', this) })
+
+        run(() => { object3D.rotation.x = Parser.evaluate(this.layout.frx || '0', this) })
+        run(() => { object3D.rotation.y = Parser.evaluate(this.layout.fry || '0', this) })
+        run(() => { object3D.rotation.z = Parser.evaluate(this.layout.frz || '0', this) })
+
+        run(() => { object3D.scale.x = Parser.evaluate(this.layout.fsx || '1', this) })
+        run(() => { object3D.scale.y = Parser.evaluate(this.layout.fsy || '1', this) })
+        run(() => { object3D.scale.z = Parser.evaluate(this.layout.fsz || '1', this) })
+
+        console.log(this.kn, JSON.stringify(this.layout))
+      } else {
+        object3D.position.x = this.px
+        object3D.position.y = this.py
+        object3D.position.z = this.pz
+
+        object3D.scale.x = this.sx
+        object3D.scale.y = this.sy
+        object3D.scale.z = this.sz
+
+        object3D.rotation.x = this.rx
+        object3D.rotation.y = this.ry
+        object3D.rotation.z = this.rz
+      }
+    }
+  },
   mounted () {
+    this.sync(this.object3D)
     this.base[this.kn] = this.object3D
     this.$parent.$emit('add', this.object3D)
   },

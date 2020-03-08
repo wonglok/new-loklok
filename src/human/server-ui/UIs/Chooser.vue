@@ -7,6 +7,7 @@
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'vec2')">Vector 2</button>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'color')">Color</button>
     <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'string')">String</button>
+    <button class="m-2 p-2 border border-green-400 px-3 bg-green-100 rounded-lg text-green-700" @click="choose(item, 'layout')">Layout Formula XYZ</button>
   </div>
 </template>
 
@@ -44,6 +45,23 @@ export default {
           x: 0,
           y: 0,
           z: 0
+        }
+        this.app.updateNow(item)
+      }
+      if (type === 'layout') {
+        item.type = 'layout'
+        item.value = {
+          fpx: '0',
+          fpy: '0',
+          fpz: '0',
+
+          frx: '0',
+          fry: '0',
+          frz: '0',
+
+          fsx: '1',
+          fsy: '1',
+          fsz: '1'
         }
         this.app.updateNow(item)
       }
