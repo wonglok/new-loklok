@@ -71,7 +71,7 @@ export default {
           runSetup()
         }, 50)
       }
-      this.base.onResize(runSetup)
+      this.base.onResize(setupLater)
       group.autoPulse('width', setupLater)
       group.autoPulse('depth', setupLater)
       group.autoPulse('curveSegments', setupLater)

@@ -48,7 +48,7 @@ export default {
         // let min = Math.min(swidth, sheight)
         let params = {
           font: font,
-          size: (width || (group.proxy.width / 100)) * swidth / text.length,
+          size: (width || (group.proxy.width / 100)) * swidth,
           height: height || (group.proxy.depth / 100 * 5),
           curveSegments: group.proxy.curveSegments / 100 * 100,
           bevelEnabled: group.proxy.bevelEnabled,
@@ -65,13 +65,14 @@ export default {
           onReady({ geo: geometry })
         }
       }
+
       let setupLater = () => {
         clearTimeout(tout)
         tout = setTimeout(() => {
           runSetup()
         }, 50)
       }
-      this.base.onResize(runSetup)
+      this.base.onResize(setupLater)
       group.autoPulse('width', setupLater)
       group.autoPulse('depth', setupLater)
       group.autoPulse('curveSegments', setupLater)

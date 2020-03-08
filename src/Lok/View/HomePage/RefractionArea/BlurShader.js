@@ -8,12 +8,13 @@ import { Vector2 } from 'three'
 let glsl = v => v[0]
 
 let vertexShader = glsl`
+  uniform vec2 resolution;
   uniform mat4 textureMatrix;
   varying vec2 vUv;
   varying vec4 vUvRefraction;
   void main (void) {
     vUv = uv;
-    vUvRefraction = textureMatrix * vec4( position, 1.0 );
+    vUvRefraction = textureMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
   }
 `
@@ -45,7 +46,7 @@ let fragmentShader = glsl`
   void main (void) {
     float waveStrength = 0.5;
     float waveSpeed = 0.00;
-    vec2 distortedUv = texture2D( tDudv, vec2( vUv.x + time * waveSpeed, vUv.y ) ).rg * waveStrength;
+    vec2 distortedUv = texture2D( tDudv, vec2( vUv.x + time * waveSpeed, fract(vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
     distortedUv = vUv.xy + vec2( distortedUv.x, distortedUv.y + time * waveSpeed );
     vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
 

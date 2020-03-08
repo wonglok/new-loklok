@@ -29,7 +29,7 @@
         <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
-        <MirrorText :base="base" :font="'resortFont'" :text="'LOVE SONG'" :kn="'mirrorText'"></MirrorText>
+        <MirrorText :base="base" :font="'resortFont'" :text="'Thank You! Thank you!'" :kn="'mirrorText'"></MirrorText>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
@@ -42,20 +42,19 @@
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
         <O3D :base="base" :kn="'belowFold'" :py="screen.height * -0.5">
           <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
-            <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
+
+            <O3D v-if="screen && layout" :screen="screen" :layout="layout['made-happily']" :base="base" :kn="'slogan'">
+              <CenterText :text="`Happily Made...`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
+              <!-- <MirrorText :base="base" :font="'resortFont'" :text="'ARTARTARTRATATTA'" :kn="'mirrorText'"></MirrorText> -->
+              <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
+            </O3D>
+
+            <O3D :base="base" :kn="'refractionO3D'">
+              <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
+            </O3D>
+
           </O3D>
 
-          <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
-            <O3D :base="base" :kn="'underRefractorPosition'">
-              <CenterText :text="`Happily Made...`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-            </O3D>
-          </O3D>
-          <O3D :base="base" :kn="'page3'" :py="screen.height * -0.5">
-            <!-- <O3D :base="base" :kn="'underRefractorPosition'">
-              <CenterText :text="`With bad Joke...`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-            </O3D> -->
-            <!-- <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea> -->
-          </O3D>
         </O3D>
       </O3D>
     </Scene>

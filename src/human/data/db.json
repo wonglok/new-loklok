@@ -84,7 +84,7 @@
       "group": "font-resort",
       "key": "width",
       "type": "number",
-      "value": 76.48,
+      "value": 23.71,
       "id": "_346921"
     },
     {
@@ -238,9 +238,9 @@
         "fpx": "right",
         "fpz": "0",
         "fpy": "top",
-        "fsx": "0.3",
-        "fsy": "0.3",
-        "fsz": "0.3",
+        "fsx": "0.05",
+        "fsy": "0.05",
+        "fsz": "0.05",
         "frx": "0",
         "fry": "0",
         "frz": "0"
@@ -258,11 +258,28 @@
         "frx": 0,
         "fry": 0,
         "frz": 0,
+        "fsx": "0.05",
+        "fsy": "0.05",
+        "fsz": "0.05"
+      },
+      "id": "_843090"
+    },
+    {
+      "group": "page1-layout",
+      "key": "made-happily",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
         "fsx": "0.3",
         "fsy": "0.3",
         "fsz": "0.3"
       },
-      "id": "_843090"
+      "id": "_184136"
     }
   ]
 }
