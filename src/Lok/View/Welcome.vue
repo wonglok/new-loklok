@@ -25,12 +25,12 @@
 
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']" :base="base" :kn="'topnav-l'">
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
         <!-- <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirror'"></MirrorText> -->
-        <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
+        <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
       </O3D>
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
-        <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
+        <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
 
         <!-- <MirrorText :base="base" :font="'resortFont'" :text="`Gospel & Communication`" :kn="'mirrorText'"></MirrorText> -->
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
