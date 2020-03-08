@@ -90,12 +90,6 @@ export default {
 
         base.page2.position.y = myscreen.max * (scroller.value - 1)
 
-        // * group.autoGet('y1') / 100.0 * 10.0
-
-        // base.ball1.rotation.x = Math.max((1.0 - scroller.value), 0.0) / 1
-        // base.ball1.rotation.y = Math.max((1.0 - scroller.value), 0.0) / 1
-        // base.ball1.rotation.z = -scroller.value
-
         renderer.render(scene, camera)
       })
 

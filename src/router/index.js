@@ -9,28 +9,26 @@ const routes = [
     beforeEnter: (to, from, next) => {
       next('/welcome')
     }
-    // component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Home.vue')
   },
-
   {
     path: '/welcome',
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Welcome.vue')
   },
   {
     path: '/cam',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Cam.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Cam.vue')
   },
   {
     path: '/menu',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Menu.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Menu.vue')
   },
   {
     path: '/doi',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/GetDomain.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/GetDomain.vue')
   },
   {
     path: '/pdf',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Layout.vue'),
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Layout.vue'),
     children: [
       {
         path: '',
@@ -38,15 +36,15 @@ const routes = [
       },
       {
         path: 'home',
-        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Home.vue')
+        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Home.vue')
       },
       {
         path: 'login',
-        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Login.vue')
+        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Login.vue')
       },
       {
         path: 'dash',
-        component: () => import(/* webpackChunkName: "home" */ '../Lok/View/PDFScanner/Dashboard.vue')
+        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Dashboard.vue')
       }
     ]
   },

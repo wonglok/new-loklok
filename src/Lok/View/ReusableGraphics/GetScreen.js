@@ -18,13 +18,15 @@ export const visibleWidthAtZDepth = (depth, camera) => {
 }
 
 export const getScreen = ({ camera, depth = camera.position.z }) => {
-  let width = visibleHeightAtZDepth(depth, camera)
+  let width = visibleWidthAtZDepth(depth, camera)
   let height = visibleHeightAtZDepth(depth, camera)
   let min = Math.min(width, height)
   let max = Math.max(width, height)
   return {
     min,
     max,
+    isVertical: height > width,
+    isLandscape: width > height,
     width,
     height
   }

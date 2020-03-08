@@ -4,8 +4,9 @@
 <script>
 import { Refractor } from 'three/examples/jsm/objects/Refractor.js'
 // import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js'
-import { PlaneBufferGeometry, TextureLoader } from 'three'
+import { PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
 import { BlurShader } from './BlurShader'
+import { getScreen } from '../../ReusableGraphics/GetScreen.js'
 
 export const visibleHeightAtZDepth = (depth, camera) => {
   // compensate for cameras not positioned at z=0
@@ -43,34 +44,37 @@ export default {
       }
     }
 
-    let makeGeo = () => {
-      let width = visibleWidthAtZDepth(camera.position.z, camera)
-      let height = visibleHeightAtZDepth(camera.position.z, camera)
-      let max = Math.max(width, height)
-      let geo = new PlaneBufferGeometry(max * 0.5, max * 0.5, 2, 2)
-      return geo
+    let makeMesh = () => {
+      let screen = getScreen({ camera, depth: camera.position.z })
+      let geo = new PlaneBufferGeometry(screen.width * 0.5, screen.height * 0.5, 2, 2)
+      let mesh = new Refractor(geo, {
+        color: 0x999999,
+        textureWidth: 1024,
+        textureHeight: 1024 * camera.aspect,
+        shader: BlurShader
+      })
+      mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
+      mesh.material.uniforms['resolution'].value = new Vector2(1024, 1024 * camera.aspect)
+      return mesh
     }
-    // var plane = new PlaneBufferGeometry(0.0000000001, 0.0000000001)
 
-    let mesh = new Refractor(makeGeo(), {
-      color: 0x999999,
-      textureWidth: 1024,
-      textureHeight: 1024,
-      shader: BlurShader
-    })
-
-    mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
+    let mesh = false
     base.loop(() => {
+      if (!mesh) {
+        return
+      }
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
     base.onResize(() => {
-      mesh.geometry = makeGeo()
-      mesh.needsUpdate = true
+      if (mesh) {
+        glProxy.remove(mesh)
+      }
+      mesh = makeMesh()
+      glProxy.add(mesh)
+      base[this.kn] = mesh
     })
 
-    base[this.kn] = mesh
-
-    glProxy.add(mesh)
+    // glProxy.add(mesh)
     console.log('done', this.kn)
   },
   async beforeDestroy () {

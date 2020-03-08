@@ -1,3 +1,5 @@
+import { Vector2 } from 'three'
+
 /**
  * @author Mugen87 / https://github.com/Mugen87
  * @author Wong Lok / https://wonglok.com
@@ -20,6 +22,9 @@ let fragmentShader = glsl`
   uniform float time;
   uniform sampler2D tDiffuse;
   uniform sampler2D tDudv;
+
+  uniform vec2 resolution;
+
   varying vec2 vUv;
   varying vec4 vUvRefraction;
 
@@ -49,7 +54,7 @@ let fragmentShader = glsl`
 
     // vec4 base = texture2DProj(tDiffuse, uv);
 
-    vec4 base = blurProj5(tDiffuse, uv, vec4(1024.0), vec4(50.0, -50.0, 50.0, -50.0));
+    vec4 base = blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(50.0, -50.0, 50.0, -50.0));
 
     gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );
     // gl_FragColor = vec4(base.rgb, 1.0);
@@ -78,6 +83,10 @@ var BlurShader = {
 
     textureMatrix: {
       value: null
+    },
+
+    resolution: {
+      value: new Vector2(1024, 1024)
     }
 
   },
