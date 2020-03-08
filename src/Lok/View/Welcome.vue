@@ -16,7 +16,8 @@
     <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
 
     <!-- Plane Texture Resource -->
-    <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'skydome2D'"></CanvasTexture>
+    <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'pale2DTexture'"></CanvasTexture>
+    <CanvasTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purple2DTexture'"></CanvasTexture>
 
     <!-- Font Resource -->
     <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort>
@@ -32,7 +33,7 @@
         <MirrorText :base="base" :font="'resortFont'" :text="`Gospel Content & Communication`" :kn="'mirrorText'"></MirrorText>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
-      <SkyDome :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
+      <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :base="base" :kn="'ball1'">
           <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
@@ -44,11 +45,38 @@
         <O3D :base="base" :kn="'belowFold'" :py="screen.height * -0.5">
           <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
 
-            <O3D v-if="screen && layout" :screen="screen" :layout="layout['made-happily']" :base="base" :kn="'slogan'">
-              <CenterText :text="`Happily Made...`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-              <!-- <MirrorText :base="base" :font="'resortFont'" :text="'ARTARTARTRATATTA'" :kn="'mirrorText'"></MirrorText> -->
-              <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
+            <O3D v-if="screen" :screen="screen" :layout="layout['bible']">
+              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
+                <TextureText :screen="screen" :text="`Love is patient, love is kind.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+              </O3D>
+
+              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
+                <TextureText :screen="screen" :text="`Love is not easily angered.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+              </O3D>
+
+              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel3']">
+                <TextureText :screen="screen" :text="`Love always protects, always trusts.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+              </O3D>
+
+              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel4']">
+                <TextureText :screen="screen" :text="`Love always hopes, always perseveres.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+              </O3D>
             </O3D>
+
+            <!--
+            <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
+              <CenterText :text="`Love Does Not Envy. Love Does Not Boast`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
+            </O3D>
+
+            <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel3']">
+              <CenterText :text="`Love Is Not Easily Angered. Love Is Not Self-Seeking`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
+            </O3D> -->
+
+            <!--
+              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
+                <CenterText :text="`John 3:16. Love is patient, love is kind.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
+              </O3D>
+            -->
 
             <O3D :base="base" :kn="'refractionO3D'">
               <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>

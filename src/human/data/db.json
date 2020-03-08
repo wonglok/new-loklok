@@ -266,20 +266,88 @@
     },
     {
       "group": "page1-layout",
-      "key": "made-happily",
+      "key": "gospel",
       "type": "layout",
       "value": {
         "fpx": "0",
-        "fpy": "0",
+        "fpy": "height  * 0.3",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
         "frz": "0",
-        "fsx": "0.3",
-        "fsy": "0.3",
-        "fsz": "0.3"
+        "fsx": "0.12",
+        "fsy": "0.12",
+        "fsz": "0.12"
       },
       "id": "_184136"
+    },
+    {
+      "group": "page1-layout",
+      "key": "gospel2",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "height * 0.2",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "0.11",
+        "fsy": "0.11",
+        "fsz": "0.11"
+      },
+      "id": "_248463"
+    },
+    {
+      "group": "page1-layout",
+      "key": "gospel3",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "height * 0.1",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "0.10",
+        "fsy": "0.10",
+        "fsz": "0.10"
+      },
+      "id": "_172557"
+    },
+    {
+      "group": "page1-layout",
+      "key": "gospel4",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "height * 0.0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "0.10",
+        "fsy": "0.10",
+        "fsz": "0.10"
+      },
+      "id": "_943743"
+    },
+    {
+      "group": "page1-layout",
+      "key": "bible",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "screen.height * -0.05",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "1",
+        "fsy": "1",
+        "fsz": "1"
+      },
+      "id": "_926929"
     }
   ]
 }

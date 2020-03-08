@@ -197,7 +197,9 @@ export default {
   },
   mounted () {
     this.sync(this.object3D)
-    this.base[this.kn] = this.object3D
+    if (this.kn && this.base) {
+      this.base[this.kn] = this.object3D
+    }
     this.$parent.$emit('add', this.object3D)
   },
   beforeDestroy () {
