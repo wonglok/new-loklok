@@ -51,7 +51,7 @@ export default {
       renderer.setSize(base.getWidth(), base.getHeight())
       renderer.setPixelRatio(dpi)
     }
-    resizer()
+    // resizer()
     base.onResize(resizer)
 
     base.mounter.appendChild(renderer.domElement)

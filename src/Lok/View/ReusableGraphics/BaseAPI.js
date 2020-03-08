@@ -43,11 +43,14 @@ export const makeBase = async ({ mounter }) => {
     }
   }
   let rAFID = 0
-  let looper = () => {
-    rAFID = requestAnimationFrame(looper)
+  let runLoop = () => {
     for (var loopKN in env._.loop) {
       env._.loop[loopKN]()
     }
+  }
+  let looper = () => {
+    rAFID = requestAnimationFrame(looper)
+    runLoop()
   }
   rAFID = requestAnimationFrame(looper)
   env.onClean(() => {
@@ -55,12 +58,15 @@ export const makeBase = async ({ mounter }) => {
   })
 
   let tout = 0
+  let runResize = () => {
+    for (var resizeKN in env._.resize) {
+      env._.resize[resizeKN]()
+    }
+  }
   let resize = () => {
     clearTimeout(tout)
     tout = setTimeout(() => {
-      for (var resizeKN in env._.resize) {
-        env._.resize[resizeKN]()
-      }
+      runResize()
     }, 100)
   }
   window.addEventListener('resize', resize, false)
@@ -74,7 +80,8 @@ export const makeBase = async ({ mounter }) => {
   // }, 100)
 
   env.systemReady = () => {
-    window.dispatchEvent(new Event('resize'))
+    runLoop()
+    runResize()
   }
 
   return env

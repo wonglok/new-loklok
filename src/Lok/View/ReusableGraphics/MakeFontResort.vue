@@ -42,41 +42,44 @@ export default {
       let group = this.sdk.getGroup(`${this.setting}`)
       let tout = 0
       let json = ''
-      let setup = () => {
+      let runSetup = () => {
+        let swidth = visibleWidthAtZDepth(camera.position.z, camera)
+        // let sheight = visibleHeightAtZDepth(camera.position.z, camera)
+        // let min = Math.min(swidth, sheight)
+        let params = {
+          font: font,
+          size: (width || (group.proxy.width / 100)) * swidth / text.length,
+          height: height || (group.proxy.depth / 100 * 5),
+          curveSegments: group.proxy.curveSegments / 100 * 100,
+          bevelEnabled: group.proxy.bevelEnabled,
+          bevelThickness: group.proxy.bevelThickness / 100,
+          bevelSize: group.proxy.bevelSize / 100,
+          bevelOffset: group.proxy.bevelOffset / 100,
+          bevelSegments: group.proxy.bevelOffset / 100 * 10
+        }
+        let newJSON = JSON.stringify(params)
+        if (newJSON !== json) {
+          json = newJSON
+          console.log(params)
+          var geometry = new TextGeometry(text, params)
+          onReady({ geo: geometry })
+        }
+      }
+      let setupLater = () => {
         clearTimeout(tout)
         tout = setTimeout(() => {
-          let swidth = visibleWidthAtZDepth(camera.position.z, camera)
-          // let sheight = visibleHeightAtZDepth(camera.position.z, camera)
-          // let min = Math.min(swidth, sheight)
-          let params = {
-            font: font,
-            size: (width || (group.proxy.width / 100) * 2) * swidth / text.length,
-            height: height || (group.proxy.depth / 100 * 5),
-            curveSegments: group.proxy.curveSegments / 100 * 100,
-            bevelEnabled: group.proxy.bevelEnabled,
-            bevelThickness: group.proxy.bevelThickness / 100,
-            bevelSize: group.proxy.bevelSize / 100,
-            bevelOffset: group.proxy.bevelOffset / 100,
-            bevelSegments: group.proxy.bevelOffset / 100 * 10
-          }
-          let newJSON = JSON.stringify(params)
-          if (newJSON !== json) {
-            json = newJSON
-            console.log(params)
-            var geometry = new TextGeometry(text, params)
-            onReady({ geo: geometry })
-          }
+          runSetup()
         }, 50)
       }
-      this.base.onResize(setup)
-      group.autoPulse('width', setup)
-      group.autoPulse('depth', setup)
-      group.autoPulse('curveSegments', setup)
-      group.autoPulse('bevelEnabled', setup)
-      group.autoPulse('bevelThickness', setup)
-      group.autoPulse('bevelSize', setup)
-      group.autoPulse('bevelOffset', setup)
-      group.autoPulse('bevelSegments', setup)
+      this.base.onResize(runSetup)
+      group.autoPulse('width', setupLater)
+      group.autoPulse('depth', setupLater)
+      group.autoPulse('curveSegments', setupLater)
+      group.autoPulse('bevelEnabled', setupLater)
+      group.autoPulse('bevelThickness', setupLater)
+      group.autoPulse('bevelSize', setupLater)
+      group.autoPulse('bevelOffset', setupLater)
+      group.autoPulse('bevelSegments', setupLater)
     }
   }
 }

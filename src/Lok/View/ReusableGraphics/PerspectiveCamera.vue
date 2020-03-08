@@ -20,7 +20,7 @@ export default {
       camera.aspect = base.getWidth() / base.getHeight()
       camera.updateProjectionMatrix()
     }
-    resizer()
+    // resizer()
     base.onResize(resizer)
 
     this.base[this.kn] = camera

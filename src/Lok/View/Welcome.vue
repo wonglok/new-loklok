@@ -8,8 +8,8 @@
 
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
-      <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
-      <O3D :base="base" :kn="'displaySpace'">
+      <O3D :visible="visible" :base="base" :kn="'root'">
+        <SkyDome v-if="base" :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
         <O3D :base="base" :kn="'heroSection'">
           <O3D :base="base" :kn="'ball1'">
             <ParametricRefraction v-if="base && sdk" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
@@ -59,7 +59,7 @@ export default {
   },
   data () {
     return {
-      visible: true,
+      visible: false,
       useOribt: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
@@ -67,16 +67,16 @@ export default {
     }
   },
   async mounted () {
-    this.base = await makeBase({ mounter: this.$refs['mounter'] })
     this.sdk = await makeSDK()
-    this.$nextTick(this.onReady)
+    this.base = await makeBase({ mounter: this.$refs['mounter'] })
+    this.onReady()
   },
   methods: {
     async onReady () {
       let base = this.base
-      let renderer = base.renderer
-      let scene = base.scene
-      let camera = base.camera
+      let renderer = await base.waitKN('renderer')
+      let scene = await base.waitKN('scene')
+      let camera = await base.waitKN('camera')
       camera.position.z = 20
 
       let pageCount = 2
@@ -100,6 +100,9 @@ export default {
       })
 
       base.systemReady()
+      setTimeout(() => {
+        this.visible = true
+      })
     },
     log (v) {
       this.logs.unshift(v)
