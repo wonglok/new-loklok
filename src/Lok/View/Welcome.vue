@@ -29,19 +29,21 @@
         <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-withloklok'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-ohmydear']" :base="base" :kn="'topnav-r'">
-        <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirrorText'"></MirrorText>
+        <MirrorText :base="base" :font="'resortFont'" :text="'LOVE SONG'" :kn="'mirrorText'"></MirrorText>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'skydome2D'" :kn="'skydome'"></SkyDome>
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :base="base" :kn="'ball1'">
-          <ParametricRefraction v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricRefraction>
+          <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
         </O3D>
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
         <O3D :base="base" :kn="'belowFold'" :py="screen.height * -0.5">
-          <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
+          <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
+            <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
+          </O3D>
 
           <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
             <O3D :base="base" :kn="'underRefractorPosition'">
@@ -113,7 +115,7 @@ export default {
       })
 
       base.loop(() => {
-        base.zoomSection.position.z = (-scroller.value + -0.1) * 50
+        base.zoomSection.position.z = (-scroller.value + -0.1) * 90.0
         base.scrollSection.position.y = (this.screen.height) * (scroller.value)
         renderer.render(scene, camera)
       })
