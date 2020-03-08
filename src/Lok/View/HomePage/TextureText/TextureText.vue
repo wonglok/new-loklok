@@ -30,6 +30,7 @@ export default {
     text: {
       default: 'With Lok Lok .com'
     },
+    align: {},
     kn: {},
     base: {},
     font: {},
@@ -50,7 +51,7 @@ export default {
     }
 
     let texture = new TextTexture({
-      align: 'center',
+      align: this.align || 'center',
       fillStyle: 'white',
       fontFamily: 'sans-serif',
       fontSize: 120,

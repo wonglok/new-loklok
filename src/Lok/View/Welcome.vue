@@ -49,7 +49,7 @@
 
             <O3D v-if="screen" :screen="screen" :layout="layout['bible']">
               <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
-                <TextureText :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+                <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
               </O3D>
 
               <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
@@ -105,10 +105,20 @@ export default {
   },
   data () {
     return {
-      favouriteVerses: `Love is patience. Love is kind.
-Love is not easily angered.
-Love always protects, always trusts.
-Love always hopes, always perseveres.`,
+      favouriteVerses: `Love is patient and kind;
+love does not envy or boast;
+it is not arrogant or rude.
+It does not insist on its own way;
+it is not irritable or resentful;
+it does not rejoice at wrongdoing,
+but rejoices with the truth.
+Love bears all things,
+believes all things,
+hopes all things,
+endures all things.
+Love never ends.
+
+1 Corinthians 13:4–8a`,
       layout: false,
       screen: false,
       ready: false,
