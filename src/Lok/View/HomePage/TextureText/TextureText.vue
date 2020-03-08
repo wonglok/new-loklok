@@ -54,14 +54,15 @@ export default {
       align: this.align || 'center',
       fillStyle: 'white',
       fontFamily: 'sans-serif',
-      fontSize: 120,
+      fontSize: 140,
       fontStyle: 'normal',
       fontVariant: 'normal',
       fontWeight: 'normal',
       lineGap: 0.15,
-      padding: 0.25,
-      strokeStyle: 'black',
-      strokeWidth: 0.0,
+      padding: 0.15,
+      // mini text shadow
+      strokeStyle: '#ccc',
+      strokeWidth: 0.01,
       text: ''
     })
     /* eslint-disable */
