@@ -1,3 +1,5 @@
+precision highp float;
+
 #define PI 3.1415926535897932384626433832795
 
 // attributes of our mesh
@@ -221,7 +223,7 @@ vec3 sample (float t) {
   float pZ = pos.y;
   float piz = 0.001 * 2.0 * 3.14159265;
 
-  // pos.xyz = rotateQ(normalize(vec3(1.0, pY * piz, 1.0)), time + pY * piz) * rotateY(time + pZ * piz) * pos.xyz;
+  pos.xyz = rotateQ(normalize(vec3(1.0, pY * piz, 1.0)), time + pY * piz) * rotateY(time + pZ * piz) * pos.xyz;
   pos.xyz = rotateQ(normalize(vec3(1.0, pZ * piz, 1.0)), time + pY * piz) * rotateZ(time + pZ * piz) * pos.xyz;
   pos.xyz = rotateQ(normalize(vec3(1.0, pZ * piz, 1.0)), time + pX * piz) * rotateY(time + pY * piz) * pos.xyz;
 
@@ -231,11 +233,11 @@ vec3 sample (float t) {
 
   float ttTime = time * 0.5;
 
-  pos.xyz *= rotateX(0.6 + ttTime);
-  pos.xyz *= rotateY(1.3 + ttTime);
-  pos.xyz *= rotateZ(0.6 + ttTime);
+  pos.xyz *= rotateX(length(pos.xyz) + ttTime);
+  pos.xyz *= rotateY(length(pos.xyz) + ttTime);
+  pos.xyz *= rotateZ(length(pos.xyz) + ttTime);
 
-  pos.xyz += ballify(pos.xyz, sin(ttTime));
+  pos.xyz += ballify(pos.xyz, length(pos.xyz) * 0.5 + 0.5 * length(pos.xyz) * sin(ttTime));
 
   return pos.xyz;
 }

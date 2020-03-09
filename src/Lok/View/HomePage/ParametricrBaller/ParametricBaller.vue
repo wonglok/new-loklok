@@ -93,7 +93,7 @@ export const createLineGeo = async ({ count = 100, numSides = 8, subdivisions = 
 export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) => {
   let count = 100
   let numSides = 4
-  let subdivisions = 300
+  let subdivisions = 350
   let openEnded = false
   let geo = await createLineGeo({ count, numSides, subdivisions, openEnded })
   let glProxy = {
