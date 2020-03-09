@@ -61,7 +61,7 @@ export default {
       lineGap: 0.15,
       padding: 0.15,
       // mini text shadow
-      strokeStyle: 'gray',
+      strokeStyle: '#bababa',
       strokeWidth: 0.025,
       text: ''
     })
