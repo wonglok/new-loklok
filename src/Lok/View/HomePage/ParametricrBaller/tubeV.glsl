@@ -217,7 +217,7 @@ vec3 spherical (float r, float phi, float theta) {
 // }
 
 vec3 sample (float t) {
-  vec3 pos = vec3((t - 0.5) * 3000.0);
+  vec3 pos = vec3((t - 0.5) * 2500.0);
   float pX = pos.x;
   float pY = pos.y;
   float pZ = pos.y;
