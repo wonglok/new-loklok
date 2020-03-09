@@ -75,6 +75,9 @@ export default {
     layout () {
       this.sync(this.object3D)
     },
+    screen () {
+      this.sync(this.object3D)
+    },
 
     px () {
       this.object3D.position.x = this.px
