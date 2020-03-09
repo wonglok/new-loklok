@@ -26,7 +26,7 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
-        <CenterText :text="`Love.WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
+        <CenterText :text="`withloklok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
         <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
@@ -41,46 +41,18 @@
       </O3D>
 
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
-        <O3D :base="base" :kn="'belowFold'" :py="screen.height * -0.5">
-          <O3D :base="base" :kn="'page2'" :py="screen.height * 0">
+        <O3D :py="screen.height * -0.5">
+
+          <!-- Page2 -->
+          <O3D>
 
             <O3D v-if="screen" :screen="screen" :layout="layout['bible']">
               <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
                 <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
               </O3D>
-
-              <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
-                <TextureText :screen="screen" :text="`Love is not easily angered.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-              </O3D>
-
-              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel3']">
-                <TextureText :screen="screen" :text="`Love always protects, always trusts.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-              </O3D>
-
-              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel4']">
-                <TextureText :screen="screen" :text="`Love always hopes, always perseveres.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-              </O3D> -->
             </O3D>
 
-            <!--
-            <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
-              <CenterText :text="`Love Does Not Envy. Love Does Not Boast`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-            </O3D>
-
-            <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel3']">
-              <CenterText :text="`Love Is Not Easily Angered. Love Is Not Self-Seeking`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-            </O3D> -->
-
-            <!--
-              <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel2']">
-                <CenterText :text="`John 3:16. Love is patient, love is kind.`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'section-2-text'"></CenterText>
-              </O3D>
-            -->
-
-            <O3D :base="base" :kn="'refractionO3D'">
-              <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
-            </O3D>
-
+            <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
           </O3D>
 
         </O3D>

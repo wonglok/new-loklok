@@ -34,7 +34,7 @@ export default {
   },
   async mounted () {
     var font = require('../../Fonts/resort-display.json')
-    // var camera = await this.base.waitKN('camera')
+    var camera = await this.base.waitKN('camera')
     font = new Font(font)
 
     this.base[this.kn] = async ({ text, width = false, height = false, onReady }) => {
@@ -43,12 +43,12 @@ export default {
       let tout = 0
       let json = ''
       let runSetup = () => {
-        // let swidth = visibleWidthAtZDepth(camera.position.z, camera)
-        // let sheight = visibleHeightAtZDepth(camera.position.z, camera)
-        // let min = Math.min(swidth, sheight)
+        let swidth = visibleWidthAtZDepth(camera.position.z, camera)
+        let sheight = visibleHeightAtZDepth(camera.position.z, camera)
+        let min = Math.min(swidth, sheight)
         let params = {
           font: font,
-          size: (width || (group.proxy.width / 100)) * 100 * 0.5,
+          size: (width || (group.proxy.width / 100)) * min,
           height: height || (group.proxy.depth / 100 * 5),
           curveSegments: group.proxy.curveSegments / 100 * 100,
           bevelEnabled: group.proxy.bevelEnabled,
@@ -57,6 +57,7 @@ export default {
           bevelOffset: group.proxy.bevelOffset / 100,
           bevelSegments: group.proxy.bevelOffset / 100 * 10
         }
+
         let newJSON = JSON.stringify(params)
         if (newJSON !== json) {
           json = newJSON
@@ -72,7 +73,7 @@ export default {
           runSetup()
         }, 50)
       }
-      this.base.onResize(setupLater)
+      this.base.onResize(runSetup)
       group.autoPulse('width', setupLater)
       group.autoPulse('depth', setupLater)
       group.autoPulse('curveSegments', setupLater)

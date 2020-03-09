@@ -92,6 +92,7 @@ export default {
       glProxy.add(mesh)
     }
     // let text = 'withloklok.com'
+    // let width = visibleWidthAtZDepth({ depth: camera.position.z, camera })
     makeFont({ text: this.text, onReady })
   },
   async beforeDestroy () {

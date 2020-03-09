@@ -44,11 +44,11 @@ export default {
       let json = ''
       let runSetup = () => {
         let swidth = visibleWidthAtZDepth(camera.position.z, camera)
-        // let sheight = visibleHeightAtZDepth(camera.position.z, camera)
-        // let min = Math.min(swidth, sheight)
+        let sheight = visibleHeightAtZDepth(camera.position.z, camera)
+        let min = Math.min(swidth, sheight)
         let params = {
           font: font,
-          size: (width || (group.proxy.width / 100)) * swidth / text.length,
+          size: (width || (group.proxy.width / 100)) * min,
           height: height || (group.proxy.depth / 100 * 5),
           curveSegments: group.proxy.curveSegments / 100 * 100,
           bevelEnabled: group.proxy.bevelEnabled,
