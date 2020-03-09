@@ -84,7 +84,7 @@
       "group": "font-resort",
       "key": "width",
       "type": "number",
-      "value": 13.61,
+      "value": 15.39,
       "id": "_346921"
     },
     {
@@ -237,7 +237,7 @@
         "fz": 0,
         "fpx": "right",
         "fpz": "0",
-        "fpy": "top",
+        "fpy": "bottom",
         "fsx": "0.175",
         "fsy": "0.175",
         "fsz": "0.175",

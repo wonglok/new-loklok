@@ -143,6 +143,15 @@ export default {
         console.log(e)
       }
       return val
+    },
+    bottom () {
+      let val = 0
+      try {
+        val = Parser.evaluate(`screen.height * -0.25 + scaleY * height * 1 - padding`, this)
+      } catch (e) {
+        console.log(e)
+      }
+      return val
     }
   },
   data () {

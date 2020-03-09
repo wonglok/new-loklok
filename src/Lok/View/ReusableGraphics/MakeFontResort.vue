@@ -41,7 +41,7 @@ export default {
       // eslint-disable-next-line
       let group = this.sdk.getGroup(`${this.setting}`)
       let tout = 0
-      let json = ''
+      // let json = ''
       let runSetup = () => {
         let swidth = visibleWidthAtZDepth(camera.position.z, camera)
         let sheight = visibleHeightAtZDepth(camera.position.z, camera)
@@ -58,13 +58,13 @@ export default {
           bevelSegments: group.proxy.bevelOffset / 100 * 10
         }
 
-        let newJSON = JSON.stringify(params)
-        if (newJSON !== json) {
-          json = newJSON
-          console.log(params)
-          var geometry = new TextGeometry(text, params)
-          onReady({ geo: geometry })
-        }
+        // let newJSON = JSON.stringify(params)
+        // if (newJSON !== json) {
+        // json = newJSON
+        console.log(params)
+        var geometry = new TextGeometry(text, params)
+        onReady({ geo: geometry })
+        // }
       }
 
       let setupLater = () => {

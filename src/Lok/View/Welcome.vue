@@ -28,9 +28,11 @@
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
         <CenterText :text="`withloklok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
       </O3D>
+
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
         <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
       </O3D>
+
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :base="base" :kn="'ball1'">
