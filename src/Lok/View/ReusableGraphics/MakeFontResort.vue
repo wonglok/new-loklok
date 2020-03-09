@@ -34,7 +34,7 @@ export default {
   },
   async mounted () {
     var font = require('../../Fonts/resort-display.json')
-    var camera = await this.base.waitKN('camera')
+    // var camera = await this.base.waitKN('camera')
     font = new Font(font)
 
     this.base[this.kn] = async ({ text, width = false, height = false, onReady }) => {
@@ -43,12 +43,12 @@ export default {
       let tout = 0
       let json = ''
       let runSetup = () => {
-        let swidth = visibleWidthAtZDepth(camera.position.z, camera)
+        // let swidth = visibleWidthAtZDepth(camera.position.z, camera)
         // let sheight = visibleHeightAtZDepth(camera.position.z, camera)
         // let min = Math.min(swidth, sheight)
         let params = {
           font: font,
-          size: (width || (group.proxy.width / 100)) * swidth,
+          size: (width || (group.proxy.width / 100)) * 100 * 0.5,
           height: height || (group.proxy.depth / 100 * 5),
           curveSegments: group.proxy.curveSegments / 100 * 100,
           bevelEnabled: group.proxy.bevelEnabled,

@@ -84,7 +84,7 @@
       "group": "font-resort",
       "key": "width",
       "type": "number",
-      "value": 23.71,
+      "value": 13.61,
       "id": "_346921"
     },
     {
@@ -280,6 +280,23 @@
         "fsz": "1"
       },
       "id": "_184136"
+    },
+    {
+      "group": "page1-layout",
+      "key": "nav-center",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "0.25",
+        "fsy": "0.25",
+        "fsz": "0.25"
+      },
+      "id": "_757577"
     }
   ]
 }

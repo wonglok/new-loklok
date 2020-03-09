@@ -61,8 +61,8 @@ export default {
       lineGap: 0.15,
       padding: 0.15,
       // mini text shadow
-      strokeStyle: '#ccc',
-      strokeWidth: 0.01,
+      strokeStyle: 'gray',
+      strokeWidth: 0.025,
       text: ''
     })
     /* eslint-disable */

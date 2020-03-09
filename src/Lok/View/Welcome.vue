@@ -26,20 +26,17 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
-        <!-- <MirrorText :base="base" :font="'resortFont'" :text="'oh my dear'" :kn="'mirror'"></MirrorText> -->
-        <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
+        <CenterText :text="`Love.WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
       </O3D>
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
         <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
-
-        <!-- <MirrorText :base="base" :font="'resortFont'" :text="`Gospel & Communication`" :kn="'mirrorText'"></MirrorText> -->
-        <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :base="base" :kn="'ball1'">
           <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
         </O3D>
+        <!-- <CenterText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></CenterText> -->
         <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
       </O3D>
 
@@ -107,10 +104,10 @@ export default {
     return {
       favouriteVerses: `Love is patient and kind;
 love does not envy or boast;
-it is not arrogant or rude.
+It is not arrogant or rude.
 It does not insist on its own way;
-it is not irritable or resentful;
-it does not rejoice at wrongdoing,
+It is not irritable or resentful;
+It does not rejoice at wrongdoing,
 but rejoices with the truth.
 Love bears all things,
 believes all things,
