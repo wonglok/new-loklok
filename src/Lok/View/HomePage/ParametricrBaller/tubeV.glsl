@@ -237,7 +237,7 @@ vec3 sample (float t) {
   pos.xyz *= rotateY(length(pos.xyz) + ttTime);
   pos.xyz *= rotateZ(length(pos.xyz) + ttTime);
 
-  pos.xyz += ballify(pos.xyz, length(pos.xyz) * 0.5 + 0.5 * length(pos.xyz) * sin(ttTime));
+  pos.xyz += ballify(pos.xyz, length(pos.xyz) * 0.25 + 0.75 * length(pos.xyz) * sin(ttTime));
 
   return pos.xyz;
 }
