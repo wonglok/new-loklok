@@ -20,6 +20,7 @@ export default {
   methods: {
     logout () {
       API.logout()
+      this.$forceUpdate()
       this.$router.push('/pdf')
     }
   }
