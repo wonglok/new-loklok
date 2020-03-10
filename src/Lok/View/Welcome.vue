@@ -14,7 +14,7 @@
     <!-- Cube Texture Resource -->
     <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
     <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
-
+    <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap>
     <!-- Plane Texture Resource -->
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'pale2DTexture'"></CanvasTexture>
     <CanvasTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purple2DTexture'"></CanvasTexture>
@@ -60,7 +60,7 @@
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
-            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
+            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'photoCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
