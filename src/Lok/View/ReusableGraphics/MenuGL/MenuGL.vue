@@ -22,7 +22,7 @@
       <O3D :layout="layout['menu-wonglok']">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://www.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Wong lok .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
-
+      <a ref="anchor"></a>
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
       <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
@@ -70,8 +70,8 @@ export default {
     onClick () {
       this.$emit('close')
     },
-    openWin (v) {
-      window.open(v)
+    openWin (href) {
+      window.location = href
     }
     // sync () {
     //   TWEEN.removeAll()
