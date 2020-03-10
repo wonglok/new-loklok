@@ -6,6 +6,15 @@
       <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
         <TextureText :visible="menu.value > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
+
+      <O3D :layout="layout['menu-ccl']">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
+
+      <O3D :layout="layout['menu-effectnode']">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
+
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
       <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
