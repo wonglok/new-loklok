@@ -29,24 +29,29 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <!-- Brand -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
+      <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
         <GeoText :text="`withloklok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></GeoText>
-      </O3D>
+      </O3D> -->
 
       <!-- Thank you -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
-        <GeoText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></GeoText>
-      </O3D>
+      <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
+        <TextureText v-if="screen" @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Thank you Gospel'" :sdk="sdk" :base="base" :texture="'pale2DTexture'" :kn="'section-2-text'"></TextureText>
+      </O3D> -->
 
       <!-- Hamburger Menu -->
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
         <TextureText :visible="!openMenu" @remove="$removeClick($event)" @add="$addClick($event, () => { if (!openMenu) { openMenu = true; $forceUpdate() } })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
 
-      <!-- Hamburger Menu -->
-      <!-- <O3D v-if="screen && layout && openMenu" :screen="screen" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu'">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openMenu = !openMenu; $forceUpdate() })" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-      </O3D> -->
+      <!-- With Lok Lok Menu -->
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']" :base="base" :kn="'nav-withloklok-'">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {  })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'With Lok Lok'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
+
+      <!-- With Lok Lok Menu -->
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Swipe Up'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
 
       <!-- Dome -->
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
@@ -115,7 +120,8 @@ Love never ends.
       useOribt: false && process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
-      sdk: false
+      sdk: false,
+      scroller: {}
     }
   },
   async mounted () {
@@ -144,8 +150,7 @@ Love never ends.
       })
 
       // can scroll how many pages = limit.y
-      let scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
-
+      let scroller = this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
       // let group = this.sdk.getGroup('page1-layout')
       // // this.layout = group
       // group.autoPulse('ball-pos', (v) => {

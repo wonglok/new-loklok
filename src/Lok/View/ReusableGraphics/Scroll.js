@@ -1,5 +1,11 @@
 // can scroll how many pages = limit.y
 export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 1000 } }) => {
+  let state = {
+    tsY: 0,
+    tdY: 0,
+    taY: 0,
+    inertiaY: 1
+  }
   class ValueDamper {
     constructor (v = 0) {
       this.latestVal = v
@@ -11,6 +17,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
     }
     set value (v) {
       this.latestVal = v
+      state.taY = v
     }
     get value () {
       return this.dampedVal
@@ -43,12 +50,6 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       SmoothY.value = scrollAmount / window.innerHeight
     }, { passive: false })
 
-    let state = {
-      tsY: 0,
-      tdY: 0,
-      taY: 0,
-      inertiaY: 1
-    }
     touchTarget.addEventListener('touchstart', (evt) => {
       evt.preventDefault()
       let t1 = evt.touches[0]
