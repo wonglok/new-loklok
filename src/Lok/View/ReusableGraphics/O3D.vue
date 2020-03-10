@@ -25,7 +25,6 @@ export default {
     pz: {
       default: 0
     },
-
     sx: {
       default: 1
     },
