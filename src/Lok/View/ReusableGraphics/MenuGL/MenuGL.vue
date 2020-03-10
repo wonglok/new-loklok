@@ -4,7 +4,7 @@
       <RefractionArea v-if="base && rect" :screen="rect" :base="base"></RefractionArea>
 
       <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
-        <TextureText v-if="menuMover > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        <TextureText :visible="menuMover > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">

@@ -30,12 +30,20 @@ export default {
     text: {
       default: 'With Lok Lok .com'
     },
+    visible: {
+      default: true
+    },
     align: {},
     kn: {},
     base: {},
     font: {},
     screen: {},
     texture: {}
+  },
+  watch: {
+    visible () {
+      this.sprite.visible = this.visible
+    }
   },
   async mounted () {
     let base = this.base
@@ -111,8 +119,8 @@ export default {
     texture.redraw()
     // sprite.scale
     //   .set(texture.image.width / texture.image.height, 1, 1)
-
     glProxy.add(sprite)
+    this.sprite.visible = this.visible
 
     let update = () => {
       texture.fontFamily = 'Arial, Helvetica, sans-serif'
@@ -186,7 +194,9 @@ export default {
   },
   async beforeDestroy () {
     let glProxy = this.glProxy
-    glProxy.remove(this.sprite)
+    if (this.sprite) {
+      glProxy.remove(this.sprite)
+    }
   }
 }
 </script>

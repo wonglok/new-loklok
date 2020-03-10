@@ -61,14 +61,15 @@ export default {
     }
 
     function onDocumentMouseMove (event) {
-      event.preventDefault()
+      // event.preventDefault()
       bs.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
       bs.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     }
     function onDocumentTouchMove (event) {
       let obj = event.touches[0]
-      bs.mouse.x = (obj.clientX / window.innerWidth) * 2 - 1
-      bs.mouse.y = -(obj.clientY / window.innerHeight) * 2 + 1
+      console.log(obj)
+      bs.mouse.x = (obj.pageX / window.innerWidth) * 2 - 1
+      bs.mouse.y = -(obj.pageY / window.innerHeight) * 2 + 1
     }
     let onDocumentClick = () => {
       let rc = this.raycaster
@@ -129,10 +130,12 @@ export default {
         }
       }
     }
-    renderer.domElement.addEventListener('touchmove', onDocumentTouchMove, { passive: true })
-    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, { passive: true })
-    renderer.domElement.addEventListener('click', onDocumentClick)
-    renderer.domElement.addEventListener('touchstart', onDocumentClick)
+
+    renderer.domElement.addEventListener('touchstart', onDocumentTouchMove, { passive: false })
+    renderer.domElement.addEventListener('touchmove', onDocumentTouchMove, { passive: false })
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, { passive: false })
+    renderer.domElement.addEventListener('click', onDocumentClick, { passive: false })
+    renderer.domElement.addEventListener('touchstart', onDocumentClick, { passive: false })
     bs.loop(onDocumentHover)
   }
 }
