@@ -15,12 +15,12 @@ limitations under the License.
 
  */
 
-import * as THREE from 'three'
+import { AudioListener, Audio, AudioAnalyser, DataTexture, LuminanceFormat } from 'three'
 
 export const setup = () => {
   var api = {}
   var fftSize = 512 // up to 2048 with pow2
-  var listener = new THREE.AudioListener()
+  var listener = new AudioListener()
 
   var analyser = null
   var texture = null
@@ -37,14 +37,14 @@ export const setup = () => {
   }
 
   navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
-    sound = new THREE.Audio(listener)
+    sound = new Audio(listener)
     var context = listener.context
     listener.setMasterVolume(0.0)
     var source = context.createMediaStreamSource(stream)
     sound.setNodeSource(source)
 
-    analyser = new THREE.AudioAnalyser(sound, fftSize)
-    texture = new THREE.DataTexture(savedBits, dataPerScan, maxHistory, THREE.LuminanceFormat)
+    analyser = new AudioAnalyser(sound, fftSize)
+    texture = new DataTexture(savedBits, dataPerScan, maxHistory, LuminanceFormat)
   })
 
   api.pause = () => {

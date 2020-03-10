@@ -43,9 +43,11 @@ export default {
 
     let glProxy = this.glProxy = {
       add: (v) => {
+        this.$emit('add', v)
         this.$parent.$emit('add', v)
       },
       remove: (v) => {
+        this.$emit('remove', v)
         this.$parent.$emit('remove', v)
       }
     }
@@ -94,7 +96,7 @@ export default {
         radius: width * 0.5,
         width: width,
         height: height,
-        depth: 0
+        depth: this.sprite.getWorldPosition().z
       }
 
       console.log(this.text, 'sizing', sizing)
@@ -102,7 +104,7 @@ export default {
 
       return geo
     }
-    let sprite = new Mesh(makeGeo(), material)
+    let sprite = new Mesh(undefined, material)
     sprite.position.z = 1.0
 
     this.sprite = sprite

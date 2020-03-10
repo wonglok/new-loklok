@@ -26,28 +26,28 @@ const routes = [
     path: '/doi',
     component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/GetDomain.vue')
   },
-  {
-    path: '/pdf',
-    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Layout.vue'),
-    children: [
-      {
-        path: '',
-        redirect: '/pdf/home'
-      },
-      {
-        path: 'home',
-        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Home.vue')
-      },
-      {
-        path: 'login',
-        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Login.vue')
-      },
-      {
-        path: 'dash',
-        component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Dashboard.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/pdf',
+  //   component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Layout.vue'),
+  //   children: [
+  //     {
+  //       path: '',
+  //       redirect: '/pdf/home'
+  //     },
+  //     {
+  //       path: 'home',
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Home.vue')
+  //     },
+  //     {
+  //       path: 'login',
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Login.vue')
+  //     },
+  //     {
+  //       path: 'dash',
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Dashboard.vue')
+  //     }
+  //   ]
+  // },
   {
     path: '/lok',
     component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Lok.vue')

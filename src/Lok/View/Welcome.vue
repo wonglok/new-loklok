@@ -23,49 +23,70 @@
     <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort>
     <!-- <MakeFontLifeSaver v-if="base" :sdk="sdk" :base="base" :kn="'lifeSaverFont'"></MakeFontLifeSaver> -->
 
+    <!-- Raycaster -->
+    <Raycaster v-if="base" :sdk="sdk" :base="base" :kn="'clickers'"></Raycaster>
+
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <!-- Brand -->
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topleft']" :base="base" :kn="'topnav-l'">
-        <CenterText :text="`withloklok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
+        <GeoText :text="`withloklok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></GeoText>
       </O3D>
 
       <!-- Thank you -->
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
-        <CenterText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></CenterText>
+        <GeoText :text="`Thank you Gospel`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'nav-slogan'"></GeoText>
       </O3D>
+
+      <!-- Hamburger Menu -->
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
+        <TextureText v-if="!openMenu" @remove="$removeClick($event)" @add="$addClick($event, () => { openMenu = !openMenu; $forceUpdate() })" :align="'left'" :screen="screen" :text="'MENU'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+      </O3D>
+
+      <!-- Hamburger Menu -->
+      <!-- <O3D v-if="screen && layout && openMenu" :screen="screen" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu'">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openMenu = !openMenu; $forceUpdate() })" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+      </O3D> -->
 
       <!-- Dome -->
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
+
+      <!-- Menu -->
+      <MenuGL @close="openMenu = false" :open="openMenu" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :layout="layout['baller']">
           <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
         </O3D>
-        <!-- <CenterText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></CenterText> -->
-        <!-- <CenterText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></CenterText> -->
+        <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
+        <!-- <GeoText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></GeoText> -->
       </O3D>
 
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
         <!-- Page2 -->
-        <O3D :py="screen.height * -0.5">
+        <O3D :py="screen.height * -1">
           <!-- Group the bible -->
           <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
             <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
           </O3D>
-          <RefractionArea :base="base" :kn="'refractionArea'"></RefractionArea>
+          <O3D>
+            <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'"></RefractionArea>
+          </O3D>
         </O3D>
       </O3D>
+
     </Scene>
 
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import { makeSDK } from '../../human'
 import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
+const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
   components: {
@@ -73,6 +94,7 @@ export default {
   },
   data () {
     return {
+      openMenu: false,
       favouriteVerses: `Love is patient and kind;
 love does not envy or boast;
 It is not arrogant or rude.
@@ -110,15 +132,19 @@ Love never ends.
       let renderer = await base.waitKN('renderer')
       let scene = await base.waitKN('scene')
       let camera = await base.waitKN('camera')
-      camera.position.z = 20
 
-      this.screen = getScreen({ camera, depth: camera.position.z })
+      camera.position.z = 100
+
+      Vue.prototype.$currentCamera = camera
+
+      this.screen = getScreen({ camera, depth: 0.0 })
       base.onResize(() => {
-        this.screen = getScreen({ camera, depth: camera.position.z })
+        this.screen = getScreen({ camera, depth: 0.0 })
+        // this.$forceUpdate()
       })
 
       // can scroll how many pages = limit.y
-      let scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { y: 1 } })
+      let scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
 
       // let group = this.sdk.getGroup('page1-layout')
       // // this.layout = group
@@ -127,8 +153,11 @@ Love never ends.
       // })
 
       base.loop(() => {
+        TWEEN.update()
+
         base.zoomSection.position.z = (-scroller.value + -0.1) * 90.0
-        base.scrollSection.position.y = (this.screen.height * (1.0 * 0.0 + 0.5)) * (scroller.value)
+        base.scrollSection.position.y = (this.screen.height * (1)) * (scroller.value)
+
         renderer.render(scene, camera)
       })
 
@@ -136,6 +165,7 @@ Love never ends.
 
       setTimeout(() => {
         this.ready = true
+        this.openMenu = true
       })
     },
     log (v) {

@@ -6,30 +6,36 @@ import { Refractor } from 'three/examples/jsm/objects/Refractor.js'
 // import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js'
 import { PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
 import { BlurShader } from './BlurShader'
-import { getScreen } from '../../ReusableGraphics/GetScreen.js'
+// import { getScreen } from '../../ReusableGraphics/GetScreen'
+// import { getScreen } from '../../ReusableGraphics/GetScreen.js'
 
-export const visibleHeightAtZDepth = (depth, camera) => {
-  // compensate for cameras not positioned at z=0
-  const cameraOffset = camera.position.z
-  if (depth < cameraOffset) depth -= cameraOffset
-  else depth += cameraOffset
+// export const visibleHeightAtZDepth = (depth, camera) => {
+//   // compensate for cameras not positioned at z=0
+//   const cameraOffset = camera.position.z
+//   if (depth < cameraOffset) depth -= cameraOffset
+//   else depth += cameraOffset
 
-  // vertical fov in radians
-  const vFOV = camera.fov * Math.PI / 180
+//   // vertical fov in radians
+//   const vFOV = camera.fov * Math.PI / 180
 
-  // Math.abs to ensure the result is always positive
-  return 2 * Math.tan(vFOV / 2) * Math.abs(depth)
-}
+//   // Math.abs to ensure the result is always positive
+//   return 2 * Math.tan(vFOV / 2) * Math.abs(depth)
+// }
 
-export const visibleWidthAtZDepth = (depth, camera) => {
-  const height = visibleHeightAtZDepth(depth, camera)
-  return height * camera.aspect
-}
+// export const visibleWidthAtZDepth = (depth, camera) => {
+//   const height = visibleHeightAtZDepth(depth, camera)
+//   return height * camera.aspect
+// }
 
 export default {
   props: {
-    pageHeight: {},
+    // depth: {
+    //   default: 0
+    // },
     kn: {},
+    screen: {
+      default: false
+    },
     base: {}
   },
   async mounted () {
@@ -46,8 +52,8 @@ export default {
     }
 
     let makeMesh = () => {
-      let screen = getScreen({ camera, depth: camera.position.z })
-      let geo = new PlaneBufferGeometry(screen.width * 0.5, screen.height * 0.5, 2, 2)
+      let screen = this.screen
+      let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {
         color: 0x999999,
         textureWidth: 1024,

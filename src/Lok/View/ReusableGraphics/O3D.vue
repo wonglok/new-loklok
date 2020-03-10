@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import { Object3D } from 'three'
+import { Object3D, Vector3 } from 'three'
 import { Parser } from 'expr-eval'
+// import { getScreen } from './GetScreen'
 // npm install expr-eval
 
-// import * as THREE from 'three'
 export default {
   props: {
     mode: {},
@@ -62,9 +62,11 @@ export default {
     })
     this.$on('add', (v) => {
       this.object3D.add(v)
+      this.$emit('onadd')
     })
     this.$on('remove', (v) => {
       this.object3D.remove(v)
+      this.$emit('onremove')
     })
   },
   watch: {
@@ -108,10 +110,13 @@ export default {
     }
   },
   computed: {
+    rect () {
+      return this.screen
+    },
     padding () {
       let val = 0
       try {
-        val = Parser.evaluate(`0.005 * screen.min`, this)
+        val = Parser.evaluate(`0.005 * rect.min`, this)
       } catch (e) {
         console.log(e)
       }
@@ -120,7 +125,7 @@ export default {
     right () {
       let val = 0
       try {
-        val = Parser.evaluate(`screen.width * 0.25 - scaleX * width * 0.5 - padding`, this)
+        val = Parser.evaluate(`rect.width * 0.5 - scaleX * width * 0.5 - padding`, this)
       } catch (e) {
         console.log(e)
       }
@@ -129,7 +134,7 @@ export default {
     left () {
       let val = 0
       try {
-        val = Parser.evaluate(`screen.width * -0.25 + scaleX * width * 0.5 + padding`, this)
+        val = Parser.evaluate(`rect.width * -0.5 + scaleX * width * 0.5 + padding`, this)
       } catch (e) {
         console.log(e)
       }
@@ -138,7 +143,7 @@ export default {
     top () {
       let val = 0
       try {
-        val = Parser.evaluate(`screen.height * 0.25 + scaleY * height * -0.5 - padding`, this)
+        val = Parser.evaluate(`rect.height * 0.5 + scaleY * height * -0.5 - padding`, this)
       } catch (e) {
         console.log(e)
       }
@@ -147,7 +152,7 @@ export default {
     bottom () {
       let val = 0
       try {
-        val = Parser.evaluate(`screen.height * -0.25 + scaleY * height * 1 - padding`, this)
+        val = Parser.evaluate(`rect.height * -0.5 + scaleY * height * 1 - padding`, this)
       } catch (e) {
         console.log(e)
       }
@@ -157,12 +162,13 @@ export default {
   data () {
     let object3D = new Object3D()
     return {
+      world: new Vector3(),
       scaleX: 1,
       scaleY: 1,
       scaleZ: 1,
       width: 1,
       height: 1,
-      depth: 1,
+      depth: 0,
       radius: 1,
       object3D
     }
@@ -170,6 +176,7 @@ export default {
   methods: {
     sync (object3D) {
       object3D.visible = this.visible
+      this.object3D.getWorldPosition(this.world)
 
       let run = (fnc) => {
         try {
@@ -191,7 +198,7 @@ export default {
         run(() => { object3D.rotation.y = Parser.evaluate(this.layout.fry || '0', this) })
         run(() => { object3D.rotation.z = Parser.evaluate(this.layout.frz || '0', this) })
 
-        console.log(this.kn, JSON.stringify(this.layout))
+        console.log('layout-update', JSON.stringify(this.layout))
       } else {
         object3D.position.x = this.px
         object3D.position.y = this.py

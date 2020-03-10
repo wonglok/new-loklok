@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import { AudioListener, Audio, AudioAnalyser, DataTexture, LuminanceFormat } from 'three'
 
 export const setup = ({ url }) => {
   var api = {}
@@ -7,8 +7,8 @@ export const setup = ({ url }) => {
   // mediaElement.autoplay = true
   // mediaElement.loop = true
 
-  var listener = new THREE.AudioListener()
-  var audio = new THREE.Audio(listener)
+  var listener = new AudioListener()
+  var audio = new Audio(listener)
   // audio.setMediaElementSource(mediaElement)
   // listener.setMasterVolume(1.0)
 
@@ -31,8 +31,8 @@ export const setup = ({ url }) => {
     historyArr.push(new Uint8Array(new Array(dataPerScan)))
   }
 
-  var analyser = new THREE.AudioAnalyser(audio, fftSize)
-  let texture = new THREE.DataTexture(savedBits, dataPerScan, maxHistory, THREE.LuminanceFormat)
+  var analyser = new AudioAnalyser(audio, fftSize)
+  let texture = new DataTexture(savedBits, dataPerScan, maxHistory, LuminanceFormat)
 
   api.play = () => {
     api.mediaElement.play()

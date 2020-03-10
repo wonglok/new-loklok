@@ -1,21 +1,21 @@
-import * as THREE from 'three'
+import { AudioListener, Audio, AudioAnalyser, DataTexture, LuminanceFormat } from 'three'
 
 export const setup = ({ url }) => {
   var api = {}
   var fftSize = 512 // up to 2048 with pow2
-  var listener = new THREE.AudioListener()
-  var audio = new THREE.Audio(listener)
+  var listener = new AudioListener()
+  var audio = new Audio(listener)
 
   var mediaElement = new Audio(url)
   mediaElement.loop = true
   mediaElement.play()
   audio.setMediaElementSource(mediaElement)
 
-  var analyser = new THREE.AudioAnalyser(audio, fftSize)
+  var analyser = new AudioAnalyser(audio, fftSize)
 
   console.log(analyser.data)
 
-  let texture = new THREE.DataTexture(analyser.data, fftSize / 2.0, 1.0, THREE.LuminanceFormat)
+  let texture = new DataTexture(analyser.data, fftSize / 2.0, 1.0, LuminanceFormat)
 
   api.pause = () => {
     mediaElement.pause()

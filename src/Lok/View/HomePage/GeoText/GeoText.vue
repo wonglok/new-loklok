@@ -34,7 +34,7 @@ export default {
   },
   async mounted () {
     let base = this.base
-    let glProxy = this.glProxy = {
+    let container = this.container = {
       add: (v) => {
         this.$parent.$emit('add', v)
       },
@@ -45,6 +45,7 @@ export default {
     // let scene = await base.waitKN('scene')
     // let camera = await base.waitKN('camera')
     // let camera = await base.waitKN('camera')
+
     let makeFont = await base.waitKN(this.font)
     let texture = await base.waitKN(this.texture)
 
@@ -55,12 +56,13 @@ export default {
 
     mat.envMap = texture
     mat.envMap.mapping = CubeReflectionMapping
+
     let mesh = false
 
     let onReady = ({ geo }) => {
       if (mesh) {
         mesh.geometry.dispose()
-        glProxy.remove(mesh)
+        container.remove(mesh)
       }
       mesh = new Mesh(geo, mat)
       base[this.kn] = mesh
@@ -89,15 +91,16 @@ export default {
 
       console.log('geo font', this.text)
 
-      glProxy.add(mesh)
+      container.add(mesh)
     }
+
     // let text = 'withloklok.com'
     // let width = visibleWidthAtZDepth({ depth: camera.position.z, camera })
     makeFont({ text: this.text, onReady })
   },
   async beforeDestroy () {
-    let glProxy = this.glProxy
-    glProxy.remove(this.base[this.kn])
+    let container = this.container
+    container.remove(this.base[this.kn])
   }
 }
 </script>

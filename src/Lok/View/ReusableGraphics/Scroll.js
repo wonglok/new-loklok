@@ -1,5 +1,5 @@
 // can scroll how many pages = limit.y
-export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
+export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 1000 } }) => {
   class ValueDamper {
     constructor (v = 0) {
       this.latestVal = v
@@ -31,6 +31,9 @@ export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
   } else {
     touchTarget.addEventListener('wheel', (evt) => {
       evt.preventDefault()
+      if (!limit.canRun) {
+        return
+      }
       scrollAmount += evt.deltaY
       if (scrollAmount < 0) {
         scrollAmount -= evt.deltaY
@@ -55,6 +58,9 @@ export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
     }, { passive: false })
     touchTarget.addEventListener('touchmove', (evt) => {
       evt.preventDefault()
+      if (!limit.canRun) {
+        return
+      }
       if (state.tD) {
         let t1 = evt.touches[0]
         // console.log(t1)
@@ -73,8 +79,14 @@ export const makeScroller = ({ base, touchTarget, limit = { y: 1000 } }) => {
     }, { passive: false })
 
     base.loop(() => {
-      state.inertiaY *= 0.15 * 5.0
-      let delta = state.inertiaY * state.tdY * (20.0 / 5.0 / 1000)
+      if (!limit.canRun) {
+        state.tdY = 0
+        state.inertiaY = 0
+        return
+      }
+
+      state.inertiaY *= 0.75
+      let delta = state.inertiaY * state.tdY / 1000
       state.taY -= delta
 
       if (state.taY <= 0) {
