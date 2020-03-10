@@ -60,10 +60,24 @@ export default {
       }
     }
 
+    async function loadSeaside () {
+      const font = new FontFace('SeasideResortNF', `url('/fonts/seaside/SeasideResortNF.eot?#iefix') format('embedded-opentype'),  url('/fonts/seaside/SeasideResortNF.woff') format('woff'), url('/fonts/seaside/SeasideResortNF.ttf')  format('truetype'), url('/fonts/seaside/SeasideResortNF.svg#SeasideResortNF') format('svg')`, {
+        family: 'SeasideResortNF',
+        style: 'normal',
+        weight: `normal`
+        // `font-weight: normal; font-style: normal;`
+      })
+      await font.load()
+      document.fonts.add(font)
+    }
+    if (this.font === 'SeasideResortNF') {
+      await loadSeaside()
+    }
+
     let texture = new TextTexture({
       align: this.align || 'center',
       fillStyle: 'white',
-      fontFamily: 'sans-serif',
+      fontFamily: `${this.font || 'Arial'}, sans-serif`,
       fontSize: 140,
       fontStyle: 'normal',
       fontVariant: 'normal',
@@ -104,7 +118,7 @@ export default {
         radius: width * 0.5,
         width: width,
         height: height,
-        depth: this.sprite.getWorldPosition().z
+        depth: 0
       }
 
       console.log(this.text, 'sizing', sizing)
@@ -123,7 +137,7 @@ export default {
     this.sprite.visible = this.visible
 
     let update = () => {
-      texture.fontFamily = 'Arial, Helvetica, sans-serif'
+      // texture.fontFamily = 'Arial, Helvetica, sans-serif'
       texture.text = this.text
       texture.redraw()
       sprite.geometry = makeGeo()
@@ -140,57 +154,6 @@ export default {
     base.onResize(() => {
       update()
     })
-
-    // let scene = await base.waitKN('scene')
-    // let camera = await base.waitKN('camera')
-    // let camera = await base.waitKN('camera')
-    // let makeFont = await base.waitKN(this.font)
-
-    // var mat = new MeshBasicMaterial({ color: 0xbababa, envMap: texture, opacity: 1.0, transparent: true })
-    // mat.color = new Color(`#fff`)
-    // mat.refractionRatio = 0.5
-    // mat.reflectionRatio = 0.5
-
-    // mat.envMap = texture
-    // mat.envMap.mapping = CubeReflectionMapping
-    // let mesh = false
-
-    // let onReady = ({ geo }) => {
-    //   if (mesh) {
-    //     mesh.geometry.dispose()
-    //     glProxy.remove(mesh)
-    //   }
-    //   mesh = new Mesh(geo, mat)
-    //   base[this.kn] = mesh
-
-    //   mesh.scale.x = 0.5
-    //   mesh.scale.y = 0.5
-    //   mesh.scale.z = 0.5
-
-    //   geo.computeBoundingSphere()
-    //   geo.computeBoundingBox()
-
-    //   mesh.position.x = geo.boundingSphere.radius * -0.5
-    //   mesh.position.y = (geo.boundingBox.min.y + geo.boundingBox.max.y) * -0.25
-
-    //   this.$parent.$emit('size', {
-    //     radius: geo.boundingSphere.radius * 0.5,
-    //     width: geo.boundingSphere.radius,
-    //     height: (geo.boundingBox.min.y + geo.boundingBox.max.y) * 0.5,
-    //     depth: 0
-    //   })
-
-    //   // mesh.position.z = camera.position.z * 0.75
-    //   mesh.needsUpdate = true
-
-    //   // mesh.rotation.x = -0.08
-
-    //   console.log('geo font', this.text)
-
-    //   glProxy.add(mesh)
-    // }
-    // // let text = 'withloklok.com'
-    // makeFont({ text: this.text, onReady })
   },
   async beforeDestroy () {
     let glProxy = this.glProxy

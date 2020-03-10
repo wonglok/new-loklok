@@ -4,7 +4,7 @@
       <RefractionArea v-if="base && rect" :screen="rect" :base="base"></RefractionArea>
 
       <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
-        <TextureText :visible="menuMover > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        <TextureText :visible="menuMover > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
@@ -78,6 +78,9 @@ export default {
   async mounted () {
     let camera = await this.base.waitKN('camera')
     this.rect = getScreen({ camera, depth: 25 })
+    this.base.onResize(() => {
+      this.rect = getScreen({ camera, depth: 25 })
+    })
     this.sync()
     this.$parent.$emit('add', this.o3d)
     if (this.base && this.kn) {

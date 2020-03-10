@@ -44,9 +44,10 @@ let fragmentShader = glsl`
     return color;
   }
   void main (void) {
-    float waveStrength = 2.5;
-    float waveSpeed = 0.00;
-    vec2 distortedUv = texture2D( tDudv, vec2( vUv.x + time * waveSpeed, fract(vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
+    float waveStrength = 0.5;
+    float waveSpeed = 0.0;
+    float myspeed = 0.05;
+    vec2 distortedUv = texture2D( tDudv, vec2( fract(vUv.x - time * myspeed), fract(time * myspeed - vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
     distortedUv = vUv.xy + vec2( distortedUv.x, distortedUv.y + time * waveSpeed );
     vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
 

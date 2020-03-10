@@ -40,7 +40,7 @@
 
       <!-- Hamburger Menu -->
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-        <TextureText :visible="!openMenu" @remove="$removeClick($event)" @add="$addClick($event, () => { if (!openMenu) { openMenu = true; $forceUpdate() } })" :align="'left'" :screen="screen" :text="'MENU'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        <TextureText :visible="!openMenu" @remove="$removeClick($event)" @add="$addClick($event, () => { if (!openMenu) { openMenu = true; $forceUpdate() } })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
 
       <!-- Hamburger Menu -->

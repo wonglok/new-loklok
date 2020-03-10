@@ -38,6 +38,11 @@ export default {
     },
     base: {}
   },
+  watch: {
+    screen () {
+      this.$emit('resize')
+    }
+  },
   async mounted () {
     let base = this.base
     let camera = await base.waitKN('camera')
@@ -72,14 +77,16 @@ export default {
       }
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
-    base.onResize(() => {
+    let onResize = () => {
       if (mesh) {
         glProxy.remove(mesh)
       }
       mesh = makeMesh()
       glProxy.add(mesh)
       base[this.kn] = mesh
-    })
+    }
+    this.$on('resize', onResize)
+    base.onResize(onResize)
 
     // glProxy.add(mesh)
     console.log('done', this.kn)
