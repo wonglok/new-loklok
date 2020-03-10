@@ -71,6 +71,7 @@ export default {
       bs.mouse.x = (obj.pageX / window.innerWidth) * 2 - 1
       bs.mouse.y = -(obj.pageY / window.innerHeight) * 2 + 1
     }
+
     let onDocumentClick = () => {
       let rc = this.raycaster
       if (bs.camera && bs.mouse && rc) {

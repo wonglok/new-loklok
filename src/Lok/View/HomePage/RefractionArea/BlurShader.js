@@ -44,7 +44,7 @@ let fragmentShader = glsl`
     return color;
   }
   void main (void) {
-    float waveStrength = 0.5;
+    float waveStrength = 2.5;
     float waveSpeed = 0.00;
     vec2 distortedUv = texture2D( tDudv, vec2( vUv.x + time * waveSpeed, fract(vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
     distortedUv = vUv.xy + vec2( distortedUv.x, distortedUv.y + time * waveSpeed );
@@ -55,7 +55,7 @@ let fragmentShader = glsl`
 
     // vec4 base = texture2DProj(tDiffuse, uv);
 
-    vec4 base = blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(50.0, -50.0, 50.0, -50.0));
+    vec4 base = blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(150.0, -150.0, 150.0, -150.0));
 
     gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );
     // gl_FragColor = vec4(base.rgb, 1.0);
