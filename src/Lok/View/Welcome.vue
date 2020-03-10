@@ -31,7 +31,7 @@
       <!-- Menu -->
       <O3D :py="menuDamper.value * 20">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1; gospelDamper.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1; scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -41,11 +41,11 @@
       </O3D>
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
-        <O3D :py="(gospelDamper.value) * -5 + 0.000001">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelDamper.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <O3D :py="(scroller.value) * -5 + 0.000001">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
         </O3D>
-        <O3D :py="(1.0 - gospelDamper.value) * -5 + 0.000001">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelDamper.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <O3D :py="(1.0 - scroller.value) * -5 + 0.000001">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -57,7 +57,9 @@
 
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :layout="layout['baller']">
-          <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
+          <O3D :pz="(-scroller.value + -0.1) * 90.0">
+            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
+          </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
         <!-- <GeoText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></GeoText> -->
@@ -65,7 +67,7 @@
 
       <O3D :base="base" :kn="'scrollSection'" v-if="screen">
 
-        <O3D :py="screen.height * 1.0 * gospelDamper.value">
+        <O3D :py="screen.height * 1.0 * scroller.value">
           <O3D :py="screen.height * -1">
             <!-- Group the bible -->
             <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
@@ -87,7 +89,7 @@
 <script>
 import Vue from 'vue'
 import { makeSDK } from '../../human'
-// import { makeScroller } from './ReusableGraphics/Scroll.js'
+import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
 import { Damper } from './ReusableGraphics/Damper.js'
@@ -122,7 +124,7 @@ Love never ends.
       sdk: false,
       // scroller: {},
       menuDamper: { value: 0 },
-      gospelDamper: { value: 0 }
+      scroller: { value: 0 }
     }
   },
   async mounted () {
@@ -133,7 +135,7 @@ Love never ends.
     })
     this.onReady()
     this.menuDamper = new Damper(0, this.base)
-    this.gospelDamper = new Damper(0, this.base)
+    // this.scroller = new Damper(0, this.base)
   },
   methods: {
     async onReady () {
@@ -153,7 +155,7 @@ Love never ends.
       })
 
       // can scroll how many pages = limit.y
-      // let scroller = this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
+      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
       // let group = this.sdk.getGroup('page1-layout')
       // // this.layout = group
       // group.autoPulse('ball-pos', (v) => {
@@ -162,8 +164,6 @@ Love never ends.
 
       base.loop(() => {
         TWEEN.update()
-        // base.zoomSection.position.z = (-scroller.value + -0.1) * 90.0
-        // base.scrollSection.position.y = (this.screen.height * (1)) * (scroller.value)
         renderer.render(scene, camera)
       })
 

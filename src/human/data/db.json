@@ -372,13 +372,13 @@
       "type": "layout",
       "value": {
         "fpx": "0",
-        "fpy": "(height * scaleY) * 3",
+        "fpy": "(height * scaleY) * 5",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
         "frz": "0",
-        "fsx": "5",
-        "fsy": "5",
+        "fsx": "3",
+        "fsy": "3",
         "fsz": "1"
       },
       "id": "_966866"
@@ -389,16 +389,50 @@
       "type": "layout",
       "value": {
         "fpx": "0",
-        "fpy": "(height * scaleY) * 2",
+        "fpy": "(height * scaleY) * 3",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
         "frz": "0",
-        "fsx": "5",
-        "fsy": "5",
+        "fsx": "3",
+        "fsy": "3",
         "fsz": "1"
       },
       "id": "_887266"
+    },
+    {
+      "group": "page1-layout",
+      "key": "menu-igraph",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "(height * scaleY) * 1",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "3",
+        "fsy": "3",
+        "fsz": "1"
+      },
+      "id": "_510380"
+    },
+    {
+      "group": "page1-layout",
+      "key": "menu-wonglok",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "(height * scaleY) * -1",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "3",
+        "fsy": "3",
+        "fsz": "1"
+      },
+      "id": "_827265"
     }
   ]
 }

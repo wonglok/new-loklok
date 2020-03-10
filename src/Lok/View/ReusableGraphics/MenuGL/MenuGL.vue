@@ -8,11 +8,19 @@
       </O3D>
 
       <O3D :layout="layout['menu-ccl']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://creativecodelab.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
       <O3D :layout="layout['menu-effectnode']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
+
+      <O3D :layout="layout['menu-igraph']">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://igraph.effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'iGraph . Effect Node .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      </O3D>
+
+      <O3D :layout="layout['menu-wonglok']">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://www.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Wong lok .com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
     </O3D>
@@ -61,6 +69,9 @@ export default {
   methods: {
     onClick () {
       this.$emit('close')
+    },
+    openWin (v) {
+      window.open(v)
     }
     // sync () {
     //   TWEEN.removeAll()
