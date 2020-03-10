@@ -25,7 +25,8 @@ export default {
       raycaster: new Raycaster()
     }
   },
-  beforeMount () {
+  async mounted () {
+    let renderer = await this.base.waitKN('renderer')
     this.base[this.kn] = this.raycaster
 
     let bs = this.base
@@ -65,15 +66,11 @@ export default {
       bs.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
     }
     function onDocumentTouchMove (event) {
-      event.preventDefault()
       let obj = event.touches[0]
       bs.mouse.x = (obj.clientX / window.innerWidth) * 2 - 1
       bs.mouse.y = -(obj.clientY / window.innerHeight) * 2 + 1
     }
-    window.addEventListener('touchstart', onDocumentTouchMove, { passive: false })
-    window.addEventListener('touchmove', onDocumentTouchMove, { passive: false })
-    window.addEventListener('mousemove', onDocumentMouseMove, { passive: false })
-    window.addEventListener('click', () => {
+    let onDocumentClick = () => {
       let rc = this.raycaster
       if (bs.camera && bs.mouse && rc) {
         rc.setFromCamera(bs.mouse, bs.camera)
@@ -100,8 +97,8 @@ export default {
           console.log(event)
         }
       }
-    })
-    bs.loop(() => {
+    }
+    let onDocumentHover = () => {
       let rc = this.raycaster
       if (bs.camera && bs.mouse && rc) {
         rc.setFromCamera(bs.mouse, bs.camera)
@@ -131,7 +128,12 @@ export default {
           }
         }
       }
-    })
+    }
+    renderer.domElement.addEventListener('touchmove', onDocumentTouchMove, { passive: true })
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, { passive: true })
+    renderer.domElement.addEventListener('click', onDocumentClick)
+    renderer.domElement.addEventListener('touchstart', onDocumentClick)
+    bs.loop(onDocumentHover)
   }
 }
 </script>
