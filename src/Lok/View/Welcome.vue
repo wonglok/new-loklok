@@ -34,14 +34,14 @@
       </O3D> -->
 
       <!-- Thank you -->
-      <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn="'topnav-r'">
+      <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-topright']" :base="base" :kn=="'topnav-r'">
         <TextureText v-if="screen" @remove="$removeClick($event)" @add="$addClick($event, () => {})" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Thank you Gospel'" :sdk="sdk" :base="base" :texture="'pale2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D> -->
 
       <!-- Hamburger Menu -->
       <O3D :py="menuDamper.value * 20">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1; scroller.value = 0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
