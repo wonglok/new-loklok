@@ -1,7 +1,7 @@
 <template>
   <O3D>
     <O3D :pz="25" :rz="(1.0 - menu.value) * -0.5" :px="(1.0 - menu.value) * -rect.width  * 2.0">
-      <RefractionArea v-if="base && rect" :screen="rect" :base="base"></RefractionArea>
+      <RefractionArea v-if="base && rect" :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></RefractionArea>
 
       <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
         <TextureText :visible="menu.value > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>

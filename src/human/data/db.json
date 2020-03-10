@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 4,
+        "r": 11,
         "g": 0,
-        "b": 51,
+        "b": 136,
         "a": 0.74
       },
       "id": "_959545"
@@ -433,6 +433,30 @@
         "fsz": "1"
       },
       "id": "_827265"
+    },
+    {
+      "group": "page1-layout",
+      "key": "gospel-layer-color",
+      "type": "color",
+      "value": {
+        "r": 62,
+        "g": 62,
+        "b": 62,
+        "a": 1
+      },
+      "id": "_29685"
+    },
+    {
+      "group": "page1-layout",
+      "key": "menu-layer-color",
+      "type": "color",
+      "value": {
+        "r": 212,
+        "g": 212,
+        "b": 212,
+        "a": 1
+      },
+      "id": "_298053"
     }
   ]
 }

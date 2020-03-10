@@ -4,7 +4,7 @@
 <script>
 import { Refractor } from 'three/examples/jsm/objects/Refractor.js'
 // import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js'
-import { Color, PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
+import { PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
 import { BlurShader } from './BlurShader'
 // import { getScreen } from '../../ReusableGraphics/GetScreen'
 // import { getScreen } from '../../ReusableGraphics/GetScreen.js'
@@ -32,6 +32,7 @@ export default {
     // depth: {
     //   default: 0
     // },
+    layout: {},
     color: {
       default: 0x999999
     },
@@ -63,7 +64,7 @@ export default {
       let screen = this.screen
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {
-        color: new Color(this.color),
+        color: this.color,
         textureWidth: 1024,
         textureHeight: 1024 * camera.aspect,
         shader: BlurShader
@@ -80,7 +81,7 @@ export default {
       }
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
-    let onResize = () => {
+    let onRemake = () => {
       if (mesh) {
         glProxy.remove(mesh)
       }
@@ -88,8 +89,12 @@ export default {
       glProxy.add(mesh)
       base[this.kn] = mesh
     }
-    this.$on('resize', onResize)
-    base.onResize(onResize)
+    this.$on('resize', onRemake)
+    base.onResize(onRemake)
+    this.$watch('layout', onRemake, {
+      deep: true,
+      immediate: true
+    })
 
     // glProxy.add(mesh)
     console.log('done', this.kn)
