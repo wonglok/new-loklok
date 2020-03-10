@@ -15,6 +15,7 @@ export default {
     mode: {},
     screen: {},
     layout: {},
+    scroller: {},
 
     px: {
       default: 0

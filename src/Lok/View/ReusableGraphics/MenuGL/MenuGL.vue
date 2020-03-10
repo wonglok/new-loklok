@@ -1,10 +1,10 @@
 <template>
   <O3D>
-    <O3D :pz="25" :px="menuMover * rect.width - rect.width">
+    <O3D :pz="25" :rz="(1.0 - menu.value) * -0.5" :py="(1.0 - menu.value) * -rect.height  * 2.0">
       <RefractionArea v-if="base && rect" :screen="rect" :base="base"></RefractionArea>
 
       <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
-        <TextureText :visible="menuMover > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        <TextureText :visible="menu.value > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
@@ -18,13 +18,14 @@
 <script>
 import { Object3D } from 'three'
 import { getScreen } from '../GetScreen'
-const TWEEN = require('@tweenjs/tween.js').default
+// const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
   components: {
     ...require('../../graphics').default
   },
   props: {
+    menu: {},
     sdk: {},
     open: {},
     layout: {},
@@ -43,37 +44,33 @@ export default {
   data () {
     return {
       rect: false,
-      menuMover: 0,
       o3d: new Object3D()
     }
   },
   watch: {
-    open () {
-      this.sync()
-    }
   },
   methods: {
     onClick () {
       this.$emit('close')
-    },
-    sync () {
-      TWEEN.removeAll()
-      if (this.open) {
-        new TWEEN.Tween(this)
-          .to({
-            menuMover: 1
-          }, 1500)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .start()
-      } else {
-        new TWEEN.Tween(this)
-          .to({
-            menuMover: 0
-          }, 1500)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .start()
-      }
     }
+    // sync () {
+    //   TWEEN.removeAll()
+    //   if (this.open) {
+    //     new TWEEN.Tween(this)
+    //       .to({
+    //         menu.value: 1
+    //       }, 1500)
+    //       .easing(TWEEN.Easing.Quadratic.InOut)
+    //       .start()
+    //   } else {
+    //     new TWEEN.Tween(this)
+    //       .to({
+    //         menu.value: 0
+    //       }, 1500)
+    //       .easing(TWEEN.Easing.Quadratic.InOut)
+    //       .start()
+    //   }
+    // }
   },
   async mounted () {
     let camera = await this.base.waitKN('camera')
@@ -81,7 +78,7 @@ export default {
     this.base.onResize(() => {
       this.rect = getScreen({ camera, depth: 25 })
     })
-    this.sync()
+    // this.sync()
     this.$parent.$emit('add', this.o3d)
     if (this.base && this.kn) {
       this.base[this.kn] = this.o3d

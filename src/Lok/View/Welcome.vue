@@ -39,8 +39,10 @@
       </O3D> -->
 
       <!-- Hamburger Menu -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-        <TextureText :visible="!openMenu" @remove="$removeClick($event)" @add="$addClick($event, () => { if (!openMenu) { openMenu = true; $forceUpdate() } })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+      <O3D :py="menuDamper.value * 20">
+        <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        </O3D>
       </O3D>
 
       <!-- With Lok Lok Menu -->
@@ -49,15 +51,17 @@
       </O3D>
 
       <!-- With Lok Lok Menu -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Swipe Up'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'" :scroller="scroller">
+        <O3D :py="scroller.value * -5 + 1">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        </O3D>
       </O3D>
 
       <!-- Dome -->
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <MenuGL @close="openMenu = false" :open="openMenu" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
+      <MenuGL @close="menuDamper.value = 0" :menu="menuDamper" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :layout="layout['baller']">
@@ -91,6 +95,7 @@ import { makeSDK } from '../../human'
 import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
+import { Damper } from './ReusableGraphics/Damper.js'
 const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
@@ -99,7 +104,6 @@ export default {
   },
   data () {
     return {
-      openMenu: false,
       favouriteVerses: `Love is patient and kind;
 love does not envy or boast;
 It is not arrogant or rude.
@@ -121,7 +125,8 @@ Love never ends.
       logs: [],
       base: false,
       sdk: false,
-      scroller: {}
+      scroller: {},
+      menuDamper: { value: 0 }
     }
   },
   async mounted () {
@@ -131,6 +136,7 @@ Love never ends.
       this.layout = stub
     })
     this.onReady()
+    this.menuDamper = new Damper(0, this.base)
   },
   methods: {
     async onReady () {
@@ -170,7 +176,6 @@ Love never ends.
 
       setTimeout(() => {
         this.ready = true
-        // this.openMenu = true
       })
     },
     log (v) {
