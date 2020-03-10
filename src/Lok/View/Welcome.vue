@@ -42,7 +42,9 @@
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
         <O3D :py="(scroller.value) * -5 + 0.000001">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+          <O3D :py="(menuDamper.value) * -5 + 0.00001">
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+          </O3D>
         </O3D>
         <O3D :py="(1.0 - scroller.value) * -5 + 0.000001">
           <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
@@ -74,7 +76,7 @@
               <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
             </O3D>
             <O3D>
-              <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'"></RefractionArea>
+              <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'" :color="'#FFFFFF'"></RefractionArea>
             </O3D>
           </O3D>
         </O3D>
@@ -155,7 +157,8 @@ Love never ends.
       })
 
       // can scroll how many pages = limit.y
-      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { canRun: true, y: 1 } })
+      let vm = this
+      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { get canRun () { return vm.menuDamper.value < 0.3 }, y: 1 } })
       // let group = this.sdk.getGroup('page1-layout')
       // // this.layout = group
       // group.autoPulse('ball-pos', (v) => {

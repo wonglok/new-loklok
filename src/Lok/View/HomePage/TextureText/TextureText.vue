@@ -137,7 +137,7 @@ export default {
     this.sprite.visible = this.visible
 
     let update = () => {
-      // texture.fontFamily = 'Arial, Helvetica, sans-serif'
+      texture.fontFamily = `${this.font || 'Arial'}, sans-serif`
       texture.text = this.text
       texture.redraw()
       sprite.geometry = makeGeo()
@@ -148,6 +148,9 @@ export default {
 
     update()
 
+    this.$watch('font', () => {
+      update()
+    })
     this.$watch('text', () => {
       update()
     })
