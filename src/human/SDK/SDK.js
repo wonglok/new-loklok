@@ -94,15 +94,17 @@ export const makeSDK = async () => {
     }
     let val = obj.value
     if (obj.type === 'vec3') {
-      HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector3(val.x, val.y, val.z)
-      HolderCache[cacheKey].x = val.x
-      HolderCache[cacheKey].y = val.y
-      HolderCache[cacheKey].z = val.z
+      // HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector3(val.x, val.y, val.z)
+      HolderCache[cacheKey] = new Vector3(val.x, val.y, val.z)
+      // HolderCache[cacheKey].x = val.x
+      // HolderCache[cacheKey].y = val.y
+      // HolderCache[cacheKey].z = val.z
       return HolderCache[cacheKey]
     } else if (obj.type === 'vec2') {
-      HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector2(val.x, val.y)
-      HolderCache[cacheKey].x = val.x
-      HolderCache[cacheKey].y = val.y
+      // HolderCache[cacheKey] = HolderCache[cacheKey] || new Vector2(val.x, val.y)
+      HolderCache[cacheKey] = new Vector2(val.x, val.y)
+      // HolderCache[cacheKey].x = val.x
+      // HolderCache[cacheKey].y = val.y
 
       return HolderCache[cacheKey]
     } else if (obj.type === 'color') {
@@ -110,10 +112,11 @@ export const makeSDK = async () => {
       // color.a = val.a
       // color.opacity = val.a
 
-      HolderCache[cacheKey] = HolderCache[cacheKey] || new Color(val.r / 255, val.g / 255, val.b / 255)
-      HolderCache[cacheKey].r = val.r / 255
-      HolderCache[cacheKey].g = val.g / 255
-      HolderCache[cacheKey].b = val.b / 255
+      // HolderCache[cacheKey] = HolderCache[cacheKey] || new Color(val.r / 255, val.g / 255, val.b / 255)
+      HolderCache[cacheKey] = new Color(val.r / 255, val.g / 255, val.b / 255)
+      // HolderCache[cacheKey].r = val.r / 255
+      // HolderCache[cacheKey].g = val.g / 255
+      // HolderCache[cacheKey].b = val.b / 255
       HolderCache[cacheKey].a = val.a
       HolderCache[cacheKey].opacity = val.a
       return HolderCache[cacheKey]
@@ -161,7 +164,9 @@ export const makeSDK = async () => {
       let items = sdk.list.filter(e => e.group === group)
       items.forEach((item) => {
         let gpkn = `${item.group}.${item.key}`
-        Object.defineProperty(stub, item.key, { get: () => transformer(item, gpkn) })
+        stub[item.key] = transformer(item, gpkn)
+        // Object.defineProperty(stub, item.key, { get: () => transformer(item, gpkn) })
+        // Object.defineProperty(stub, item.key, { get: () => transformer(item, gpkn) })
       })
       return stub
     }

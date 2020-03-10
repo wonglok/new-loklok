@@ -91,7 +91,7 @@ export default {
     }
     this.$on('resize', onRemake)
     base.onResize(onRemake)
-    this.$watch('layout', onRemake, {
+    this.$watch('color', onRemake, {
       deep: true,
       immediate: true
     })
