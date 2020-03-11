@@ -16,12 +16,12 @@ export default {
   data () {
     return {
       cubemap: new CubeTextureLoader().load([
-        require('./single-bridge.png'),
-        require('./single-bridge.png'),
-        require('./single-bridge.png'),
-        require('./single-bridge.png'),
-        require('./single-bridge.png'),
-        require('./single-bridge.png')
+        require('./purple.png'),
+        require('./purple.png'),
+        require('./purple.png'),
+        require('./purple.png'),
+        require('./purple.png'),
+        require('./purple.png')
       ], () => {
         if (this.wait && this.base && this.kn) {
           this.base[this.kn] = this.cubemap

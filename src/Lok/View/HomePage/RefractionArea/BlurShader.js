@@ -87,7 +87,8 @@ let fragmentShader = glsl`
     vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
 
     vec4 uv = vec4(vUvRefraction);
-    uv.xy += distortion;
+
+    uv.xy += distortion * 2.5;
 
     // vec4 base = texture2DProj(tDiffuse, uv);
 

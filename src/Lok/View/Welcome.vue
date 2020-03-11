@@ -12,10 +12,13 @@
     <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom>
 
     <!-- Cube Texture Resource -->
-    <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
+    <!-- <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture> -->
     <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
+
     <!-- <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap> -->
-    <SingleBridge v-if="base" :base="base" :kn="'singleBridge'"></SingleBridge>
+    <ProtossCube v-if="base" :base="base" :kn="'protossCube'"></ProtossCube>
+    <!-- <LimeCube v-if="base" :base="base" :kn="'limeCube'"></LimeCube>
+    <PurpleCube v-if="base" :base="base" :kn="'purpleBallCube'"></PurpleCube> -->
 
     <!-- Plane Texture Resource -->
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'pale2DTexture'"></CanvasTexture>
@@ -31,9 +34,9 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <!-- Menu -->
-      <O3D :py="menuDamper.value * 20">
+      <O3D :py="menuAnimator.value * 20">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuDamper.value = 1; scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -44,7 +47,7 @@
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
         <O3D :py="(scroller.value) * -5 + 0.000001">
-          <O3D :py="(menuDamper.value) * -5 + 0.00001">
+          <O3D :py="(menuAnimator.value) * -5 + 0.00001">
             <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
@@ -57,12 +60,13 @@
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <MenuGL @close="menuDamper.value = 0.000001" :menu="menuDamper" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
+      <MenuGL @close="menuAnimator.value = 0.000001" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
       <O3D :base="base" :kn="'zoomSection'">
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
-            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'singleBridge'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
+            <!-- Baller -->
+            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
@@ -127,7 +131,7 @@ Love never ends.
       base: false,
       sdk: false,
       // scroller: {},
-      menuDamper: { value: 0 },
+      menuAnimator: { value: 0 },
       scroller: { value: 0 }
     }
   },
@@ -138,7 +142,7 @@ Love never ends.
       this.layout = stub
     })
     this.onReady()
-    this.menuDamper = new Damper(0, this.base)
+    this.menuAnimator = new Damper(0, this.base)
     // this.scroller = new Damper(0, this.base)
   },
   methods: {
@@ -160,7 +164,7 @@ Love never ends.
 
       // can scroll how many pages = limit.y
       let vm = this
-      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { get canRun () { return vm.menuDamper.value < 0.3 }, y: 1 } })
+      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { get canRun () { return vm.menuAnimator.value < 0.3 }, y: 1 } })
       // let group = this.sdk.getGroup('page1-layout')
       // // this.layout = group
       // group.autoPulse('ball-pos', (v) => {
