@@ -42,9 +42,6 @@ export default {
         this.$parent.$emit('remove', v)
       }
     }
-    // let scene = await base.waitKN('scene')
-    // let camera = await base.waitKN('camera')
-    // let camera = await base.waitKN('camera')
 
     let makeFont = await base.waitKN(this.font)
     let texture = await base.waitKN(this.texture)

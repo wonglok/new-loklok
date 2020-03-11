@@ -174,7 +174,7 @@ export const makeParametric = async ({ cube, ui, base, sdk, setting }) => {
   //   mesh.position.z = v.z - 50.0
   // })
 
-  console.log('parametric installed')
+  // console.log('parametric installed')
   let clean = async () => {
     // let mesh = await group.gets.kn)
     mesh.geometry.dispose()

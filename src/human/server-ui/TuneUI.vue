@@ -31,8 +31,8 @@
                 <!-- <span class="p-1 rounded-lg text-red-600 bg-red-100" @click="remove(gi)">❌</span> -->
               </div>
               <div class="group p-2 border-b text-sm flex items-ceneter justify-between cursor-pointer hover:bg-gray-200" :class="{ 'bg-green-200': app.isSelectedGroupItem(gi.id), 'hover:bg-green-300': app.isSelectedGroupItem(gi.id) }" @click="app.selectGroupItem(gi.id)" :key="gix" v-for="(gi, gix) in app.selected.groupItems">
-                <span class="p-1">🧪 <input type="text" class="bg-transparent" v-model="gi.key" @input="updateNow(gi)"></span>
-                <span class="p-1 rounded-lg text-red-600 bg-red-100" @click="remove(gi)">❌</span>
+                <span class="p-1"><span @click="copyItem({ item: gi })"> 🧪 </span><input type="text" class="bg-transparent" v-model="gi.key" @input="updateNow(gi)"></span>
+                <span class="p-1 rounded-lg text-red-600 bg-red-100 inline-flex justify-center items-center" @click="remove(gi)">❌</span>
               </div>
             </div>
             <keep-alive>
@@ -127,6 +127,21 @@ export default {
     },
     updateLater (item) {
       this.app.updateLater(item)
+    },
+    copyItem ({ item }) {
+      let name = window.prompt('new name?')
+      if (name) {
+        if (this.app.selected.groupItems.map(e => e.key).includes(name)) {
+          window.alert('Duplicated group name')
+          return
+        }
+        this.app.add({
+          group: item.group,
+          key: name,
+          type: item.type,
+          value: item.value
+        })
+      }
     },
     add ({ groupName }) {
       if (this.alt) {

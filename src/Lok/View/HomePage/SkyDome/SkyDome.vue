@@ -56,10 +56,8 @@ export default {
     base[this.kn] = mesh
 
     glProxy.add(mesh)
-    console.log('done', this.kn)
   },
   async beforeDestroy () {
-    // let scene = await this.base.waitKN('scene')
     let mesh = await this.base.waitKN(this.kn)
     this.glProxy.remove(mesh)
   }

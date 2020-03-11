@@ -15,7 +15,7 @@ export default {
     mode: {},
     screen: {},
     layout: {},
-    scroller: {},
+    // scroller: {},
 
     px: {
       default: 0
@@ -47,28 +47,11 @@ export default {
     },
 
     kn: {},
-    base: {},
     visible: {
       default: true
     }
   },
-  created () {
-    this.$on('size', (v) => {
-      this.width = v.width
-      this.height = v.height
-      this.depth = v.depth
-      this.radius = v.radius
-      this.sync(this.object3D)
-    })
-    this.$on('add', (v) => {
-      this.object3D.add(v)
-      this.$emit('onadd')
-    })
-    this.$on('remove', (v) => {
-      this.object3D.remove(v)
-      this.$emit('onremove')
-    })
-  },
+
   watch: {
     visible () {
       this.object3D.visible = this.visible
@@ -162,6 +145,8 @@ export default {
   data () {
     let object3D = new Object3D()
     return {
+      time: 0,
+      baase: false,
       world: new Vector3(),
       scaleX: 1,
       scaleY: 1,
@@ -170,13 +155,14 @@ export default {
       height: 1,
       depth: 0,
       radius: 1,
-      object3D
+      object3D,
+      ...Math
     }
   },
   methods: {
     sync (object3D) {
       object3D.visible = this.visible
-      this.object3D.getWorldPosition(this.world)
+      // this.object3D.getWorldPosition(this.world)
 
       let run = (fnc) => {
         try {
@@ -186,6 +172,8 @@ export default {
         }
       }
       if (this.layout) {
+        this.time = window.performance.now() * 0.001
+
         run(() => { this.scaleX = object3D.scale.x = Parser.evaluate(this.layout.fsx || '1', this) })
         run(() => { this.scaleY = object3D.scale.y = Parser.evaluate(this.layout.fsy || '1', this) })
         run(() => { this.scaleZ = object3D.scale.z = Parser.evaluate(this.layout.fsz || '1', this) })
@@ -198,7 +186,7 @@ export default {
         run(() => { object3D.rotation.y = Parser.evaluate(this.layout.fry || '0', this) })
         run(() => { object3D.rotation.z = Parser.evaluate(this.layout.frz || '0', this) })
 
-        console.log('layout-update', JSON.stringify(this.layout))
+        // console.log('layout-update', JSON.stringify(this.layout))
       } else {
         object3D.position.x = this.px
         object3D.position.y = this.py
@@ -214,11 +202,45 @@ export default {
       }
     }
   },
+  created () {
+    this.$on('get-base', (vm) => {
+      if (this.$parent.base) {
+        vm.base = this.$parent.base
+      } else {
+        this.$parent.$emit('get-base', vm)
+      }
+    })
+    this.$on('size', (v) => {
+      this.width = v.width
+      this.height = v.height
+      this.depth = v.depth
+      this.radius = v.radius
+      this.sync(this.object3D)
+    })
+    this.$on('add', (v) => {
+      this.object3D.add(v)
+      this.$emit('onadd')
+    })
+    this.$on('remove', (v) => {
+      this.object3D.remove(v)
+      this.$emit('onremove')
+    })
+  },
   mounted () {
-    this.sync(this.object3D)
+    this.$emit('get-base', this)
+    this.base.waitKN('scroller')
+      .then((scroller) => {
+        this.scroller = scroller
+      })
+
+    this.base.loop(() => {
+      this.sync(this.object3D)
+    })
+
     if (this.kn && this.base) {
       this.base[this.kn] = this.object3D
     }
+
     this.$parent.$emit('add', this.object3D)
   },
   beforeDestroy () {

@@ -17,6 +17,7 @@
 
     <!-- <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap> -->
     <ProtossCube v-if="base" :base="base" :kn="'protossCube'"></ProtossCube>
+    <!-- <BeachCube v-if="base" :base="base" :kn="'beachCube'"></BeachCube> -->
     <!-- <LimeCube v-if="base" :base="base" :kn="'limeCube'"></LimeCube>
     <PurpleCube v-if="base" :base="base" :kn="'purpleBallCube'"></PurpleCube> -->
 
@@ -35,24 +36,24 @@
     <Scene v-if="base" :base="base" :kn="'scene'">
       <!-- Menu -->
       <O3D :py="menuAnimator.value * 20">
-        <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']" :base="base" :kn="'nav-menu'">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+        <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
       <!-- Logo -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']" :base="base" :kn="'nav-withloklok-'">
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {  })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'With Lok Lok'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']" :base="base" :kn="'nav-withloklok-'">
-        <O3D :py="(scroller.value) * -5 + 0.000001">
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
+        <O3D :py="(scroller.value) * -5 + 0.0">
           <O3D :py="(menuAnimator.value) * -5 + 0.00001">
             <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
-        <O3D :py="(1.0 - scroller.value) * -5 + 0.000001">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 0.000001 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <O3D :py="(1.0 - scroller.value) * -5 + 0.0">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -60,9 +61,9 @@
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <MenuGL @close="menuAnimator.value = 0.000001" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
+      <MenuGL @close="menuAnimator.value = 0.0" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
-      <O3D :base="base" :kn="'zoomSection'">
+      <O3D>
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
             <!-- Baller -->
@@ -73,7 +74,7 @@
         <!-- <GeoText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></GeoText> -->
       </O3D>
 
-      <O3D :base="base" :kn="'scrollSection'" v-if="screen">
+      <O3D v-if="screen">
 
         <O3D :py="screen.height * 1.0 * scroller.value">
           <O3D :py="screen.height * -1">
@@ -95,7 +96,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+// import Vue from 'vue'
 import { makeSDK } from '../../human'
 import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
@@ -135,6 +136,11 @@ Love never ends.
       scroller: { value: 0 }
     }
   },
+  created () {
+    this.$on('get-base', (vm) => {
+      vm['base'] = this.base
+    })
+  },
   async mounted () {
     this.sdk = await makeSDK()
     this.base = await makeBase({ mounter: this.$refs['mounter'] })
@@ -154,22 +160,22 @@ Love never ends.
 
       camera.position.z = 100
 
-      Vue.prototype.$currentCamera = camera
-
       this.screen = getScreen({ camera, depth: 0.0 })
       base.onResize(() => {
         this.screen = getScreen({ camera, depth: 0.0 })
-        // this.$forceUpdate()
       })
 
-      // can scroll how many pages = limit.y
       let vm = this
-      this.scroller = makeScroller({ base, touchTarget: renderer.domElement, limit: { get canRun () { return vm.menuAnimator.value < 0.3 }, y: 1 } })
-      // let group = this.sdk.getGroup('page1-layout')
-      // // this.layout = group
-      // group.autoPulse('ball-pos', (v) => {
-      //   base.ball1.position.z = v.z - 50
-      // })
+      this.base.scroller = this.scroller = makeScroller({
+        base,
+        touchTarget: renderer.domElement,
+        limit: {
+          get canRun () {
+            return vm.menuAnimator.value < 0.3
+          },
+          y: 1
+        }
+      })
 
       base.loop(() => {
         TWEEN.update()

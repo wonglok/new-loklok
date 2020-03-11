@@ -33,7 +33,7 @@ export default {
     bs.mouse = new Vector2(0, 0)
 
     Vue.prototype.$addClick = (v, handler = () => {}) => {
-      console.log('add-clicker', v)
+      // console.log('add-clicker', v)
       v.userData = v.userData || {}
       v.userData.handler = handler
       this.o3dClickers.push(v)
@@ -41,13 +41,13 @@ export default {
     }
 
     Vue.prototype.$removeClick = (v) => {
-      console.log('remove-clicker', v)
+      // console.log('remove-clicker', v)
       this.o3dClickers.splice(this.o3dClickers.indexOf(v), 1)
       this.both.splice(this.both.indexOf(v), 1)
     }
 
     Vue.prototype.$addHover = (v, handler = () => {}) => {
-      console.log('add-hover', v)
+      // console.log('add-hover', v)
       v.userData = v.userData || {}
       v.userData.handler = handler
       this.o3dHovers.push(v)
@@ -55,7 +55,7 @@ export default {
     }
 
     Vue.prototype.$removeHover = (v) => {
-      console.log('remove-hover', v)
+      // console.log('remove-hover', v)
       this.o3dHovers.splice(this.o3dHovers.indexOf(v), 1)
       this.both.splice(this.both.indexOf(v), 1)
     }

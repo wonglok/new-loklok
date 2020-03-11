@@ -61,16 +61,17 @@ export default {
     }
 
     let makeMesh = () => {
+      let RES_SIZE = 512
       let screen = this.screen
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {
         color: this.color,
-        textureWidth: 1024,
-        textureHeight: 1024 * camera.aspect,
+        textureWidth: RES_SIZE,
+        textureHeight: RES_SIZE * camera.aspect,
         shader: BlurShader
       })
       mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
-      mesh.material.uniforms['resolution'].value = new Vector2(1024, 1024 * camera.aspect)
+      mesh.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
       return mesh
     }
 
@@ -97,7 +98,7 @@ export default {
     })
 
     // glProxy.add(mesh)
-    console.log('done', this.kn)
+    // console.log('done', this.kn)
   },
   async beforeDestroy () {
     let mesh = await this.base.waitKN(this.kn)

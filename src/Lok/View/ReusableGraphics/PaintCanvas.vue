@@ -34,9 +34,9 @@ export default {
 
     class TouchTexture {
       constructor () {
-        this.size = 16
-        this.width = 16
-        this.height = 16
+        this.size = 32
+        this.width = 32
+        this.height = 32
         this.width = this.height = this.size
 
         this.maxAge = 350

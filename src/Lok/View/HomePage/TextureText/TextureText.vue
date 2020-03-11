@@ -121,7 +121,7 @@ export default {
         depth: 0
       }
 
-      console.log(this.text, 'sizing', sizing)
+      // console.log(this.text, 'sizing', sizing)
       this.$parent.$emit('size', sizing)
 
       return geo
