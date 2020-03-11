@@ -90,7 +90,7 @@ export const createLineGeo = async ({ count = 100, numSides = 8, subdivisions = 
   return geometry
 }
 
-export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) => {
+export const makeParametric = async ({ cube, ui, base, sdk, setting }) => {
   let count = 100
   let numSides = 4
   let subdivisions = 350
@@ -104,6 +104,7 @@ export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) =>
       ui.$parent.$emit('remove', v)
     }
   }
+
   let group = sdk.getGroup(setting)
   let uniforms = {
     // tCube: { value: cubeTexture },
@@ -114,7 +115,7 @@ export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) =>
     mFresnelBias: { value: 0.2 },
     mFresnelPower: { value: 2.2 },
     mFresnelScale: { value: 1.2 },
-    tCube: { value: cubeTexture },
+    tCube: { value: null },
     tDudv: { value: null },
     useDudv: { value: false },
 
@@ -159,6 +160,8 @@ export const makeParametric = async ({ cubeTexture, ui, base, sdk, setting }) =>
   mesh.scale.set(20.0, 20.0, 20.0)
   refresh(mesh)
 
+  uniforms.tCube.value = await base.waitKN(cube)
+
   let obj3d = new Object3D()
   obj3d.add(mesh)
   glProxy.add(obj3d)
@@ -200,8 +203,7 @@ export default {
     }
   },
   async mounted () {
-    let cubeTexture = await this.base.waitKN(this.cube)
-    const parametric = await makeParametric({ cubeTexture: cubeTexture, ui: this, base: this.base, sdk: this.sdk, setting: this.setting })
+    const parametric = await makeParametric({ cube: this.cube, ui: this, base: this.base, sdk: this.sdk, setting: this.setting })
     this.clean = parametric.clean
   },
   beforeDestroy () {
