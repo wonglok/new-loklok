@@ -16,7 +16,7 @@
     <!-- <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture> -->
 
     <!-- <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap> -->
-    <ProtossCube v-if="base" :base="base" :kn="'protossCube'"></ProtossCube>
+    <!-- <ProtossCube v-if="base" :base="base" :kn="'protossCube'"></ProtossCube> -->
     <!-- <BeachCube v-if="base" :base="base" :kn="'beachCube'"></BeachCube> -->
     <!-- <LimeCube v-if="base" :base="base" :kn="'limeCube'"></LimeCube>
     <PurpleCube v-if="base" :base="base" :kn="'purpleBallCube'"></PurpleCube> -->
@@ -61,14 +61,14 @@
       <O3D>
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
-            <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
+            <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
         <!-- <GeoText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></GeoText> -->
       </O3D>
 
-      <O3D v-if="screen">
+      <O3D v-if="screen && layout && scroller">
 
         <O3D :py="screen.height * 1.0 * scroller.value">
           <O3D :py="screen.height * -1">
