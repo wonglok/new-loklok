@@ -196,7 +196,6 @@ vec2 defineVoume (float t) {
 //   float pY = pos.y;
 //   float pZ = pos.y;
 //   float piz = 0.001 * 2.0 * 3.14159265;
-
 //   pos.xyz = rotateQ(normalize(vec3(1.0, pY * piz, 1.0)), time + pY * piz) * rotateY(time + pZ * piz) * pos.xyz;
 //   pos.xyz = rotateQ(normalize(vec3(1.0, pZ * piz, 1.0)), time + pY * piz) * rotateZ(time + pZ * piz) * pos.xyz;
 //   pos.xyz = rotateQ(normalize(vec3(1.0, pZ * piz, 1.0)), time + pX * piz) * rotateY(time + pY * piz) * pos.xyz;
@@ -204,7 +203,6 @@ vec2 defineVoume (float t) {
 //   pos.z += cos(time  + pX * piz * 0.333) * pos.y;
 
 //   // pos.xyz *= 0.00055;
-
 //   float ttTime = time * 0.05;
 
 //   pos.xyz *= rotateX(length(pos.xyz) + ttTime);
@@ -212,7 +210,6 @@ vec2 defineVoume (float t) {
 //   pos.xyz *= rotateZ(length(pos.xyz) + ttTime);
 
 //   pos.xyz += ballify(pos.xyz, length(pos.xyz) * 0.25 + 0.75 * length(pos.xyz) * sin(ttTime));
-
 //   return pos.xyz;
 // }
 
@@ -231,10 +228,10 @@ vec3 defineCurve (float t) {
   float tick = time * 0.3;
   float y = sin(t + tick + t * offset.x * spread);
   vec3 pos = vec3(x, y, 0);
-  pos = rotateX(tick + pos.y) * pos;
   pos = rotateX(tick + pos.z) * pos;
+  pos = rotateX(tick + pos.y) * pos;
   pos = rotateX(tick + pos.x) * pos;
-  // pos = offset.x * 20.0 * pos;
+  // pos += offset.x * 0.6 * pos;
   return
     pos;
 }
