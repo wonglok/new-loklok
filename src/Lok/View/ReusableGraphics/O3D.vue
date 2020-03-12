@@ -228,11 +228,8 @@ export default {
   },
   mounted () {
     this.$emit('get-base', this)
-    this.base.waitKN('scroller')
-      .then((scroller) => {
-        this.scroller = scroller
-      })
 
+    this.sync(this.object3D)
     this.base.loop(() => {
       this.sync(this.object3D)
     })

@@ -73,7 +73,7 @@
         <O3D :py="screen.height * 1.0 * scroller.value">
           <O3D :py="screen.height * -1">
             <!-- Group the bible -->
-            <O3D v-if="screen && layout" :screen="screen" :layout="layout['gospel']">
+            <O3D :screen="screen" :layout="layout['gospel']">
               <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
             </O3D>
             <O3D>
