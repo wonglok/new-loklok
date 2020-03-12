@@ -233,16 +233,18 @@ vec4 defineTube (vec3 nPos) {
   float spreader = spread * indexer;
   return
     rotationX(nPos.x + displacement.x * spreader) *
-    rotationY(nPos.y + displacement.y * spreader) *
-    rotationZ(nPos.z + displacement.z * spreader) *
+    rotationX(nPos.y * offset.x) *
+    rotationY(nPos.y * offset.x + displacement.y * spreader) *
+    rotationZ(nPos.z * offset.x + time + displacement.z * spreader) *
 
     // rotationY(nPos.z + spread * offset.x * PI * 2.0 + time) *
-    // rotationX(nPos.y) *
     // translate(displacement.x, displacement.y, displacement.z) *
     // rotationZ(nPos.z + spread * offset.x * PI * 2.0 + time) *
     // rotationZ(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
     // rotationY(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
     // rotationX(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
+
+    rotationZ(length(nPos.xyz)) *
     vec4(nPos, 1.0);
 }
 

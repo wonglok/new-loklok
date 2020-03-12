@@ -472,7 +472,7 @@
       "group": "parametric-orbit",
       "key": "spread",
       "type": "number",
-      "value": 3.59,
+      "value": 10.33,
       "id": "_343757"
     },
     {
@@ -494,9 +494,9 @@
       "key": "displacement",
       "type": "vec3",
       "value": {
-        "x": 100,
-        "y": 71,
-        "z": 69
+        "x": 0,
+        "y": 0,
+        "z": 100
       },
       "id": "_281246"
     }

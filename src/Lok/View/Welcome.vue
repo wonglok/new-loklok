@@ -1,5 +1,5 @@
 <template>
-  <div class="full" ref="mounter">
+  <div class="full" ref="mounter" v-show="ready">
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
@@ -155,8 +155,8 @@ Love never ends.
     this.sdk.onStubGroup('page1-layout', (stub) => {
       this.layout = stub
     })
-    this.onReady()
     this.menuAnimator = new Damper(0, this.base)
+    this.onReady()
     // this.scroller = new Damper(0, this.base)
   },
   methods: {
