@@ -12,7 +12,7 @@
     <!-- <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom> -->
 
     <!-- Cube Texture Resource -->
-    <!-- <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture> -->
+    <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
     <!-- <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture> -->
 
     <!-- <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap> -->
@@ -37,7 +37,7 @@
       <!-- Menu -->
       <O3D :py="menuAnimator.value * 20">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -61,7 +61,7 @@
       <O3D>
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
-            <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
+            <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
@@ -77,8 +77,8 @@
               <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
             </O3D>
             <O3D>
-              <PlaneArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></PlaneArea>
-              <!-- <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></RefractionArea> -->
+              <!-- <PlaneArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></PlaneArea> -->
+              <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></RefractionArea>
             </O3D>
           </O3D>
         </O3D>

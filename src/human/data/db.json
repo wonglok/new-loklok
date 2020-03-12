@@ -451,42 +451,28 @@
       "group": "parametric-orbit",
       "key": "maxLines",
       "type": "number",
-      "value": 96.74,
+      "value": 15,
       "id": "_49638"
-    },
-    {
-      "group": "parametric-orbit",
-      "key": "animateStrength",
-      "type": "number",
-      "value": 46.97,
-      "id": "_832408"
-    },
-    {
-      "group": "parametric-orbit",
-      "key": "animateRadius",
-      "type": "number",
-      "value": 51.89,
-      "id": "_761472"
     },
     {
       "group": "parametric-orbit",
       "key": "spread",
       "type": "number",
-      "value": 10.33,
+      "value": 56.76,
       "id": "_343757"
     },
     {
       "group": "parametric-orbit",
       "key": "thickness",
       "type": "number",
-      "value": 13.99,
+      "value": 24.62,
       "id": "_51587"
     },
     {
       "group": "parametric-orbit",
       "key": "baseOpacity",
       "type": "number",
-      "value": 68.75,
+      "value": 100,
       "id": "_351378"
     },
     {
@@ -494,8 +480,8 @@
       "key": "displacement",
       "type": "vec3",
       "value": {
-        "x": 0,
-        "y": 0,
+        "x": 100,
+        "y": 100,
         "z": 100
       },
       "id": "_281246"
