@@ -41,11 +41,6 @@
         </O3D>
       </O3D>
 
-      <!-- Logo -->
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-withloklok']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {  })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'With Lok Lok'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
-      </O3D>
-
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
         <O3D :py="(scroller.value) * -5 + 0.0">
           <O3D :py="(menuAnimator.value) * -5 + 0.00001">

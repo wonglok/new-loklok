@@ -1,5 +1,9 @@
 <template>
   <O3D>
+    <!-- Logo -->
+    <O3D v-if="screen && layout" :screen="rect" :layout="layout['nav-withloklok']">
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {  })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'With Lok Lok'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+    </O3D>
     <O3D :pz="25" :rz="(1.0 - menu.value) * -0.5" :px="(1.0 - menu.value) * -rect.width  * 2.0">
       <!-- <RefractionArea v-if="base && rect" :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></RefractionArea> -->
       <PlaneArea :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></PlaneArea>
