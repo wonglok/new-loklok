@@ -1,5 +1,5 @@
 <template>
-  <div class="full" ref="mounter" v-show="ready && layout">
+  <div class="full" ref="mounter" :style="{ visibility: layout ? 'visible' : 'hidden' }">
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
@@ -63,7 +63,6 @@
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
             <!-- Baller -->
             <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
-            <!-- <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller> -->
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
