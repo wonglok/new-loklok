@@ -13,11 +13,11 @@
       </O3D>
 
       <O3D :layout="layout['menu-ccl']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://creativecodelab.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab . com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://creativecodelab.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
       <O3D :layout="layout['menu-effectnode']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node . com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
       <O3D :layout="layout['menu-effectnode-2']">
@@ -31,10 +31,10 @@
       <O3D :layout="layout['menu-wonglok']">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://www.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'WongLok . com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
+
       <O3D :layout="layout['menu-wonglok-age']">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://age.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Assisted Graphics Engineering'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
-      <a ref="anchor"></a>
     </O3D>
     <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
       <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>

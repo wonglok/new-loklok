@@ -238,7 +238,6 @@ vec3 defineCurve (float t) {
 
 vec4 defineTube (vec3 pos) {
   return
-    rotationZ(time + pos.x) *
     vec4(pos, 1.0);
 }
 
