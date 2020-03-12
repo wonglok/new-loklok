@@ -1,5 +1,5 @@
 <template>
-  <div class="full" ref="mounter" v-show="ready">
+  <div class="full" ref="mounter" v-show="ready && layout">
     <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
