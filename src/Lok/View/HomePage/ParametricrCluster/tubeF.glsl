@@ -46,7 +46,7 @@ void main (void) {
   //   tRefract2.xy += distortion;
   // }
 
-  vec4 reflectedColor = textureCube( tCube, vec3( vReflect.x, vReflect.yz ) );
+  vec4 reflectedColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );
   // vec4 reflectedColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );
   vec4 refractedColor = vec4(1.0);
 

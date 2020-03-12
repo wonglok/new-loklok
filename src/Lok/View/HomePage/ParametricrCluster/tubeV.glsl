@@ -216,36 +216,33 @@ vec2 defineVoume (float t) {
 //   return pos.xyz;
 // }
 
+// vec3 defineDoughNut (float t) {
+//   // Dough nut
+//   float angle = t * 2.0 * PI;
+//   vec2 rot = vec2(cos(angle), sin(angle));
+//   vec3 pos = vec3(rot.x, rot.y, 0.0);
+//   return
+//     pos;
+// }
+
 vec3 defineCurve (float t) {
-  // Dough nut
-  float angle = t * 2.0 * PI;
-  vec2 rot = vec2(cos(angle), sin(angle));
-  vec3 pos = vec3(rot.x, rot.y, 0.0);
+  float x = t * 2.0 - 1.0;
+  x *= 10.0;
+  float tick = time * 0.3;
+  float y = sin(t + tick + t * offset.x * spread);
+  vec3 pos = vec3(x, y, 0);
+  pos = rotateX(tick + pos.y) * pos;
+  pos = rotateX(tick + pos.z) * pos;
+  pos = rotateX(tick + pos.x) * pos;
+  // pos = offset.x * 20.0 * pos;
   return
-    // rotateZ(time + pos.z) *
-    // rotateY(time + pos.x) *
-    // rotateX(time + pos.y) *
     pos;
 }
 
-vec4 defineTube (vec3 nPos) {
-  float indexer = offset.x;
-  float spreader = spread * indexer;
+vec4 defineTube (vec3 pos) {
   return
-    rotationX(nPos.x + displacement.x * spreader) *
-    rotationX(nPos.y * offset.x) *
-    rotationY(nPos.y * offset.x + displacement.y * spreader) *
-    rotationZ(nPos.z * offset.x + time + displacement.z * spreader) *
-
-    // rotationY(nPos.z + spread * offset.x * PI * 2.0 + time) *
-    // translate(displacement.x, displacement.y, displacement.z) *
-    // rotationZ(nPos.z + spread * offset.x * PI * 2.0 + time) *
-    // rotationZ(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
-    // rotationY(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
-    // rotationX(nPos.z * scaler * displacement.z * indexer + nPos.x * scaler * displacement.x * indexer + nPos.y * scaler * displacement.y * indexer + time) *
-
-    rotationZ(length(nPos.xyz)) *
-    vec4(nPos, 1.0);
+    // rotationX(time + pos.z) *
+    vec4(pos, 1.0);
 }
 
 // vec3 defineCurve (float t) {
@@ -315,12 +312,11 @@ void main (void) {
   vec3 objectNormal;
   createTube(t, volume, transformed, objectNormal);
 
-  // pass the normal and UV along
   vec3 transformedNormal = normalMatrix * objectNormal;
   // vNormal = normalize(transformedNormal);
   // vUv = uv.xy; // swizzle this to match expectations
 
-  vec4 newObjPos = defineTube(transformed);//twist * rotationalSpread * translationalSpread * vec4(transformed, 1.0);
+  vec4 newObjPos = defineTube(transformed);
 
   // project our vertex position
   vec4 mvPosition = modelViewMatrix * newObjPos;

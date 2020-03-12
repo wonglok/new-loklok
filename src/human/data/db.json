@@ -448,43 +448,32 @@
       "id": "_298053"
     },
     {
-      "group": "parametric-orbit",
+      "group": "parametric-cluster",
       "key": "maxLines",
       "type": "number",
       "value": 15,
       "id": "_49638"
     },
     {
-      "group": "parametric-orbit",
+      "group": "parametric-cluster",
       "key": "spread",
       "type": "number",
-      "value": 56.76,
+      "value": 20.96,
       "id": "_343757"
     },
     {
-      "group": "parametric-orbit",
+      "group": "parametric-cluster",
       "key": "thickness",
       "type": "number",
-      "value": 24.62,
+      "value": 14.35,
       "id": "_51587"
     },
     {
-      "group": "parametric-orbit",
+      "group": "parametric-cluster",
       "key": "baseOpacity",
       "type": "number",
       "value": 100,
       "id": "_351378"
-    },
-    {
-      "group": "parametric-orbit",
-      "key": "displacement",
-      "type": "vec3",
-      "value": {
-        "x": 100,
-        "y": 100,
-        "z": 100
-      },
-      "id": "_281246"
     },
     {
       "group": "page1-layout",
@@ -519,6 +508,24 @@
         "fsz": "1"
       },
       "id": "_416018"
+    },
+    {
+      "group": "parametric-cluster",
+      "key": "displacement",
+      "type": "vec3",
+      "value": {
+        "x": 0,
+        "y": 3,
+        "z": 0
+      },
+      "id": "_577116"
+    },
+    {
+      "group": "parametric-cluster",
+      "key": "width",
+      "type": "number",
+      "value": 28.28,
+      "id": "_677702"
     }
   ]
 }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { CylinderGeometry, Vector2, InstancedBufferGeometry, BufferAttribute, InstancedBufferAttribute, RawShaderMaterial, Mesh, Vector3, Object3D } from 'three'
+import { CylinderGeometry, Vector2, InstancedBufferGeometry, BufferAttribute, InstancedBufferAttribute, RawShaderMaterial, Mesh, Object3D, Vector3 } from 'three'
 
 /* eslint-disable */
 export const tubeV = require('raw-loader!./tubeV.glsl').default
@@ -90,10 +90,10 @@ export const createLineGeo = async ({ count = 100, numSides = 8, subdivisions = 
   return geometry
 }
 
-export const makeParametric = async ({ scroller, cube, ui, base, sdk, setting }) => {
+export const makeParametric = async ({ cube, ui, base, sdk, setting }) => {
   let count = 100
-  let numSides = 48
-  let subdivisions = 300
+  let numSides = 4
+  let subdivisions = 350
   let openEnded = false
   let geo = await createLineGeo({ count, numSides, subdivisions, openEnded })
   let glProxy = {
@@ -111,7 +111,7 @@ export const makeParametric = async ({ scroller, cube, ui, base, sdk, setting })
     baseOpacity: { value: 1 },
     // baseColor: { value: new Color('#00f') },
 
-    mRefractionRatio: { value: 0.2 },
+    mRefractionRatio: { value: 0.02 },
     mFresnelBias: { value: 0.2 },
     mFresnelPower: { value: 2.2 },
     mFresnelScale: { value: 1.2 },
@@ -123,19 +123,18 @@ export const makeParametric = async ({ scroller, cube, ui, base, sdk, setting })
     thickness: { value: 0.01 },
     spread: { value: 0.01 },
     time: { value: 0 },
-    displacement: { value: new Vector3(0) },
-
-    scroller
+    displacement: { value: new Vector3() }
   }
 
   base.loop(() => {
     geo.maxInstancedCount = Math.floor(group.autoGet('maxLines') / 100.0 * count)
 
-    uniforms.displacement.value = group.autoGet('displacement').multiplyScalar(0.01)
-    uniforms.spread.value = group.autoGet('spread') / 10.0
+    uniforms.displacement.value = group.autoGet('displacement').multiplyScalar(0.1)
+    uniforms.spread.value = group.autoGet('spread')
     uniforms.thickness.value = group.autoGet('thickness') / 1000.0
 
     uniforms.baseOpacity.value = group.autoGet('baseOpacity') / 100.0
+    // uniforms.baseColor.value = group.autoGet('baseColor')
     uniforms.time.value = window.performance.now() * 0.001
   })
 
@@ -192,14 +191,7 @@ export default {
     sdk: {},
     cube: {},
     setting: {
-      default: 'parametric-orbit'
-    },
-    scroller: {
-      default () {
-        return {
-          value: 0
-        }
-      }
+      default: 'parametric-1'
     }
   },
   data () {
@@ -208,7 +200,7 @@ export default {
     }
   },
   async mounted () {
-    const parametric = await makeParametric({ scroller: this.scroller, cube: this.cube, ui: this, base: this.base, sdk: this.sdk, setting: this.setting })
+    const parametric = await makeParametric({ cube: this.cube, ui: this, base: this.base, sdk: this.sdk, setting: this.setting })
     this.clean = parametric.clean
   },
   beforeDestroy () {
