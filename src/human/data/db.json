@@ -224,7 +224,7 @@
         "fx": "1",
         "fy": 0,
         "fz": 0,
-        "fpx": "right - padding * 3.0",
+        "fpx": "right - 2",
         "fpz": "0",
         "fpy": "rect.height * 0.25 - height * scaleY ",
         "fsx": "4",

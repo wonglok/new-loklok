@@ -49,7 +49,7 @@
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
         <O3D :py="(scroller.value) * -5 + 0.0">
           <O3D :py="(menuAnimator.value) * -5 + 0.00001">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
         <O3D :py="(1.0 - scroller.value) * -5 + 0.0">
