@@ -227,7 +227,7 @@ vec3 defineCurve (float t) {
   x *= 10.0;
   float tick = time * 0.3;
   float y = sin(t + tick + t * offset.x * spread);
-  vec3 pos = vec3(x, y, 0);
+  vec3 pos = vec3(x, y, 0.0);
   pos = rotateX(tick + pos.z) * pos;
   pos = rotateX(tick + pos.y) * pos;
   pos = rotateX(tick + pos.x) * pos;
@@ -238,7 +238,7 @@ vec3 defineCurve (float t) {
 
 vec4 defineTube (vec3 pos) {
   return
-    // rotationX(time + pos.z) *
+    rotationZ(time + pos.x) *
     vec4(pos, 1.0);
 }
 
