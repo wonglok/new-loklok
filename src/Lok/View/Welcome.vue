@@ -61,7 +61,6 @@
       <O3D>
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
-            <!-- Baller -->
             <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
           </O3D>
         </O3D>
