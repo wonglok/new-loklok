@@ -4,16 +4,16 @@
     <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <!-- Controls -->
-    <OrbitControls v-if="useOribt && base" :base="base" :kn="'orbitControls'"></OrbitControls>
+    <!-- <OrbitControls v-if="isDev && base" :base="base" :kn="'orbitControls'"></OrbitControls> -->
 
     <!-- Compute Intese Resources -->
     <!-- Canvas2D Resource -->
     <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paleCanvas'" :settings="'paint-canvas'"></PaintCanvas>
-    <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom>
+    <!-- <PaintCanvasCustom v-if="base && sdk" :sdk="sdk" :base="base" :kn="'purpleCanvas'" :settings="'paint-canvas-purple'"></PaintCanvasCustom> -->
 
     <!-- Cube Texture Resource -->
     <!-- <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture> -->
-    <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture>
+    <!-- <CubeTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purpleCube'"></CubeTexture> -->
 
     <!-- <BridgeMap v-if="base" :base="base" :kn="'photoCube'"></BridgeMap> -->
     <ProtossCube v-if="base" :base="base" :kn="'protossCube'"></ProtossCube>
@@ -23,7 +23,7 @@
 
     <!-- Plane Texture Resource -->
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'pale2DTexture'"></CanvasTexture>
-    <CanvasTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purple2DTexture'"></CanvasTexture>
+    <!-- <CanvasTexture v-if="base" :base="base" :canvas="'purpleCanvas'" :kn="'purple2DTexture'"></CanvasTexture> -->
 
     <!-- Font Resource -->
     <!-- <MakeFontResort v-if="base" :sdk="sdk" :base="base" :kn="'resortFont'"></MakeFontResort> -->
@@ -67,7 +67,8 @@
         <O3D :layout="layout['baller']">
           <O3D :pz="(-scroller.value + -0.1) * 90.0">
             <!-- Baller -->
-            <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
+            <ParametricOrbit v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-orbit'" :kn="'parametric'"></ParametricOrbit>
+            <!-- <ParametricBaller v-if="base" :sdk="sdk" :base="base" :cube="'protossCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller> -->
           </O3D>
         </O3D>
         <!-- <GeoText :text="`WONG LOK`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'ball-slogan'"></GeoText> -->
@@ -103,6 +104,7 @@ import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
 import { Damper } from './ReusableGraphics/Damper.js'
+import Stats from 'stats.js'
 const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
@@ -128,7 +130,7 @@ Love never ends.
       layout: false,
       screen: false,
       ready: false,
-      useOribt: false && process.env.NODE_ENV === 'development',
+      isDev: process.env.NODE_ENV === 'development',
       logs: [],
       base: false,
       sdk: false,
@@ -144,7 +146,12 @@ Love never ends.
   },
   async mounted () {
     this.sdk = await makeSDK()
-    this.base = await makeBase({ mounter: this.$refs['mounter'] })
+    var stats = false
+    if (this.isDev) {
+      stats = new Stats()
+      this.$refs.mounter.appendChild(stats.dom)
+    }
+    this.base = await makeBase({ stats, mounter: this.$refs['mounter'] })
     this.sdk.onStubGroup('page1-layout', (stub) => {
       this.layout = stub
     })
@@ -167,7 +174,7 @@ Love never ends.
       })
 
       let vm = this
-      this.base.scroller = this.scroller = makeScroller({
+      this.scroller = makeScroller({
         base,
         touchTarget: renderer.domElement,
         limit: {

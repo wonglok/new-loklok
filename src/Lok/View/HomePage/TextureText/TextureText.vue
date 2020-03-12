@@ -47,7 +47,7 @@ export default {
   },
   async mounted () {
     let base = this.base
-    let pattern = await base.waitKN(this.texture)
+    // let pattern = await base.waitKN(this.texture)
 
     let glProxy = this.glProxy = {
       add: (v) => {
@@ -93,7 +93,7 @@ export default {
     let material = new ShaderMaterial({
       transparent: true,
       uniforms: {
-        patternTexture: { value: pattern },
+        // patternTexture: { value: pattern },
         textTexture: { value: texture }
       },
       vertexShader: require('raw-loader!./text-vert.glsl').default,

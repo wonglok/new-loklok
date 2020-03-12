@@ -1,4 +1,4 @@
-export const makeBase = async ({ mounter }) => {
+export const makeBase = async ({ stats = false, mounter }) => {
   let getID = () => '_' + (100000000.0 * Math.random()).toFixed(0) + ''
   let env = {
     mounter,
@@ -50,7 +50,13 @@ export const makeBase = async ({ mounter }) => {
   }
   let looper = () => {
     rAFID = requestAnimationFrame(looper)
+    if (stats) {
+      stats.begin()
+    }
     runLoop()
+    if (stats) {
+      stats.end()
+    }
   }
   rAFID = requestAnimationFrame(looper)
   env.onClean(() => {
