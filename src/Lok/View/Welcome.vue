@@ -37,18 +37,18 @@
       <!-- Menu -->
       <O3D :py="menuAnimator.value * 20">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
-        <O3D :py="(scroller.value) * -5 + 0.0">
-          <O3D :py="(menuAnimator.value) * -5 + 0.00001">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <O3D :py="gospelAnimator.value * -5">
+          <O3D :py="(menuAnimator.value) * -5">
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelAnimator.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
-        <O3D :py="(1.0 - scroller.value) * -5 + 0.0">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { scroller.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <O3D :py="(1.0 - gospelAnimator.value) * -5 + 0.0">
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -68,9 +68,9 @@
         <!-- <GeoText :text="`WithLokLok.com`" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purpleCube'" :kn="'centerText'"></GeoText> -->
       </O3D>
 
-      <O3D v-if="screen && layout && scroller">
+      <O3D v-if="screen && layout && gospelAnimator" :visible="gospelAnimator.value > 0.01">
 
-        <O3D :py="screen.height * 1.0 * scroller.value">
+        <O3D :py="screen.height * 1.0 * gospelAnimator.value">
           <O3D :py="screen.height * -1">
             <!-- Group the bible -->
             <O3D :screen="screen" :layout="layout['gospel']">
@@ -129,6 +129,7 @@ Love never ends.
       sdk: false,
       // scroller: {},
       menuAnimator: { value: 0 },
+      gospelAnimator: { value: 0 },
       scroller: { value: 0 }
     }
   },
@@ -149,6 +150,7 @@ Love never ends.
       this.layout = stub
     })
     this.menuAnimator = new Damper(0, this.base)
+    this.gospelAnimator = new Damper(0, this.base)
     this.onReady()
     // this.scroller = new Damper(0, this.base)
   },
@@ -174,7 +176,7 @@ Love never ends.
           get canRun () {
             return vm.menuAnimator.value < 0.3
           },
-          y: 1
+          y: 2
         }
       })
 
