@@ -60,7 +60,7 @@
 
       <O3D>
         <O3D :layout="layout['baller']">
-          <O3D :pz="(-scroller.value + -0.1) * 90.0">
+          <O3D :py="(scroller.value) * 90.0">
             <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
           </O3D>
         </O3D>
@@ -70,16 +70,19 @@
 
       <O3D v-if="screen && layout && gospelAnimator" :visible="gospelAnimator.value > 0.01">
 
-        <O3D :py="screen.height * 1.0 * gospelAnimator.value">
-          <O3D :py="screen.height * -1">
+        <O3D :px="screen.height * 1.0 * gospelAnimator.value">
+          <O3D :px="screen.height * -1">
+
             <!-- Group the bible -->
             <O3D :screen="screen" :layout="layout['gospel']">
               <TextureText :align="'left'" :screen="screen" :text="favouriteVerses" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
             </O3D>
+
             <O3D>
               <!-- <PlaneArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></PlaneArea> -->
               <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></RefractionArea>
             </O3D>
+
           </O3D>
         </O3D>
 
