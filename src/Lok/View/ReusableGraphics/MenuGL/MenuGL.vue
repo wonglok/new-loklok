@@ -21,7 +21,7 @@
       </O3D>
 
       <O3D :layout="layout['menu-effectnode-2']">
-        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Node Based Three.js'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+        <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://v2.effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Node Based Three.js'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
       <O3D :layout="layout['menu-igraph']">
