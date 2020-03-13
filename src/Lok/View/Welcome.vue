@@ -35,20 +35,25 @@
     <!-- Scene -->
     <Scene v-if="base" :base="base" :kn="'scene'">
       <!-- Menu -->
-      <O3D :py="menuAnimator.value * 20">
+      <O3D :py="gospelAnimator.value * 10">
+        <O3D :py="menuAnimator.value * 10">
+          <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          </O3D>
+        </O3D>
+      </O3D>
+
+      <O3D :py="(1.0 - gospelAnimator.value) * 10">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 0; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
         <O3D :py="gospelAnimator.value * -5">
-          <O3D :py="(menuAnimator.value) * -5">
+          <O3D :py="menuAnimator.value * -5">
             <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelAnimator.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
-        </O3D>
-        <O3D :py="(1.0 - gospelAnimator.value) * -5 + 0.0">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
         </O3D>
       </O3D>
 
@@ -58,7 +63,7 @@
       <!-- Menu -->
       <MenuGL @close="menuAnimator.value = 0.0" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
-      <O3D>
+      <O3D :visible="scroller.value < 1">
         <O3D :layout="layout['baller']">
           <O3D :py="(scroller.value) * 90.0">
             <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-1'" :kn="'parametric'"></ParametricBaller>
