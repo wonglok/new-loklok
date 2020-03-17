@@ -75,8 +75,8 @@
 
       <O3D v-if="screen && layout && gospelAnimator" :visible="gospelAnimator.value > 0.01">
 
-        <O3D :px="screen.height * 1.0 * gospelAnimator.value">
-          <O3D :px="screen.height * -1">
+        <O3D :px="screen.width * 1.0 * gospelAnimator.value">
+          <O3D :px="screen.width * -1">
 
             <!-- Group the bible -->
             <O3D :screen="screen" :layout="layout['gospel']">
@@ -84,7 +84,6 @@
             </O3D>
 
             <O3D>
-              <!-- <PlaneArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></PlaneArea> -->
               <RefractionArea :screen="screen" :base="base" :kn="'refractionArea'" :layout="layout" :color="layout['gospel-layer-color']"></RefractionArea>
             </O3D>
 
@@ -167,14 +166,11 @@ Love never ends.
       this.gospelAnimator.value = 0
     }
     this.$watch('overlay', () => {
+      closeAll()
       if (this.overlay === 'gospel') {
-        closeAll()
         this.gospelAnimator.value = 1
       } else if (this.overlay === 'menu') {
-        closeAll()
         this.menuAnimator.value = 1
-      } else if (this.overlay === '') {
-        closeAll()
       }
     })
 
