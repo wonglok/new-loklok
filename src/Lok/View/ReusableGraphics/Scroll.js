@@ -8,6 +8,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
   }
   class ValueDamper {
     constructor (v = 0) {
+      this.maxY = limit.y
       this.latestVal = v
       this.dampedVal = v
       base.loop(() => {

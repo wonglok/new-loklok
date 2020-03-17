@@ -12,10 +12,11 @@ import { Parser } from 'expr-eval'
 
 export default {
   props: {
-    mode: {},
-    screen: {},
-    layout: {},
+    // mode: {},
+    // screen: {},
     // scroller: {},
+
+    layout: {},
 
     px: {
       default: 0
@@ -58,10 +59,7 @@ export default {
     },
 
     layout () {
-      this.sync(this.object3D)
-    },
-    screen () {
-      this.sync(this.object3D)
+      this.sync()
     },
 
     px () {
@@ -93,9 +91,9 @@ export default {
     }
   },
   computed: {
-    rect () {
-      return this.screen
-    },
+    // rect () {
+    //   return this.screen
+    // },
     padding () {
       let val = 0
       try {
@@ -145,8 +143,10 @@ export default {
   data () {
     let object3D = new Object3D()
     return {
+      layoutObj: false,
+      stub: false,
       time: 0,
-      baase: false,
+      base: false,
       world: new Vector3(),
       scaleX: 1,
       scaleY: 1,
@@ -160,7 +160,27 @@ export default {
     }
   },
   methods: {
-    sync (object3D) {
+    sync () {
+      let looker = (parent, key, target) => {
+        if (parent[key]) {
+          target[key] = parent[key]
+        } else {
+          let gradParent = parent.$parent
+          if (gradParent) {
+            looker(gradParent, key, target)
+          }
+        }
+      }
+      looker(this.$parent, 'base', this)
+      looker(this.$parent, 'screen', this)
+      looker(this.$parent, 'stub', this)
+      this.rect = this.screen || {}
+
+      let object3D = this.object3D
+      if (this.stub && this.layout) {
+        this.layoutObj = this.stub[this.layout]
+      }
+
       object3D.visible = this.visible
       // this.object3D.getWorldPosition(this.world)
 
@@ -171,51 +191,54 @@ export default {
           console.log(e)
         }
       }
-      if (this.layout) {
+      object3D.position.x = this.px
+      object3D.position.y = this.py
+      object3D.position.z = this.pz
+
+      object3D.scale.x = this.sx
+      object3D.scale.y = this.sy
+      object3D.scale.z = this.sz
+
+      object3D.rotation.x = this.rx
+      object3D.rotation.y = this.ry
+      object3D.rotation.z = this.rz
+
+      if (this.layout && this.layoutObj) {
         this.time = window.performance.now() * 0.001
 
-        run(() => { this.scaleX = object3D.scale.x = Parser.evaluate(this.layout.fsx || '1', this) })
-        run(() => { this.scaleY = object3D.scale.y = Parser.evaluate(this.layout.fsy || '1', this) })
-        run(() => { this.scaleZ = object3D.scale.z = Parser.evaluate(this.layout.fsz || '1', this) })
+        run(() => { object3D.rotation.x = Parser.evaluate(this.layoutObj.frx || '0', this) })
+        run(() => { object3D.rotation.y = Parser.evaluate(this.layoutObj.fry || '0', this) })
+        run(() => { object3D.rotation.z = Parser.evaluate(this.layoutObj.frz || '0', this) })
 
-        run(() => { object3D.position.x = Parser.evaluate(this.layout.fpx || '0', this) })
-        run(() => { object3D.position.y = Parser.evaluate(this.layout.fpy || '0', this) })
-        run(() => { object3D.position.z = Parser.evaluate(this.layout.fpz || '0', this) })
+        run(() => { this.scaleX = object3D.scale.x = Parser.evaluate(this.layoutObj.fsx || '1', this) })
+        run(() => { this.scaleY = object3D.scale.y = Parser.evaluate(this.layoutObj.fsy || '1', this) })
+        run(() => { this.scaleZ = object3D.scale.z = Parser.evaluate(this.layoutObj.fsz || '1', this) })
 
-        run(() => { object3D.rotation.x = Parser.evaluate(this.layout.frx || '0', this) })
-        run(() => { object3D.rotation.y = Parser.evaluate(this.layout.fry || '0', this) })
-        run(() => { object3D.rotation.z = Parser.evaluate(this.layout.frz || '0', this) })
+        run(() => { object3D.position.x = Parser.evaluate(this.layoutObj.fpx || '0', this) })
+        run(() => { object3D.position.y = Parser.evaluate(this.layoutObj.fpy || '0', this) })
+        run(() => { object3D.position.z = Parser.evaluate(this.layoutObj.fpz || '0', this) })
 
-        // console.log('layout-update', JSON.stringify(this.layout))
-      } else {
-        object3D.position.x = this.px
-        object3D.position.y = this.py
-        object3D.position.z = this.pz
+        // console.log('layout-update', JSON.stringify(this.layoutObj))
+      } else if (this.layout && !this.layoutObj) {
+        console.log(this.layout, 'not found stub')
 
-        object3D.scale.x = this.sx
-        object3D.scale.y = this.sy
-        object3D.scale.z = this.sz
-
-        object3D.rotation.x = this.rx
-        object3D.rotation.y = this.ry
-        object3D.rotation.z = this.rz
+        setTimeout(() => {
+          this.sync()
+        }, 0)
       }
     }
   },
   created () {
-    this.$on('get-base', (vm) => {
-      if (this.$parent.base) {
-        vm.base = this.$parent.base
-      } else {
-        this.$parent.$emit('get-base', vm)
-      }
+    this.$on('relayout', () => {
+      this.sync()
     })
+
     this.$on('size', (v) => {
       this.width = v.width
       this.height = v.height
       this.depth = v.depth
       this.radius = v.radius
-      this.sync(this.object3D)
+      this.sync()
     })
     this.$on('add', (v) => {
       this.object3D.add(v)
@@ -227,17 +250,7 @@ export default {
     })
   },
   mounted () {
-    this.$emit('get-base', this)
-
-    this.sync(this.object3D)
-    this.base.loop(() => {
-      this.sync(this.object3D)
-    })
-
-    if (this.kn && this.base) {
-      this.base[this.kn] = this.object3D
-    }
-
+    this.sync()
     this.$parent.$emit('add', this.object3D)
   },
   beforeDestroy () {

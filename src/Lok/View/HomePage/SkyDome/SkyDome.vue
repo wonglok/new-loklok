@@ -47,8 +47,8 @@ export default {
     base.onResize(() => {
       let width = visibleWidthAtZDepth(camera.position.z, camera)
       let height = visibleHeightAtZDepth(camera.position.z, camera)
-      let max = Math.max(width, height) * 100.0
-      let geo = new SphereBufferGeometry(max, 16, 16)
+      let max = Math.max(width, height) * 200.0
+      let geo = new SphereBufferGeometry(max, 8, 8)
       mesh.geometry = geo
       mesh.needsUpdate = true
     })

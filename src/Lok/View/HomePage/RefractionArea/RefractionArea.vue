@@ -32,7 +32,6 @@ export default {
     // depth: {
     //   default: 0
     // },
-    layout: {},
     color: {
       default: 0x999999
     },

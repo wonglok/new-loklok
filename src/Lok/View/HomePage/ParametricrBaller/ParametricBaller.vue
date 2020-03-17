@@ -122,16 +122,16 @@ export const makeParametric = async ({ cube, ui, base, sdk, setting }) => {
     // baseColor: { value: new Color('#fff') },
     thickness: { value: 0.01 },
     spread: { value: 0.01 },
-    animateStrength: { value: 0.01 },
-    animateRadius: { value: 0.01 },
+    // animateStrength: { value: 0.01 },
+    // animateRadius: { value: 0.01 },
     time: { value: 0 }
   }
 
   base.loop(() => {
     geo.maxInstancedCount = Math.floor(group.autoGet('maxLines') / 100.0 * count)
 
-    uniforms.animateStrength.value = group.autoGet('animateStrength') / 100.0
-    uniforms.animateRadius.value = group.autoGet('animateRadius') / 100.0
+    // uniforms.animateStrength.value = group.autoGet('animateStrength') / 100.0
+    // uniforms.animateRadius.value = group.autoGet('animateRadius') / 100.0
 
     uniforms.spread.value = group.autoGet('spread') / 10.0
     uniforms.thickness.value = group.autoGet('thickness') / 1000.0

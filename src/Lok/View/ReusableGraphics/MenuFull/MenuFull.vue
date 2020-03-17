@@ -1,53 +1,47 @@
 <template>
-  <O3D v-if="rect">
-    <!-- Logo -->
-    <!-- <O3D v-if="screen && layout" :screen="rect" :layout="layout['nav-withloklok']">
-      <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => {  })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'With Lok Lok'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
-    </O3D> -->
-
-    <O3D :pz="25" :py="(1.0 - menu.value) * 10">
-      <O3D v-if="rect && layout" :screen="rect" :layout="layout['nav-menu-off']" :base="base" :kn="'nav-menu-off'">
-        <TextureText :visible="menu.value > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+  <O3D :pz="depth" v-if="screen">
+    <O3D :px="30 * (animator.value + hider.value)">
+      <O3D :layout="'open-menu'">
+        <TextureText :text="'Menu'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
     </O3D>
-    <O3D :visible="menu.value > 0.01" :pz="25" :py="(1.0 - menu.value) * rect.height  * 2.0">
-      <O3D>
-        <RefractionArea v-if="base && rect" :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></RefractionArea>
-      </O3D>
-      <!-- <PlaneArea :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></PlaneArea> -->
 
-      <O3D :layout="layout['menu-ccl']">
+    <O3D :px="30 * (1.0 - animator.value)">
+      <O3D :layout="'close-menu'">
+        <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
+      </O3D>
+    </O3D>
+
+    <O3D :px="(1.0 - animator.value) * -screen.width">
+      <O3D :visible="animator.value > 0.001">
+        <RefractionArea v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
+      </O3D>
+
+      <O3D :layout="'menu-codelab'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://creativecodelab.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Creative Code Lab'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D :layout="layout['menu-effectnode']">
+      <O3D :layout="'menu-effectnode'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Effect Node'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D :layout="layout['menu-effectnode-2']">
+      <O3D :layout="'menu-effectnode-2'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://v2.effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Node Based Three.js'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D :layout="layout['menu-igraph']">
+      <O3D :layout="'menu-igraph'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://igraph.effectnode.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'iGraph Cinematic Editor'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D :layout="layout['menu-wonglok']">
+      <O3D :layout="'menu-wonglok'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://www.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'WongLok . com'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
 
-      <O3D :layout="layout['menu-wonglok-age']">
+      <O3D :layout="'menu-wonglok-age'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://age.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Assisted Graphics Engineering'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
+
     </O3D>
-
-    <!--
-      <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
-        <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-      </O3D>
-    -->
-
-    <!-- Hamburger Menu -->
 
     <slot></slot>
   </O3D>
@@ -55,6 +49,8 @@
 <script>
 import { Object3D } from 'three'
 import { getScreen } from '../GetScreen'
+import { Damper } from '../Damper.js'
+
 // const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
@@ -62,11 +58,11 @@ export default {
     ...require('../../graphics').default
   },
   props: {
-    menu: {},
+    overlay: {},
+    // animator: {},
     sdk: {},
     open: {},
-    layout: {},
-    screen: {},
+    // screen: {},
     kn: {},
     base: {}
   },
@@ -80,7 +76,25 @@ export default {
   },
   data () {
     return {
-      rect: false,
+      hider: false,
+      animator: false,
+      stub: false,
+      depth: 100,
+      favouriteVerses: `Love is patient and kind;
+love does not envy or boast;
+It is not arrogant or rude.
+It does not insist on its own way;
+It is not irritable or resentful;
+It does not rejoice at wrongdoing,
+but rejoices with the truth.
+Love bears all things,
+believes all things,
+hopes all things,
+endures all things.
+Love never ends.
+
+1 Corinthians 13:4–8a`,
+      screen: false,
       o3d: new Object3D()
     }
   },
@@ -98,14 +112,14 @@ export default {
     //   if (this.open) {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         menu.value: 1
+    //         animator.value: 1
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
     //   } else {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         menu.value: 0
+    //         animator.value: 0
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
@@ -113,10 +127,41 @@ export default {
     // }
   },
   async mounted () {
+    this.animator = new Damper(0, this.base)
+    this.hider = new Damper(0, this.base)
+    this.sync = () => {
+      if (this.overlay !== '') {
+        this.hider.value = 1
+      } else {
+        this.hider.value = 0
+      }
+      if (this.overlay === 'menu') {
+        this.animator.value = 1
+      } else {
+        this.animator.value = 0
+      }
+    }
+    this.sync()
+    this.$watch('overlay', this.sync)
+
+    let castDown = (vm, ev, data) => {
+      if (vm && vm.$children.length > 0) {
+        vm.$emit(ev, data)
+        vm.$children.forEach((kid) => {
+          castDown(kid, ev, data)
+        })
+      }
+    }
+
+    this.sdk.onStubGroup('menu-overlay', (stub) => {
+      this.stub = stub
+      castDown(this, 'relayout', {})
+    })
+
     let camera = await this.base.waitKN('camera')
-    this.rect = getScreen({ camera, depth: 25 })
+    this.screen = getScreen({ camera, depth: this.depth })
     this.base.onResize(() => {
-      this.rect = getScreen({ camera, depth: 25 })
+      this.screen = getScreen({ camera, depth: this.depth })
     })
     // this.sync()
     this.$parent.$emit('add', this.o3d)
