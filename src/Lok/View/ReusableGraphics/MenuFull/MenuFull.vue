@@ -103,7 +103,7 @@ hopes all things,
 endures all things.
 Love never ends.
 
-1 Corinthians 13:4–8a`,
+1 Corinthians 13:4 - 8a`,
       screen: false,
       o3d: new Object3D()
     }
