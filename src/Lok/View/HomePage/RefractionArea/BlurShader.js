@@ -90,10 +90,13 @@ let fragmentShader = glsl`
 
     uv.xy += distortion * 2.5;
 
-    // vec4 base = texture2DProj(tDiffuse, uv);
+    float amount = resolution.x * 0.5;
+    vec4 base = vec4(0.0);
 
-    float amount = resolution.x * rand(resolution.xy) * 0.25;
-    vec4 base = blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
+    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
 
     gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );
     // gl_FragColor = vec4(base.rgb, 1.0);

@@ -61,7 +61,7 @@ export default {
     }
 
     let makeMesh = () => {
-      let RES_SIZE = 512
+      let RES_SIZE = 1024
       let screen = this.screen
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {
