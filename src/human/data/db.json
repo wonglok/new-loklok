@@ -267,7 +267,7 @@
       "key": "open-menu",
       "type": "layout",
       "value": {
-        "fpx": "rect.width * 0.5 - height * 2 + padding * -2",
+        "fpx": "rect.width * 0.5 - height * 2 + padding * -5",
         "fpy": "rect.height * 0.5 - width * 2 + padding * -2 - height * 10",
         "fpz": "0",
         "frx": "0",
@@ -307,9 +307,9 @@
         "frx": "0",
         "fry": "0",
         "frz": "0",
-        "fsx": "5",
-        "fsy": "5",
-        "fsz": "1"
+        "fsx": "4",
+        "fsy": "4",
+        "fsz": "4"
       },
       "id": "_637909"
     },
@@ -476,7 +476,7 @@
         "fpz": "0",
         "frx": "0",
         "fry": "0",
-        "frz": "0",
+        "frz": "3.14159265 * -0.15",
         "fsx": "3",
         "fsy": "3",
         "fsz": "3"
