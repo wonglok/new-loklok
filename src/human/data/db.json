@@ -485,17 +485,17 @@
     },
     {
       "group": "home-page",
-      "key": "withloklok",
+      "key": "loklok",
       "type": "layout",
       "value": {
-        "fpx": "left + padding * 2",
-        "fpy": "top - padding * 2",
+        "fpx": "left + padding * 2.0",
+        "fpy": "top - padding * 2.0",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
         "frz": "0",
-        "fsx": "10",
-        "fsy": "10",
+        "fsx": "7",
+        "fsy": "7",
         "fsz": "1"
       },
       "id": "_466204"

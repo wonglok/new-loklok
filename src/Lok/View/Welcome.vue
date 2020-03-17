@@ -20,22 +20,26 @@
       <!-- Dome -->
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
-      <!-- Menu -->
-      <Gospel @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && gospelAnimator && scroller" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base" ></Gospel>
-      <MenuFull @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && menuAnimator" :sdk="sdk" :overlay="overlay" :base="base" ></MenuFull>
+      <O3D v-if="base && stub && screen">
+        <!-- Menu -->
+        <Gospel @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && gospelAnimator && scroller" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base" ></Gospel>
+        <MenuFull @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && menuAnimator" :sdk="sdk" :overlay="overlay" :base="base" ></MenuFull>
 
-      <O3D :py="(scroller.value) * screen.height">
-        <O3D :visible="scroller.value < (screen.height * 0.5)">
-          <O3D :layout="'baller'">
-            <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
-          </O3D>
-          <O3D :layout="'withloklok'">
-            <TextureText :text="'Wiht Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
-          </O3D>
+        <O3D :layout="'loklok'">
+          <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
         </O3D>
-        <O3D>
-          <O3D :layout="'cluster'">
-            <ParametricCluster v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
+
+        <O3D :py="(scroller.value) * screen.height">
+          <O3D :visible="scroller.value < (screen.height * 0.5)">
+            <O3D :layout="'baller'">
+              <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
+            </O3D>
+
+          </O3D>
+          <O3D>
+            <O3D :layout="'cluster'">
+              <ParametricCluster v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
+            </O3D>
           </O3D>
         </O3D>
       </O3D>
