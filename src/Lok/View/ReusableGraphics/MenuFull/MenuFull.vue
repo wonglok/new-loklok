@@ -12,7 +12,7 @@
       </O3D>
     </O3D>
 
-    <O3D :pz="opener.value * -depth * 2" :py="screen.height * (scroller.value)">
+    <O3D :pz="hider.value * -depth * 2" :py="screen.height * (scroller.value)">
       <O3D :layout="'baller'">
         <O3D :pz="depth">
           <ParametricBaller :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
