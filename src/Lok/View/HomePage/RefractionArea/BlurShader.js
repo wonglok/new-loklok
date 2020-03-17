@@ -42,7 +42,7 @@ let fragmentShader = glsl`
 
   //https://github.com/Jam3/glsl-fast-gaussian-blur/blob/master/13.glsl
 
-  vec4 blurProj13(sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  vec4 blurProj13 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
     vec4 color = vec4(0.0);
     vec4 off1 = vec4(1.411764705882353) * direction;
     vec4 off2 = vec4(3.2941176470588234) * direction;
@@ -57,8 +57,7 @@ let fragmentShader = glsl`
     return color;
   }
 
-
-  vec4 blurProj9(sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  vec4 blurProj9 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
     vec4 color = vec4(0.0);
     vec4 off1 = vec4(1.3846153846) * direction;
     vec4 off2 = vec4(3.2307692308) * direction;
@@ -70,7 +69,7 @@ let fragmentShader = glsl`
     return color;
   }
 
-  vec4 blurProj5(sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  vec4 blurProj5 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
     vec4 color = vec4(0.0);
     vec4 off1 = vec4(1.3333333333333333) * direction;
     color += texture2DProj(image, uv) * 0.29411764705882354;
@@ -78,6 +77,7 @@ let fragmentShader = glsl`
     color += texture2DProj(image, uv - (off1 / resolution)) * 0.35294117647058826;
     return color;
   }
+
   void main (void) {
     float waveStrength = 0.5;
     float waveSpeed = 0.0;

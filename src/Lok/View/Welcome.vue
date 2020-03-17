@@ -53,6 +53,9 @@ export default {
   },
   data () {
     return {
+      layers: {
+        logo: false
+      },
       overlay: '',
       stub: false,
       screen: false,
