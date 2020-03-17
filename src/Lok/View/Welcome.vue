@@ -143,13 +143,13 @@ Love never ends.
         this.screen = getScreen({ camera, depth: 0.0 })
       })
 
-      let vm = this
+      // let vm = this
       this.scroller = makeScroller({
         base,
         touchTarget: renderer.domElement,
         limit: {
           get canRun () {
-            return vm.overlay === ''
+            return true
           },
           y: 1
         }
