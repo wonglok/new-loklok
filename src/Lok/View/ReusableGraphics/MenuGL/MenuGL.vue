@@ -9,7 +9,7 @@
         <TextureText :visible="menu.value > 0" @remove="$removeClick($event)" @add="$addClick($event, onClick)" :align="'left'" :screen="screen" :text="'CLOSE'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
       </O3D>
     </O3D>
-    <O3D :visible="menu.value > 0.01" :pz="25" :py="(1.0 - menu.value) * -rect.height  * 2.0">
+    <O3D :visible="menu.value > 0.01" :pz="25" :py="(1.0 - menu.value) * rect.height  * 2.0">
       <O3D>
         <RefractionArea v-if="base && rect" :screen="rect" :base="base" :layout="layout" :color="layout['menu-layer-color']"></RefractionArea>
       </O3D>

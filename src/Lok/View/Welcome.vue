@@ -38,21 +38,21 @@
       <O3D :py="gospelAnimator.value * 10">
         <O3D :py="menuAnimator.value * 10">
           <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'menu' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'menu'; $emit('overlay-sync') })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
           </O3D>
         </O3D>
       </O3D>
 
       <O3D :py="(1.0 - gospelAnimator.value) * 10">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = '' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = ''; $emit('overlay-sync') })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
         <O3D :py="gospelAnimator.value * -5">
           <O3D :py="menuAnimator.value * -5">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'gospel' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Thank you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'gospel'; $emit('overlay-sync') })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Thank you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
       </O3D>
@@ -61,7 +61,7 @@
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <MenuGL @close="() => { overlay = '' }" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
+      <MenuGL @close="() => { overlay = ''; $emit('overlay-sync') }" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
       <O3D :visible="scroller.value < 1">
         <O3D :layout="layout['baller']">
@@ -165,13 +165,19 @@ Love never ends.
       this.menuAnimator.value = 0
       this.gospelAnimator.value = 0
     }
-    this.$watch('overlay', () => {
-      closeAll()
+    this.$on('overlay-sync', () => {
       if (this.overlay === 'gospel') {
+        closeAll()
         this.gospelAnimator.value = 1
       } else if (this.overlay === 'menu') {
+        closeAll()
         this.menuAnimator.value = 1
+      } else if (this.overlay === '') {
+        closeAll()
       }
+    })
+    this.$watch('overlay', () => {
+      this.$emit('overlay-sync')
     })
 
     window.addEventListener('keydown', (evt) => {
