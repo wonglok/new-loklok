@@ -267,12 +267,12 @@
       "key": "open-menu",
       "type": "layout",
       "value": {
-        "fpx": "rect.width * 0.5 - height * 2 + padding * -5",
-        "fpy": "rect.height * 0.5 - width * 2 + padding * -2 - height * 10",
+        "fpx": "0",
+        "fpy": "0",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
-        "frz": "3.141592 * 0.5 ",
+        "frz": "",
         "fsx": "4",
         "fsy": "4",
         "fsz": "1"
@@ -472,7 +472,7 @@
       "type": "layout",
       "value": {
         "fpx": "0",
-        "fpy": "rect.height * -1.0",
+        "fpy": "rect.height * -1",
         "fpz": "0",
         "frx": "0",
         "fry": "0",
@@ -482,6 +482,23 @@
         "fsz": "3"
       },
       "id": "_864975"
+    },
+    {
+      "group": "home-page",
+      "key": "withloklok",
+      "type": "layout",
+      "value": {
+        "fpx": "left + padding * 2",
+        "fpy": "top - padding * 2",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "10",
+        "fsy": "10",
+        "fsz": "1"
+      },
+      "id": "_466204"
     }
   ]
 }

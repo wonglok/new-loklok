@@ -21,13 +21,16 @@
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <Gospel @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && gospelAnimator" :sdk="sdk" :overlay="overlay" :base="base" ></Gospel>
+      <Gospel @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && gospelAnimator && scroller" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base" ></Gospel>
       <MenuFull @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && menuAnimator" :sdk="sdk" :overlay="overlay" :base="base" ></MenuFull>
 
       <O3D :py="(scroller.value) * screen.height">
         <O3D :visible="scroller.value < (screen.height * 0.5)">
           <O3D :layout="'baller'">
             <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
+          </O3D>
+          <O3D :layout="'withloklok'">
+            <TextureText :text="'Wiht Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
           </O3D>
         </O3D>
         <O3D>
@@ -96,18 +99,18 @@ Love never ends.
     }
     this.base = await makeBase({ stats, mounter: this.$refs['mounter'] })
 
-    let tellKids = (vm, ev, data) => {
+    let castDown = (vm, ev, data) => {
       if (vm) {
         vm.$emit(ev, data)
         vm.$children.forEach((grandKid) => {
-          tellKids(grandKid, ev, data)
+          castDown(grandKid, ev, data)
         })
       }
     }
-    this.tellKids = tellKids
+    this.castDown = castDown
     this.sdk.onStubGroup('home-page', (stub) => {
       this.stub = stub
-      tellKids(this, 'relayout', {})
+      castDown(this, 'relayout', {})
     })
 
     this.$on('overlay', (overlay) => {
@@ -157,7 +160,10 @@ Love never ends.
 
       setTimeout(() => {
         this.ready = true
-        this.tellKids(this, 'relayout', {})
+        this.castDown(this, 'relayout', {})
+        this.base.onResize(() => {
+          this.castDown(this, 'relayout', {})
+        })
       })
     },
     log (v) {

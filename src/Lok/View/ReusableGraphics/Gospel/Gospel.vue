@@ -1,6 +1,6 @@
 <template>
-  <O3D  :pz="depth" v-if="screen">
-    <O3D :px="10 * (animator.value + hider.value)">
+  <O3D :pz="depth" v-if="screen">
+    <O3D :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * (animator.value + hider.value)">
       <O3D :layout="'open-menu'">
         <TextureText :text="'Thank you Gospel'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'gospel') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
@@ -31,7 +31,6 @@ import { getScreen } from '../GetScreen'
 import { Damper } from '../Damper.js'
 
 // import { Damper } from '../Damper.js'
-
 // const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
@@ -39,6 +38,7 @@ export default {
     ...require('../../graphics').default
   },
   props: {
+    scroller: {},
     overlay: {},
     // animator: {},
     sdk: {},

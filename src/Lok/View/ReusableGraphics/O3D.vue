@@ -174,6 +174,7 @@ export default {
       looker(this.$parent, 'base', this)
       looker(this.$parent, 'screen', this)
       looker(this.$parent, 'stub', this)
+
       this.rect = this.screen || {}
 
       let object3D = this.object3D
@@ -182,7 +183,6 @@ export default {
       }
 
       object3D.visible = this.visible
-      // this.object3D.getWorldPosition(this.world)
 
       let run = (fnc) => {
         try {
@@ -220,16 +220,18 @@ export default {
 
         // console.log('layout-update', JSON.stringify(this.layoutObj))
       } else if (this.layout && !this.layoutObj) {
-        console.log(this.layout, 'not found stub')
-
+        console.log(this.layout, 'not found stub / layout')
         setTimeout(() => {
-          this.sync()
-        }, 0)
+          this.$emit('retry')
+        }, 1000)
       }
     }
   },
   created () {
     this.$on('relayout', () => {
+      this.sync()
+    })
+    this.$on('retry', () => {
       this.sync()
     })
 
