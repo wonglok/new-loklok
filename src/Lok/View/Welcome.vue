@@ -18,12 +18,13 @@
     <Scene v-if="base" :base="base" :kn="'scene'">
 
       <!-- Dome -->
-      <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
+      <SkyDome :base="base" :kn="'skydome'" :texture="'pale2DTexture'"></SkyDome>
 
-      <O3D v-if="base && stub && screen">
+      <!--  -->
+      <O3D v-if="base && stub && screen && scroller && sdk">
         <!-- Menu -->
-        <Gospel @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && gospelAnimator && scroller" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base" ></Gospel>
-        <MenuFull @overlay="$emit('overlay', $event)" v-if="base && screen && sdk && menuAnimator" :sdk="sdk" :overlay="overlay" :base="base" ></MenuFull>
+        <Gospel @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></Gospel>
+        <MenuFull @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></MenuFull>
 
         <O3D :layout="'loklok'">
           <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
@@ -32,13 +33,13 @@
         <O3D :py="(scroller.value) * screen.height">
           <O3D :visible="scroller.value < (screen.height * 0.5)">
             <O3D :layout="'baller'">
-              <ParametricBaller v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
+              <ParametricBaller :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
             </O3D>
 
           </O3D>
           <O3D>
             <O3D :layout="'cluster'">
-              <ParametricCluster v-if="base && scroller" :scroller="scroller" :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
+              <ParametricCluster :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
             </O3D>
           </O3D>
         </O3D>
@@ -56,6 +57,7 @@ import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
 import Stats from 'stats.js'
+
 const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
@@ -65,20 +67,6 @@ export default {
   data () {
     return {
       overlay: '',
-      favouriteVerses: `Love is patient and kind;
-love does not envy or boast;
-It is not arrogant or rude.
-It does not insist on its own way;
-It is not irritable or resentful;
-It does not rejoice at wrongdoing,
-but rejoices with the truth.
-Love bears all things,
-believes all things,
-hopes all things,
-endures all things.
-Love never ends.
-
-1 Corinthians 13:4–8a`,
       stub: false,
       screen: false,
       ready: false,
@@ -87,8 +75,6 @@ Love never ends.
       base: false,
       sdk: false,
       // scroller: {},
-      menuAnimator: { value: 0 },
-      gospelAnimator: { value: 0 },
       scroller: { value: 0 }
     }
   },
