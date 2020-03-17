@@ -273,28 +273,11 @@
         "frx": "0",
         "fry": "0",
         "frz": "",
-        "fsx": "4",
-        "fsy": "4",
-        "fsz": "1"
+        "fsx": "4.5",
+        "fsy": "4.5",
+        "fsz": "4.5"
       },
       "id": "_901920"
-    },
-    {
-      "group": "home-page",
-      "key": "baller",
-      "type": "layout",
-      "value": {
-        "fpx": "0",
-        "fpy": "0",
-        "fpz": "0",
-        "frx": "0",
-        "fry": "0",
-        "frz": "0",
-        "fsx": "5",
-        "fsy": "5",
-        "fsz": "5"
-      },
-      "id": "_954126"
     },
     {
       "group": "gospel-overlay",
@@ -468,23 +451,6 @@
     },
     {
       "group": "home-page",
-      "key": "cluster",
-      "type": "layout",
-      "value": {
-        "fpx": "0",
-        "fpy": "rect.height * -1",
-        "fpz": "0",
-        "frx": "0",
-        "fry": "0",
-        "frz": "3.14159265 * -0.15",
-        "fsx": "3",
-        "fsy": "3",
-        "fsz": "3"
-      },
-      "id": "_864975"
-    },
-    {
-      "group": "home-page",
       "key": "loklok",
       "type": "layout",
       "value": {
@@ -499,6 +465,40 @@
         "fsz": "1"
       },
       "id": "_466204"
+    },
+    {
+      "group": "gospel-overlay",
+      "key": "cluster",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "3",
+        "fsy": "3",
+        "fsz": "3"
+      },
+      "id": "_472451"
+    },
+    {
+      "group": "menu-overlay",
+      "key": "baller",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "2.5",
+        "fsy": "2.5",
+        "fsz": "1"
+      },
+      "id": "_291058"
     }
   ]
 }

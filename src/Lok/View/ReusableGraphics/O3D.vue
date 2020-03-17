@@ -7,8 +7,19 @@
 <script>
 import { Object3D, Vector3 } from 'three'
 import { Parser } from 'expr-eval'
+import { lookUp } from './Scope.js'
 // import { getScreen } from './GetScreen'
 // npm install expr-eval
+// let lookUp = (parent, key) => {
+//   if (parent[key]) {
+//     return parent[key]
+//   } else {
+//     let gradParent = parent.$parent
+//     if (gradParent) {
+//       return lookUp(gradParent, key)
+//     }
+//   }
+// }
 
 export default {
   props: {
@@ -138,15 +149,23 @@ export default {
         console.log(e)
       }
       return val
+    },
+    rect () {
+      return lookUp(this.$parent, 'screen')
+    },
+    base () {
+      return lookUp(this.$parent, 'base')
+    },
+    stub () {
+      return lookUp(this.$parent, 'stub')
     }
   },
   data () {
     let object3D = new Object3D()
     return {
       layoutObj: false,
-      stub: false,
       time: 0,
-      base: false,
+      // base: false,
       world: new Vector3(),
       scaleX: 1,
       scaleY: 1,
@@ -161,22 +180,6 @@ export default {
   },
   methods: {
     sync () {
-      let looker = (parent, key, target) => {
-        if (parent[key]) {
-          target[key] = parent[key]
-        } else {
-          let gradParent = parent.$parent
-          if (gradParent) {
-            looker(gradParent, key, target)
-          }
-        }
-      }
-      looker(this.$parent, 'base', this)
-      looker(this.$parent, 'screen', this)
-      looker(this.$parent, 'stub', this)
-
-      this.rect = this.screen || {}
-
       let object3D = this.object3D
       if (this.stub && this.layout) {
         this.layoutObj = this.stub[this.layout]
@@ -253,6 +256,10 @@ export default {
   },
   mounted () {
     this.sync()
+    this.base.onResize(() => {
+      this.sync()
+    })
+
     this.$parent.$emit('add', this.object3D)
   },
   beforeDestroy () {

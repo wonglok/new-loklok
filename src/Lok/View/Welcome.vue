@@ -30,19 +30,6 @@
           <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
         </O3D>
 
-        <O3D :py="(scroller.value) * screen.height">
-          <O3D :visible="scroller.value < (screen.height * 0.5)">
-            <O3D :layout="'baller'">
-              <ParametricBaller :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
-            </O3D>
-
-          </O3D>
-          <O3D>
-            <O3D :layout="'cluster'">
-              <ParametricCluster :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
-            </O3D>
-          </O3D>
-        </O3D>
       </O3D>
 
     </Scene>
@@ -127,6 +114,7 @@ export default {
       this.screen = getScreen({ camera, depth: 0.0 })
       base.onResize(() => {
         this.screen = getScreen({ camera, depth: 0.0 })
+        this.castDown(this, 'relayout', {})
       })
 
       // let vm = this
@@ -151,9 +139,6 @@ export default {
       setTimeout(() => {
         this.ready = true
         this.castDown(this, 'relayout', {})
-        this.base.onResize(() => {
-          this.castDown(this, 'relayout', {})
-        })
       })
     },
     log (v) {

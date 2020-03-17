@@ -1,19 +1,27 @@
 <template>
-  <O3D :pz="depth" v-if="screen">
-    <O3D :px="30 * (animator.value + hider.value)">
+  <O3D v-if="screen">
+    <O3D :pz="depth" :px="30 * (opener.value + hider.value)">
       <O3D :layout="'open-menu'">
         <TextureText :text="'Menu'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
     </O3D>
 
-    <O3D :px="30 * (1.0 - animator.value)">
+    <O3D :pz="depth" :px="30 * (1.0 - opener.value)">
       <O3D :layout="'close-menu'">
         <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
     </O3D>
 
-    <O3D :px="(1.0 - animator.value) * -screen.width">
-      <O3D :visible="animator.value > 0.001">
+    <O3D :pz="opener.value * -depth * 2" :py="screen.height * (scroller.value)">
+      <O3D :layout="'baller'">
+        <O3D :pz="depth">
+          <ParametricBaller :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-baller'" :kn="'parametric'"></ParametricBaller>
+        </O3D>
+      </O3D>
+    </O3D>
+
+    <O3D :pz="depth" :px="(1.0 - opener.value) * -screen.width">
+      <O3D :visible="opener.value > 0.001">
         <RefractionArea v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
       </O3D>
 
@@ -50,6 +58,7 @@
 import { Object3D } from 'three'
 import { getScreen } from '../GetScreen'
 import { Damper } from '../Damper.js'
+import { castDownEvent } from '../Scope.js'
 
 // const TWEEN = require('@tweenjs/tween.js').default
 
@@ -58,8 +67,9 @@ export default {
     ...require('../../graphics').default
   },
   props: {
+    scroller: {},
     overlay: {},
-    // animator: {},
+    // opener: {},
     sdk: {},
     open: {},
     // screen: {},
@@ -77,7 +87,7 @@ export default {
   data () {
     return {
       hider: false,
-      animator: false,
+      opener: false,
       stub: false,
       depth: 100,
       favouriteVerses: `Love is patient and kind;
@@ -112,14 +122,14 @@ Love never ends.
     //   if (this.open) {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         animator.value: 1
+    //         opener.value: 1
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
     //   } else {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         animator.value: 0
+    //         opener.value: 0
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
@@ -127,7 +137,7 @@ Love never ends.
     // }
   },
   async mounted () {
-    this.animator = new Damper(0, this.base)
+    this.opener = new Damper(0, this.base)
     this.hider = new Damper(0, this.base)
     this.sync = () => {
       if (this.overlay !== '') {
@@ -136,32 +146,25 @@ Love never ends.
         this.hider.value = 0
       }
       if (this.overlay === 'menu') {
-        this.animator.value = 1
+        this.opener.value = 1
       } else {
-        this.animator.value = 0
+        this.opener.value = 0
       }
     }
+
     this.sync()
     this.$watch('overlay', this.sync)
 
-    let castDown = (vm, ev, data) => {
-      if (vm && vm.$children.length > 0) {
-        vm.$emit(ev, data)
-        vm.$children.forEach((kid) => {
-          castDown(kid, ev, data)
-        })
-      }
-    }
-
     this.sdk.onStubGroup('menu-overlay', (stub) => {
       this.stub = stub
-      castDown(this, 'relayout', {})
+      castDownEvent(this, 'relayout', {})
     })
 
     let camera = await this.base.waitKN('camera')
     this.screen = getScreen({ camera, depth: this.depth })
     this.base.onResize(() => {
       this.screen = getScreen({ camera, depth: this.depth })
+      castDownEvent(this, 'relayout', {})
     })
     // this.sync()
     this.$parent.$emit('add', this.o3d)
