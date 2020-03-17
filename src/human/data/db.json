@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 11,
-        "g": 0,
-        "b": 136,
+        "r": 0,
+        "g": 87,
+        "b": 97,
         "a": 0.74
       },
       "id": "_959545"

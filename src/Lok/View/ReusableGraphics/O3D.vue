@@ -204,7 +204,7 @@ export default {
       object3D.rotation.z = this.rz
 
       if (this.layout && this.layoutObj) {
-        this.time = window.performance.now() * 0.001
+        // this.time = window.performance.now() * 0.001
 
         run(() => { object3D.rotation.x = Parser.evaluate(this.layoutObj.frx || '0', this) })
         run(() => { object3D.rotation.y = Parser.evaluate(this.layoutObj.fry || '0', this) })
@@ -223,7 +223,7 @@ export default {
         console.log(this.layout, 'not found stub / layout')
         setTimeout(() => {
           this.$emit('retry')
-        }, 1000)
+        }, 100)
       }
     }
   },
