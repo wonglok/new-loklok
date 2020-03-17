@@ -38,21 +38,21 @@
       <O3D :py="gospelAnimator.value * 10">
         <O3D :py="menuAnimator.value * 10">
           <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 1; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'menu' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' MENU'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
           </O3D>
         </O3D>
       </O3D>
 
       <O3D :py="(1.0 - gospelAnimator.value) * 10">
         <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-menu']">
-          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { menuAnimator.value = 0; gospelAnimator.value = 0.0 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="' Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+          <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = '' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Close'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
         </O3D>
       </O3D>
 
       <O3D v-if="screen && layout" :screen="screen" :layout="layout['nav-thx-gospel']">
         <O3D :py="gospelAnimator.value * -5">
           <O3D :py="menuAnimator.value * -5">
-            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { gospelAnimator.value = 1 })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Than you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
+            <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { overlay = 'gospel' })" :align="'left'" :screen="screen" :font="'SeasideResortNF'" :text="'Thank you Gospel ✞'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
           </O3D>
         </O3D>
       </O3D>
@@ -61,7 +61,7 @@
       <SkyDome :base="base" :texture="'pale2DTexture'" :kn="'skydome'"></SkyDome>
 
       <!-- Menu -->
-      <MenuGL @close="menuAnimator.value = 0.0" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
+      <MenuGL @close="() => { overlay = '' }" :menu="menuAnimator" v-if="base && screen && sdk && layout" :layout="layout" :screen="screen" :sdk="sdk" :base="base" ></MenuGL>
 
       <O3D :visible="scroller.value < 1">
         <O3D :layout="layout['baller']">
@@ -114,6 +114,7 @@ export default {
   },
   data () {
     return {
+      overlay: '',
       favouriteVerses: `Love is patient and kind;
 love does not envy or boast;
 It is not arrogant or rude.
@@ -157,9 +158,31 @@ Love never ends.
     this.sdk.onStubGroup('page1-layout', (stub) => {
       this.layout = stub
     })
+
     this.menuAnimator = new Damper(0, this.base)
     this.gospelAnimator = new Damper(0, this.base)
     this.onReady()
+    let closeAll = () => {
+      this.menuAnimator.value = 0
+      this.gospelAnimator.value = 0
+    }
+    this.$watch('overlay', () => {
+      if (this.overlay === 'gospel') {
+        closeAll()
+        this.gospelAnimator.value = 1
+      } else if (this.overlay === 'menu') {
+        closeAll()
+        this.menuAnimator.value = 1
+      } else if (this.overlay === '') {
+        closeAll()
+      }
+    })
+
+    window.addEventListener('keydown', (evt) => {
+      if (evt.keyCode === 27) {
+        closeAll()
+      }
+    }, false)
     // this.scroller = new Damper(0, this.base)
   },
   methods: {
@@ -182,7 +205,7 @@ Love never ends.
         touchTarget: renderer.domElement,
         limit: {
           get canRun () {
-            return vm.menuAnimator.value < 0.3
+            return (vm.menuAnimator.value + vm.gospelAnimator.value) < 0.3
           },
           y: 2
         }

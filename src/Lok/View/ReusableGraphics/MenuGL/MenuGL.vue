@@ -40,9 +40,12 @@
       </O3D>
     </O3D>
 
-    <!-- <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
-      <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
-    </O3D> -->
+    <!--
+      <O3D v-if="screen && layout" :screen="screen" :layout="layout['menu-title']">
+        <TextureText @add="$addClick($event, onClick)" @remove="$removeClick($event)" @clicker="() => {}" :align="'center'" :screen="screen" :text="'Menu'" :sdk="sdk" :base="base" :font="'resortFont'" :texture="'purple2DTexture'" :kn="'section-2-text'"></TextureText>
+      </O3D>
+    -->
+
     <!-- Hamburger Menu -->
 
     <slot></slot>
