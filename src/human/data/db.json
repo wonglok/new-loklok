@@ -499,6 +499,23 @@
         "fsz": "1"
       },
       "id": "_291058"
+    },
+    {
+      "group": "menu-overlay",
+      "key": "brand-logo",
+      "type": "layout",
+      "value": {
+        "fpx": "left + padding * 2",
+        "fpy": "top - padding * 2",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "5",
+        "fsy": "5",
+        "fsz": "1"
+      },
+      "id": "_438061"
     }
   ]
 }

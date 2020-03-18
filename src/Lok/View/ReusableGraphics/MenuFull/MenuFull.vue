@@ -6,6 +6,12 @@
       </O3D>
     </O3D>
 
+    <O3D :pz="depth">
+      <O3D :layout="'brand-logo'">
+        <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
+      </O3D>
+    </O3D>
+
     <O3D :pz="depth" :px="30 * (1.0 - opener.value)">
       <O3D :layout="'close-menu'">
         <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>

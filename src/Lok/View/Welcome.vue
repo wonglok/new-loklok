@@ -26,14 +26,13 @@
         <Gospel @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></Gospel>
         <MenuFull @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></MenuFull>
 
-        <O3D :layout="'loklok'">
+        <!-- <O3D :layout="'loklok'">
           <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
-        </O3D>
+        </O3D> -->
 
       </O3D>
 
     </Scene>
-
   </div>
 </template>
 
