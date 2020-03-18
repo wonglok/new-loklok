@@ -102,7 +102,7 @@ let fragmentShader = glsl`
     const int r = int(radius);
     const int nr = -r;
     float k = 0.9342/(radius*radius);
-    float size = pow(radius * (1.1 - blur), 2.0);
+    float size = pow(radius * (1.15 - blur), 2.0);
 
     for (int y = nr; y <= r; y++) {
       for (int x = nr; x <= r; x++) {

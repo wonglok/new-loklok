@@ -1,6 +1,6 @@
 <template>
   <O3D v-if="screen">
-    <O3D :pz="depth" :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * 0.5 * (animator.value + hider.value)">
+    <O3D :pz="depth" :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * (animator.value + hider.value)">
       <O3D :layout="'open-menu'">
         <TextureText :text="'Thank you Gospel'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'gospel') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
@@ -21,6 +21,7 @@
     </O3D>
 
     <O3D :pz="depth" :px="(1.0 - animator.value) * screen.width">
+
       <O3D :visible="animator.value > 0.001">
         <RefractionArea :blur="animator.value * 0.96" v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
       </O3D>
