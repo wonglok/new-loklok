@@ -97,7 +97,7 @@ let fragmentShader = glsl`
 
     // Quality of the Blur
     // higher = slower but more pretty
-    const float radius = 5.0;
+    const float radius = 4.0;
 
     const int r = int(radius);
     const int nr = -r;
