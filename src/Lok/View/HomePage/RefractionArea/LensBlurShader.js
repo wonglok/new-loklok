@@ -26,6 +26,7 @@ let fragmentShader = glsl`
   uniform float time;
   uniform sampler2D tDiffuse;
   uniform sampler2D tDudv;
+  uniform float blur;
 
   uniform vec2 resolution;
 
@@ -94,22 +95,24 @@ let fragmentShader = glsl`
 
     vec4 base = vec4(0.0);
 
-    const float radius = 4.0;
+    // Quality of the Blur
+    // higher = slower but more pretty
+    const float radius = 5.0;
 
     const int r = int(radius);
     const int nr = -r;
     float k = 0.9342/(radius*radius);
-    float size = 1.0;
+    float size = pow(radius * (1.1 - blur), 2.0);
 
     for (int y = nr; y <= r; y++) {
       for (int x = nr; x <= r; x++) {
         float xx = float(x);
         float yy = float(y);
         float d = length(vec2(xx, yy));
-        if (d >= float(r)) {
+        if (d >= radius) {
           continue;
         }
-        float weight = float(k) * (cos(pi*float(d)/float(r)) + 1.0) / 2.0;
+        float weight = k * (cos(pi*d/radius) + 1.0) / 2.0;
         base += texture2DProj(tDiffuse, uv + vec4(xx, yy, 0.0, 0.0) / size) * weight;
       }
     }
@@ -131,6 +134,10 @@ var BlurShader = {
 
     color: {
       value: null
+    },
+
+    blur: {
+      value: 1
     },
 
     time: {

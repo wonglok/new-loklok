@@ -22,7 +22,7 @@
 
     <O3D :pz="depth" :px="(1.0 - animator.value) * screen.width">
       <O3D :visible="animator.value > 0.001">
-        <RefractionArea v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
+        <RefractionArea :blur="animator.value * 0.96" v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
       </O3D>
 
       <O3D :layout="'bible'">

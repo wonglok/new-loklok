@@ -1,6 +1,6 @@
 <template>
   <O3D v-if="screen">
-    <O3D :pz="depth" :px="30 * (opener.value + hider.value)">
+    <O3D :pz="depth" :px="30 * (animator.value + hider.value)">
       <O3D :layout="'open-menu'">
         <TextureText :text="'Menu'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
@@ -12,7 +12,7 @@
       </O3D>
     </O3D>
 
-    <O3D :pz="depth" :px="30 * (1.0 - opener.value)">
+    <O3D :pz="depth" :px="30 * (1.0 - animator.value)">
       <O3D :layout="'close-menu'">
         <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
@@ -26,9 +26,9 @@
       </O3D>
     </O3D>
 
-    <O3D :pz="depth" :px="(1.0 - opener.value) * -screen.width">
-      <O3D :visible="opener.value > 0.001">
-        <RefractionArea v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
+    <O3D :pz="depth" :px="(1.0 - animator.value) * -screen.width">
+      <O3D :visible="animator.value > 0.001">
+        <RefractionArea :blur="animator.value * 0.96" v-if="base && screen" :screen="screen" :base="base" :color="'#aaaaaa'"></RefractionArea>
       </O3D>
 
       <O3D :layout="'menu-codelab'">
@@ -54,7 +54,6 @@
       <O3D :layout="'menu-wonglok-age'">
         <TextureText @remove="$removeClick($event)" @add="$addClick($event, () => { openWin('https://age.wonglok.com') })" :align="'center'" :screen="screen" :font="'SeasideResortNF'" :text="'Assisted Graphics Engineering'" :sdk="sdk" :base="base" :texture="'purple2DTexture'" :kn="'wihtloklok-text'"></TextureText>
       </O3D>
-
     </O3D>
 
     <slot></slot>
@@ -75,7 +74,7 @@ export default {
   props: {
     scroller: {},
     overlay: {},
-    // opener: {},
+    // animator: {},
     sdk: {},
     open: {},
     // screen: {},
@@ -93,7 +92,7 @@ export default {
   data () {
     return {
       hider: false,
-      opener: false,
+      animator: false,
       stub: false,
       depth: 100,
       favouriteVerses: `Love is patient and kind;
@@ -128,14 +127,14 @@ Love never ends.
     //   if (this.open) {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         opener.value: 1
+    //         animator.value: 1
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
     //   } else {
     //     new TWEEN.Tween(this)
     //       .to({
-    //         opener.value: 0
+    //         animator.value: 0
     //       }, 1500)
     //       .easing(TWEEN.Easing.Quadratic.InOut)
     //       .start()
@@ -143,7 +142,7 @@ Love never ends.
     // }
   },
   async mounted () {
-    this.opener = new Damper(0, this.base)
+    this.animator = new Damper(0, this.base)
     this.hider = new Damper(0, this.base)
     this.sync = () => {
       if (this.overlay !== '') {
@@ -152,9 +151,9 @@ Love never ends.
         this.hider.value = 0
       }
       if (this.overlay === 'menu') {
-        this.opener.value = 1
+        this.animator.value = 1
       } else {
-        this.opener.value = 0
+        this.animator.value = 0
       }
     }
 

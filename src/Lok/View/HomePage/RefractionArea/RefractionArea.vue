@@ -29,6 +29,9 @@ import { BlurShader } from './LensBlurShader'
 
 export default {
   props: {
+    blur: {
+      default: 0.9
+    },
     // depth: {
     //   default: 0
     // },
@@ -69,6 +72,7 @@ export default {
         textureHeight: RES_SIZE * camera.aspect,
         shader: BlurShader
       })
+
       mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
       mesh.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
       return mesh
@@ -79,6 +83,7 @@ export default {
       if (!mesh) {
         return
       }
+      mesh.material.uniforms['blur'].value = this.blur
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
     let onRemake = () => {
