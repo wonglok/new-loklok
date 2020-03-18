@@ -1,5 +1,5 @@
 // can scroll how many pages = limit.y
-export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 1000 } }) => {
+export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 1000 }, onMove = () => {} }) => {
   let state = {
     tsY: 0,
     tdY: 0,
@@ -49,6 +49,8 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
         scrollAmount -= evt.deltaY
       }
       SmoothY.value = scrollAmount / window.innerHeight
+
+      onMove(SmoothY)
     }, { passive: false })
 
     touchTarget.addEventListener('touchstart', (evt) => {
@@ -70,6 +72,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
         state.tsY = t1.pageY
         state.inertiaY = 1.5
       }
+      onMove(SmoothY)
     }, { passive: false })
     touchTarget.addEventListener('touchend', (evt) => {
       state.tsY = 0

@@ -20,16 +20,9 @@
       <!-- Dome -->
       <SkyDome :base="base" :kn="'skydome'" :texture="'pale2DTexture'"></SkyDome>
 
-      <!--  -->
       <O3D v-if="base && stub && screen && scroller && sdk">
-        <!-- Menu -->
         <Gospel @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></Gospel>
         <MenuFull @overlay="$emit('overlay', $event)" :sdk="sdk" :scroller="scroller" :overlay="overlay" :base="base"></MenuFull>
-
-        <!-- <O3D :layout="'loklok'">
-          <TextureText :text="'With Lok Lok'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'menu') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'pale2DTexture'"></TextureText>
-        </O3D> -->
-
       </O3D>
 
     </Scene>
@@ -95,6 +88,11 @@ export default {
     this.$on('overlay', (overlay) => {
       this.overlay = overlay
     })
+    this.$on('onScroll', () => {
+      if (this.overlay !== '') {
+        this.overlay = ''
+      }
+    })
 
     window.addEventListener('keydown', (evt) => {
       if (evt.keyCode === 27) {
@@ -123,6 +121,9 @@ export default {
       this.scroller = makeScroller({
         base,
         touchTarget: renderer.domElement,
+        onMove: () => {
+          this.$emit('onScroll')
+        },
         limit: {
           get canRun () {
             return true
