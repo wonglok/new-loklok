@@ -23,6 +23,7 @@ export default {
   },
   mounted () {
     this.base[this.kn] = this.scene
+    this.$emit('scene', this.scene)
   }
 }
 </script>

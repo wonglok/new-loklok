@@ -5,7 +5,7 @@
 import { Refractor } from 'three/examples/jsm/objects/Refractor.js'
 // import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js'
 import { PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
-import { BlurShader } from './BlurShader'
+import { BlurShader } from './LensBlurShader'
 // import { getScreen } from '../../ReusableGraphics/GetScreen'
 // import { getScreen } from '../../ReusableGraphics/GetScreen.js'
 
@@ -60,7 +60,7 @@ export default {
     }
 
     let makeMesh = () => {
-      let RES_SIZE = 1024
+      let RES_SIZE = 256
       let screen = this.screen
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {

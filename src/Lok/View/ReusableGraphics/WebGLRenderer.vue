@@ -55,6 +55,8 @@ export default {
     base.onResize(resizer)
 
     base.mounter.appendChild(renderer.domElement)
+
+    this.$emit('renderer', renderer)
   },
   beforeDestroy () {
   }

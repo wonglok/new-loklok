@@ -1,7 +1,7 @@
 <template>
   <div class="full" ref="mounter">
-    <WebGLRenderer v-if="base" :base="base" kn="renderer"></WebGLRenderer>
-    <PerspectiveCamera v-if="base" :base="base" :kn="'camera'"></PerspectiveCamera>
+    <WebGLRenderer v-if="base" @renderer="renderer = $event" :base="base" kn="renderer"></WebGLRenderer>
+    <PerspectiveCamera v-if="base" @camera="camera = $event" :base="base" :kn="'camera'"></PerspectiveCamera>
 
     <!-- Controls -->
     <!-- <OrbitControls v-if="isDev && base" :base="base" :kn="'orbitControls'"></OrbitControls> -->
@@ -15,7 +15,7 @@
     <Raycaster v-if="base" :sdk="sdk" :base="base" :kn="'clickers'"></Raycaster>
 
     <!-- Scene -->
-    <Scene v-if="base" :base="base" :kn="'scene'">
+    <Scene v-if="base" @scene="scene = $event" :base="base" :kn="'scene'">
 
       <!-- Dome -->
       <SkyDome :base="base" :kn="'skydome'" :texture="'pale2DTexture'"></SkyDome>
@@ -35,6 +35,7 @@ import { makeSDK } from '../../human'
 import { makeScroller } from './ReusableGraphics/Scroll.js'
 import { makeBase } from './ReusableGraphics/BaseAPI.js'
 import { getScreen } from './ReusableGraphics/GetScreen.js'
+import { castDownEvent } from './ReusableGraphics/Scope.js'
 import Stats from 'stats.js'
 
 const TWEEN = require('@tweenjs/tween.js').default
@@ -45,6 +46,8 @@ export default {
   },
   data () {
     return {
+      scene: false,
+      camera: false,
       layers: {
         logo: false
       },
@@ -63,47 +66,42 @@ export default {
   created () {
   },
   async mounted () {
-    this.sdk = await makeSDK()
-    var stats = false
-    if (this.isDev) {
-      stats = new Stats()
-      this.$refs.mounter.appendChild(stats.dom)
-    }
-    this.base = await makeBase({ stats, mounter: this.$refs['mounter'] })
-
-    let castDown = (vm, ev, data) => {
-      if (vm) {
-        vm.$emit(ev, data)
-        vm.$children.forEach((grandKid) => {
-          castDown(grandKid, ev, data)
-        })
-      }
-    }
-    this.castDown = castDown
-    this.sdk.onStubGroup('home-page', (stub) => {
-      this.stub = stub
-      castDown(this, 'relayout', {})
-    })
-
-    this.$on('overlay', (overlay) => {
-      this.overlay = overlay
-    })
-    this.$on('onScroll', () => {
-      if (this.overlay !== '') {
-        this.overlay = ''
-      }
-    })
-
-    window.addEventListener('keydown', (evt) => {
-      if (evt.keyCode === 27) {
-        this.overlay = ''
-      }
-    }, false)
-
     this.onReady()
   },
   methods: {
+    relayout () {
+      castDownEvent(this, 'relayout', {})
+    },
     async onReady () {
+      this.sdk = await makeSDK()
+      var stats = false
+      if (this.isDev) {
+        stats = new Stats()
+        this.$refs.mounter.appendChild(stats.dom)
+      }
+      this.base = await makeBase({ stats, mounter: this.$refs['mounter'] })
+
+      this.sdk.onStubGroup('home-page', (stub) => {
+        this.stub = stub
+        this.relayout()
+      })
+
+      this.$on('overlay', (overlay) => {
+        this.overlay = overlay
+      })
+
+      this.$on('onScroll', () => {
+        if (this.overlay !== '') {
+          this.overlay = ''
+        }
+      })
+
+      window.addEventListener('keydown', (evt) => {
+        if (evt.keyCode === 27) {
+          this.overlay = ''
+        }
+      }, false)
+
       let base = this.base
       let renderer = await base.waitKN('renderer')
       let scene = await base.waitKN('scene')
@@ -114,7 +112,7 @@ export default {
       this.screen = getScreen({ camera, depth: 0.0 })
       base.onResize(() => {
         this.screen = getScreen({ camera, depth: 0.0 })
-        this.castDown(this, 'relayout', {})
+        this.relayout()
       })
 
       // let vm = this
@@ -141,7 +139,7 @@ export default {
 
       setTimeout(() => {
         this.ready = true
-        this.castDown(this, 'relayout', {})
+        castDownEvent(this, 'relayout', {})
       })
     },
     log (v) {
