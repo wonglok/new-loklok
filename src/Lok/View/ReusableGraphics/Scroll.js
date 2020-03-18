@@ -24,6 +24,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       return this.dampedVal
     }
   }
+
   let browserScrollBox = document.querySelector('.broswer-scroll-box')
   let scrollAmount = 0
   let SmoothY = new ValueDamper(-0.2)
