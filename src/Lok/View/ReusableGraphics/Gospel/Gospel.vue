@@ -1,6 +1,6 @@
 <template>
   <O3D v-if="screen">
-    <O3D :pz="depth" :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * (animator.value + hider.value)">
+    <O3D :pz="depth" :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * 0.5 * (animator.value + hider.value)">
       <O3D :layout="'open-menu'">
         <TextureText :text="'Thank you Gospel'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'gospel') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
@@ -39,8 +39,11 @@ import { Object3D } from 'three'
 import { getScreen } from '../GetScreen'
 import { Damper } from '../Damper.js'
 import { castDownEvent } from '../Scope.js'
+
 // import { Damper } from '../Damper.js'
+
 // const TWEEN = require('@tweenjs/tween.js').default
+
 // let castDown = (vm, ev, data) => {
 //   if (vm && vm.$children.length > 0) {
 //     vm.$emit(ev, data)
