@@ -15,6 +15,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Welcome.vue')
   },
   {
+    path: '/ice-cream',
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/IceCreamLayout.vue')
+  },
+  {
     path: '/cam',
     component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Cam.vue')
   },
@@ -72,6 +76,11 @@ const routes = [
     path: '/jelly',
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/JellyStudio.vue')
   },
+
+  // {
+  //   path: '/ice-cream',
+  //   component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/IceCream.vue')
+  // },
   {
     path: '/cascade',
     component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Cascade.vue')

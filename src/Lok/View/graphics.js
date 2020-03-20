@@ -20,5 +20,6 @@ function importAll (r) {
 
 importAll(require.context('./ReusableGraphics', true, /\.vue$/))
 importAll(require.context('./HomePage', true, /\.vue$/))
+importAll(require.context('./IceCreamPage', true, /\.vue$/))
 
 export default exporter

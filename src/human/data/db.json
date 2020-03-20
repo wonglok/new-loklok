@@ -516,6 +516,54 @@
         "fsz": "1"
       },
       "id": "_438061"
+    },
+    {
+      "group": "icecream-overlay",
+      "key": "ice-cream",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "0",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "10",
+        "fsy": "10",
+        "fsz": "10"
+      },
+      "id": "_590407"
+    },
+    {
+      "group": "cream-canvas",
+      "key": "hue-spread",
+      "type": "number",
+      "value": 77.97,
+      "id": "_658137"
+    },
+    {
+      "group": "cream-canvas",
+      "key": "canvas-texture-dot",
+      "type": "color",
+      "value": {
+        "r": 255,
+        "g": 0,
+        "b": 0,
+        "a": 0.74
+      },
+      "id": "_185363"
+    },
+    {
+      "group": "cream-canvas",
+      "key": "canvas-texture-bg",
+      "type": "color",
+      "value": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.8
+      },
+      "id": "_976259"
     }
   ]
 }
