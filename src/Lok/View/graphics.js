@@ -12,16 +12,17 @@ async function importAll (r) {
   r.keys().forEach(key => {
     let filename = path.basename(key).replace('.vue', '')
     exporter[filename] = () => new Promise((resolve) => {
-      r(key).then((mod) => {
-        resolve(mod.default)
-      })
+      resolve(r(key).default)
+      // r(key).then((mod) => {
+      //   resolve(mod.default)
+      // })
     })
   })
   return exporter
 }
 
-importAll(require.context('./ReusableGraphics', true, /\.vue$/, 'lazy'))
-importAll(require.context('./HomePage', true, /\.vue$/, 'lazy'))
-importAll(require.context('./IceCreamPage', true, /\.vue$/, 'lazy'))
+importAll(require.context('./ReusableGraphics', true, /\.vue$/, 'sync'))
+importAll(require.context('./HomePage', true, /\.vue$/, 'sync'))
+importAll(require.context('./IceCreamPage', true, /\.vue$/, 'sync'))
 
 export default exporter
