@@ -2,7 +2,7 @@
   <O3D v-if="screen">
     <O3D :pz="depth" :py="-screen.height * (scroller.maxY - scroller.value)" :px="screen.width * (animator.value + hider.value)">
       <O3D :layout="'open-menu'">
-        <TextureText :text="'Thank you Gospel'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', 'gospel') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
+        <TextureText :text="'Thank you Gospel'" @remove="$removeClick($event)" @add="$addHover($event); $addClick($event, () => { $emit('overlay', 'gospel') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
     </O3D>
 
@@ -13,13 +13,13 @@
         </O3D>
       </O3D>
       <O3D :layout="'ice-cream'">
-        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/ice-cream') })" :base="base" :sdk="sdk" :cube="'paleCube'"></IceCreamCone>
+        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { if (overlay) { return; } $router.push('/ice-cream') })" :base="base" :sdk="sdk" :cube="'paleCube'"></IceCreamCone>
       </O3D>
     </O3D>
 
     <O3D :pz="depth" :px="30 * (1.0 - animator.value)">
       <O3D :layout="'close-menu'">
-        <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
+        <TextureText :text="'CLOSE'" @remove="$removeClick($event)" @add="$addHover($event); $addClick($event, () => { $emit('overlay', '') })" :align="'left'" :sdk="sdk" :base="base" :font="'SeasideResortNF'" :texture="'purple2DTexture'"></TextureText>
       </O3D>
     </O3D>
 

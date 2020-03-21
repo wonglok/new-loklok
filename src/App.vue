@@ -1,6 +1,8 @@
 <template>
   <div id="app" class="full">
-    <router-view/>
+    <!-- <keep-alive> -->
+      <router-view :key="$router.fullPath" />
+    <!-- </keep-alive> -->
     <!-- <router-link to="/menu" class="absolute bottom-0 left-0 p-4 toucher">🏠</router-link> -->
   </div>
 </template>
