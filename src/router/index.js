@@ -12,11 +12,11 @@ const routes = [
   },
   {
     path: '/welcome',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Welcome.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Layouts/WelcomeLayout.vue')
   },
   {
     path: '/ice-cream',
-    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/IceCreamLayout.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Layouts/IceCreamLayout.vue')
   },
   {
     path: '/cam',

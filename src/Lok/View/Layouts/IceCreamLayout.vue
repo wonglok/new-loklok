@@ -35,18 +35,18 @@
 
 <script>
 // import Vue from 'vue'
-import { makeSDK } from '../../human'
-import { makeScroller } from './ReusableGraphics/Scroll.js'
-import { makeBase } from './ReusableGraphics/BaseAPI.js'
-import { getScreen } from './ReusableGraphics/GetScreen.js'
-import { castDownEvent } from './ReusableGraphics/Scope.js'
+import { makeSDK } from '../../../human'
+import { makeScroller } from '../ReusableGraphics/Scroll.js'
+import { makeBase } from '../ReusableGraphics/BaseAPI.js'
+import { getScreen } from '../ReusableGraphics/GetScreen.js'
+import { castDownEvent } from '../ReusableGraphics/Scope.js'
 import Stats from 'stats.js'
 
 const TWEEN = require('@tweenjs/tween.js').default
 
 export default {
   components: {
-    ...require('./graphics').default
+    ...require('../graphics').default
   },
   data () {
     return {
