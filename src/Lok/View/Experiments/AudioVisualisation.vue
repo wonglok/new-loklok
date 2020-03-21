@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import * as AudioVisualisation from '../GLs/AudioVisualisation'
+import * as AudioVisualisation from '../../GLs/AudioVisualisation'
 export default {
   components: {
   },

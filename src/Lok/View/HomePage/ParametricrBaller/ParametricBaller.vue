@@ -4,7 +4,7 @@
 
 <script>
 import { CylinderGeometry, Vector2, InstancedBufferGeometry, BufferAttribute, InstancedBufferAttribute, RawShaderMaterial, Mesh, Object3D } from 'three'
-
+// import { lookUp } from '../../ReusableGraphics/Scope.js'
 /* eslint-disable */
 export const tubeV = require('raw-loader!./tubeV.glsl').default
 export const tubeF = require('raw-loader!./tubeF.glsl').default

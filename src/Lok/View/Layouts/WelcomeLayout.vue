@@ -8,7 +8,7 @@
 
     <!-- Compute Intese Resources -->
     <PaintCanvas v-if="base && sdk" :sdk="sdk" :base="base" :kn="'paleCanvas'" :settings="'paint-canvas'"></PaintCanvas>
-    <CubeTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
+    <CubeTexture v-if="base" @cube="paleCube = $event" :base="base" :canvas="'paleCanvas'" :kn="'paleCube'"></CubeTexture>
     <CanvasTexture v-if="base" :base="base" :canvas="'paleCanvas'" :kn="'pale2DTexture'"></CanvasTexture>
 
     <!-- Raycaster -->
@@ -46,6 +46,7 @@ export default {
   },
   data () {
     return {
+      paleCube: false,
       scene: false,
       camera: false,
       layers: {

@@ -20,19 +20,19 @@ const routes = [
   },
   {
     path: '/cam',
-    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Cam.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/Cam.vue')
   },
   {
     path: '/menu',
-    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Menu.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/Menu.vue')
   },
   {
     path: '/doi',
-    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/GetDomain.vue')
+    component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/GetDomain.vue')
   },
   // {
   //   path: '/pdf',
-  //   component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Layout.vue'),
+  //   component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/PDFScanner/Layout.vue'),
   //   children: [
   //     {
   //       path: '',
@@ -40,62 +40,62 @@ const routes = [
   //     },
   //     {
   //       path: 'home',
-  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Home.vue')
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/PDFScanner/Home.vue')
   //     },
   //     {
   //       path: 'login',
-  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Login.vue')
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/PDFScanner/Login.vue')
   //     },
   //     {
   //       path: 'dash',
-  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/PDFScanner/Dashboard.vue')
+  //       component: () => import(/* webpackChunkName: "waha" */ '../Lok/View/Experiments/PDFScanner/Dashboard.vue')
   //     }
   //   ]
   // },
   {
     path: '/lok',
-    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Lok.vue')
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Experiments/Lok.vue')
   },
   {
     path: '/depth-photo',
-    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/DepthPhoto.vue')
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Experiments/DepthPhoto.vue')
   },
   {
     path: '/audio-visualisation',
-    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/AudioVisualisation.vue')
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Experiments/AudioVisualisation.vue')
   },
   {
     path: '/creative',
-    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/CreativeLab.vue')
+    component: () => import(/* webpackChunkName: "lok" */ '../Lok/View/Experiments/CreativeLab.vue')
   },
   {
     path: '/bear',
-    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/VoyageBear.vue')
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Experiments/VoyageBear.vue')
   },
   {
     path: '/jelly',
-    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/JellyStudio.vue')
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Experiments/JellyStudio.vue')
   },
 
   // {
   //   path: '/ice-cream',
-  //   component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/IceCream.vue')
+  //   component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Experiments/IceCream.vue')
   // },
   {
     path: '/cascade',
-    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Cascade.vue')
+    component: () => import(/* webpackChunkName: "voyagebear" */ '../Lok/View/Experiments/Cascade.vue')
   },
   {
     path: '/bryant-and-jenni-2019',
-    component: () => import(/* webpackChunkName: "bnj" */ '../Lok/View/BryantAndJenni2019.vue')
+    component: () => import(/* webpackChunkName: "bnj" */ '../Lok/View/Experiments/BryantAndJenni2019.vue')
   },
   {
     path: '/words',
-    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Words.vue')
+    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Experiments/Words.vue')
   },
   {
     path: '/words-glowing',
-    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/WordsGlowing.vue')
+    component: () => import(/* webpackChunkName: "words" */ '../Lok/View/Experiments/WordsGlowing.vue')
   }
 ]
 

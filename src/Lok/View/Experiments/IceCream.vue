@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as WordsGlowing from '../GLs/WordsGlowing'
+import * as IceCream from '../../GLs/IceCream'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = WordsGlowing.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = IceCream.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

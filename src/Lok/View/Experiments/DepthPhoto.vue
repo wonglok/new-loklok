@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as IceCream from '../GLs/IceCream'
+import * as DepthPhoto from '../../GLs/DepthPhoto'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = IceCream.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = DepthPhoto.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

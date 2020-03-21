@@ -2,13 +2,13 @@
   <O3D>
     <O3D :layout="'ice-cream'">
       <O3D :px="-6">
-        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :file="require('file-loader!./model/ice-cream.glb')" :base="base" :sdk="sdk"></IceCreamCone>
+        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :base="base" :sdk="sdk" :cube="'creamCube'"></IceCreamCone>
       </O3D>
       <O3D>
-        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :file="require('file-loader!./model/ice-cream.glb')" :base="base" :sdk="sdk"></IceCreamCone>
+        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :base="base" :sdk="sdk" :cube="'creamCube'"></IceCreamCone>
       </O3D>
       <O3D :px="6">
-        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :file="require('file-loader!./model/ice-cream.glb')" :base="base" :sdk="sdk"></IceCreamCone>
+        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/') })" :base="base" :sdk="sdk" :cube="'creamCube'"></IceCreamCone>
       </O3D>
     </O3D>
   </O3D>

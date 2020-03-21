@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as VoyageBear from '../GLs/VoyageBear'
+import * as VoyageBear from '../../GLs/VoyageBear'
 export default {
   components: {
   },

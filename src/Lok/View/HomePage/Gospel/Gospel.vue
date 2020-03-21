@@ -12,6 +12,9 @@
           <ParametricCluster :sdk="sdk" :base="base" :cube="'paleCube'" :setting="'parametric-cluster'" :kn="'parametric'"></ParametricCluster>
         </O3D>
       </O3D>
+      <O3D :layout="'ice-cream'">
+        <IceCreamCone @remove="$removeClick($event)" @add="$addClick($event, () => { $router.push('/ice-cream') })" :base="base" :sdk="sdk" :cube="'paleCube'"></IceCreamCone>
+      </O3D>
     </O3D>
 
     <O3D :pz="depth" :px="30 * (1.0 - animator.value)">
@@ -37,9 +40,9 @@
 </template>
 <script>
 import { Object3D } from 'three'
-import { getScreen } from '../GetScreen'
-import { Damper } from '../Damper.js'
-import { castDownEvent } from '../Scope.js'
+import { getScreen } from '../../ReusableGraphics/GetScreen'
+import { Damper } from '../../ReusableGraphics/Damper.js'
+import { castDownEvent } from '../../ReusableGraphics/Scope.js'
 
 // import { Damper } from '../Damper.js'
 

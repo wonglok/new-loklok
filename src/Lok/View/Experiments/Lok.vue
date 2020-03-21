@@ -1,11 +1,10 @@
 <template>
   <div class="full" ref="mounter">
-    <button ref="change-name" class="btn btn-outline  absolute top-0 left-0">Change Name</button>
   </div>
 </template>
 
 <script>
-import * as Cascade from '../GLs/Cascade'
+import * as Balls from '../../GLs/Balls'
 export default {
   components: {
   },
@@ -15,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = Cascade.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = Balls.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

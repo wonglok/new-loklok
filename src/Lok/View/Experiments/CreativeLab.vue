@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as JellyStudio from '../GLs/JellyStudio'
+import * as CreativeLab from '../../GLs/CreativeLab'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = JellyStudio.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = CreativeLab.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

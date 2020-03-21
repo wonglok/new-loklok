@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import * as API from '../../api/quickcam.js'
+import * as API from '../../../api/quickcam.js'
 export default {
   data () {
     return {

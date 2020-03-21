@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as Words from '../GLs/Words'
+import * as JellyStudio from '../../GLs/JellyStudio'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = Words.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = JellyStudio.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

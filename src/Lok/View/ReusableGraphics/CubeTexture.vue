@@ -23,6 +23,7 @@ export default {
     this.base.loop(() => {
       texture.needsUpdate = true
     })
+    this.$emit('cube', texture)
     this.base[this.kn] = texture
   }
 }

@@ -61,9 +61,9 @@
 </template>
 <script>
 import { Object3D } from 'three'
-import { getScreen } from '../GetScreen'
-import { Damper } from '../Damper.js'
-import { castDownEvent } from '../Scope.js'
+import { getScreen } from '../../ReusableGraphics/GetScreen'
+import { Damper } from '../../ReusableGraphics/Damper.js'
+import { castDownEvent } from '../../ReusableGraphics/Scope.js'
 
 // const TWEEN = require('@tweenjs/tween.js').default
 

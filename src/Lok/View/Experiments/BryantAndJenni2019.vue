@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as CreativeLab from '../GLs/CreativeLab'
+import * as BryantJenni2019 from '../../GLs/BryantJenni2019'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = CreativeLab.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = BryantJenni2019.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

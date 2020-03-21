@@ -564,6 +564,23 @@
         "a": 0.8
       },
       "id": "_976259"
+    },
+    {
+      "group": "gospel-overlay",
+      "key": "ice-cream",
+      "type": "layout",
+      "value": {
+        "fpx": "0",
+        "fpy": "0",
+        "fpz": "50",
+        "frx": "0",
+        "fry": "0",
+        "frz": "0",
+        "fsx": "10",
+        "fsy": "10",
+        "fsz": "10"
+      },
+      "id": "_150543"
     }
   ]
 }

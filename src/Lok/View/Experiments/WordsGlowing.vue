@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as Balls from '../GLs/Balls'
+import * as WordsGlowing from '../../GLs/WordsGlowing'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = Balls.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = WordsGlowing.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()

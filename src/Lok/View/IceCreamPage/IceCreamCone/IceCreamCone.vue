@@ -1,6 +1,6 @@
 <template>
-  <O3D>
-  </O3D>
+  <div>
+  </div>
 </template>
 
 <script>
@@ -13,7 +13,8 @@ export default {
     ...require('../../graphics').default
   },
   props: {
-    file: {},
+    cube: {},
+    // file: {},
     sdk: {},
     base: {}
   },
@@ -48,19 +49,21 @@ export default {
         this.$parent.$emit('remove', v)
       }
     }
+    // eslint-disable-next-line
+    let file = require('file-loader!./model/ice-cream.glb')
     let loader = new GLTFLoader()
-    loader.load(this.file, (result) => {
+    loader.load(file, (result) => {
       // console.log(result.scene)
       result.scene.traverse(async (item) => {
         if (item.isMesh) {
-          let paleCube = await this.base.waitKN('creamCube')
+          let envMap = await this.base.waitKN(this.cube)
           var mat = new MeshBasicMaterial({ opacity: 1, transparent: true })
           // mat.map = await loadTexture(require('../Textures/demos/cat.png'))
           mat.color = new Color(`#fff`)
           mat.refractionRatio = 0.7
           mat.reflectionRatio = 0.7
 
-          mat.envMap = paleCube
+          mat.envMap = envMap
           mat.envMap.mapping = CubeReflectionMapping
           mat.envMap.mapping = CubeRefractionMapping
           mat.needsUpdate = true

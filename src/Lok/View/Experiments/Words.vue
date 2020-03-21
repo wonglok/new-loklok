@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import * as DepthPhoto from '../GLs/DepthPhoto'
+import * as Words from '../../GLs/Words'
 export default {
   components: {
   },
@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    this.rAPI = DepthPhoto.install({ mounter: this.$refs['mounter'], vm: this })
+    this.rAPI = Words.install({ mounter: this.$refs['mounter'], vm: this })
   },
   beforeDestroy () {
     this.rAPI.clean()
