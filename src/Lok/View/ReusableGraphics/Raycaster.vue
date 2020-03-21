@@ -35,7 +35,7 @@ export default {
     Vue.prototype.$addClick = (v, handler = () => {}) => {
       // console.log('add-clicker', v)
       v.userData = v.userData || {}
-      v.userData.handler = handler
+      v.userData.clicker = handler
       this.o3dClickers.push(v)
       this.both.push(v)
     }
@@ -49,7 +49,7 @@ export default {
     Vue.prototype.$addHover = (v, handler = () => {}) => {
       // console.log('add-hover', v)
       v.userData = v.userData || {}
-      v.userData.handler = handler
+      v.userData.hover = handler
       this.o3dHovers.push(v)
       this.both.push(v)
     }
@@ -85,7 +85,7 @@ export default {
         if (event) {
           let obj = event.object
           let userData = obj.userData
-          let handler = userData.handler
+          let handler = userData.clicker
           if (handler) {
             handler({
               type: 'click',
@@ -105,30 +105,31 @@ export default {
       if (bs.camera && bs.mouse && rc) {
         rc.setFromCamera(bs.mouse, bs.camera)
 
-        var findings = rc.intersectObjects(this.o3dHovers)
+        // var findings = rc.intersectObjects(this.o3dHovers)
         var tryhover = rc.intersectObjects(this.both)
         if ((tryhover.length) > 0) {
-          document.body.style.cursor = 'pointer !important'
+          document.body.style.cursor = 'pointer'
         } else {
           document.body.style.cursor = ''
         }
-        let event = (findings.length) > 0 ? findings[0] : null
-        // console.log(first)
-        if (event) {
-          let obj = event.object
-          let userData = obj.userData
-          let handler = userData.handler
-          if (handler) {
-            handler({
-              type: 'hover',
-              event,
-              userData,
-              object: obj
-            })
-          } else {
-            console.error('handler not found')
-          }
-        }
+
+        // let event = (findings.length) > 0 ? findings[0] : null
+        // // console.log(first)
+        // if (event) {
+        //   let obj = event.object
+        //   let userData = obj.userData
+        //   let handler = userData.hover
+        //   if (handler) {
+        //     handler({
+        //       type: 'hover',
+        //       event,
+        //       userData,
+        //       object: obj
+        //     })
+        //   } else {
+        //     console.error('handler not found')
+        //   }
+        // }
       }
     }
 
