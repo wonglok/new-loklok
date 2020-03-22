@@ -122,42 +122,28 @@
       "group": "parametric-baller",
       "key": "maxLines",
       "type": "number",
-      "value": 27.78,
+      "value": 24.86,
       "id": "_150565"
-    },
-    {
-      "group": "parametric-baller",
-      "key": "animateStrength",
-      "type": "number",
-      "value": 46.97,
-      "id": "_185962"
-    },
-    {
-      "group": "parametric-baller",
-      "key": "animateRadius",
-      "type": "number",
-      "value": 51.89,
-      "id": "_799315"
     },
     {
       "group": "parametric-baller",
       "key": "spread",
       "type": "number",
-      "value": 5.29,
+      "value": 6.77,
       "id": "_234245"
     },
     {
       "group": "parametric-baller",
       "key": "thickness",
       "type": "number",
-      "value": 14.01,
+      "value": 5.44,
       "id": "_159234"
     },
     {
       "group": "parametric-baller",
       "key": "baseOpacity",
       "type": "number",
-      "value": 68.75,
+      "value": 75.48,
       "id": "_904040"
     },
     {
@@ -220,21 +206,21 @@
       "group": "parametric-cluster",
       "key": "maxLines",
       "type": "number",
-      "value": 32.63,
+      "value": 5.35,
       "id": "_49638"
     },
     {
       "group": "parametric-cluster",
       "key": "spread",
       "type": "number",
-      "value": 9.83,
+      "value": 74.41,
       "id": "_343757"
     },
     {
       "group": "parametric-cluster",
       "key": "thickness",
       "type": "number",
-      "value": 18.94,
+      "value": 41.79,
       "id": "_51587"
     },
     {
@@ -250,7 +236,7 @@
       "type": "vec3",
       "value": {
         "x": 0,
-        "y": 3,
+        "y": 4,
         "z": 0
       },
       "id": "_577116"
@@ -259,7 +245,7 @@
       "group": "parametric-cluster",
       "key": "width",
       "type": "number",
-      "value": 28.28,
+      "value": 11.42,
       "id": "_677702"
     },
     {
