@@ -88,6 +88,10 @@ export default {
         mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/cube.jpg'))
       } else if (this.dudv === 'cross') {
         mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/cross.jpg'))
+      } else if (this.dudv === 'cross-2') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/cross-2.jpg'))
+      } else if (this.dudv === 'flower') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/flower.jpg'))
       }
       mesh.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
       return mesh
