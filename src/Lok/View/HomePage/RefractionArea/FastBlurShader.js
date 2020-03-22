@@ -14,6 +14,7 @@ let vertexShader = glsl`
   varying vec4 vUvRefraction;
   void main (void) {
     vUv = uv;
+    // vUv.y = 1.0 - vUv.y;
     vUvRefraction = textureMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
   }
@@ -82,28 +83,36 @@ let fragmentShader = glsl`
     float waveStrength = 0.5;
     float waveSpeed = 0.0;
     float myspeed = 0.05;
-    vec2 distortedUv = texture2D( tDudv, vec2( fract(vUv.x - time * myspeed), fract(time * myspeed - vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
-    distortedUv = vUv.xy + vec2( distortedUv.x, distortedUv.y + time * waveSpeed );
-    vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
+    // vec2 distortedUv = texture2D( tDudv, vec2( fract(vUv.x - time * myspeed), fract(time * myspeed - vUv.y * (resolution.x / resolution.y)) ) ).rg * waveStrength;
+    // distortedUv = vUv.xy + vec2( distortedUv.x, distortedUv.y + time * waveSpeed );
+    // // distortedUv.y = 1.0 - distortedUv.y;
+    // vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
+
 
     vec4 uv = vec4(vUvRefraction);
+    vec2 dlookup = vUv.xy - time * myspeed;
+    dlookup.y *= resolution.x / resolution.y;
 
-    uv.xy += distortion * 2.5;
+
+
+    vec2 distortion = ( texture2D( tDudv, vec2(fract(dlookup.x), fract(dlookup.y)) ).rg * 2.0 - 1.0 );
+    uv.xy += distortion * 3.5;
 
     float amount = resolution.x * 0.5;
     vec4 base = vec4(0.0);
+    base += texture2DProj(tDiffuse, uv);
 
-    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
-    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
-    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
-    base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
+    // base += 1.0 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
+    // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
 
     gl_FragColor = vec4( blendOverlay( base.rgb, color ), 1.0 );
     // gl_FragColor = vec4(base.rgb, 1.0);
   }
 `
 
-var BlurShader = {
+var FastBlurShader = {
 
   uniforms: {
 
@@ -137,4 +146,4 @@ var BlurShader = {
   fragmentShader: fragmentShader
 }
 
-export { BlurShader }
+export { FastBlurShader }

@@ -2,10 +2,12 @@
   <div></div>
 </template>
 <script>
+import { lookUp } from '../../ReusableGraphics/Scope.js'
 import { Refractor } from 'three/examples/jsm/objects/Refractor.js'
 // import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js'
-import { PlaneBufferGeometry, TextureLoader, Vector2 } from 'three'
-import { BlurShader } from './LensBlurShader'
+import { PlaneBufferGeometry, Vector2, TextureLoader } from 'three'
+import { FastBlurShader } from './FastBlurShader'
+// import { FastBlurShader } from './LensBlurShader'
 // import { getScreen } from '../../ReusableGraphics/GetScreen'
 // import { getScreen } from '../../ReusableGraphics/GetScreen.js'
 
@@ -29,6 +31,9 @@ import { BlurShader } from './LensBlurShader'
 
 export default {
   props: {
+    dudv: {
+      default: 'diamond'
+    },
     blur: {
       default: 0.9
     },
@@ -51,7 +56,7 @@ export default {
   },
   async mounted () {
     let base = this.base
-    let camera = await base.waitKN('camera')
+    let camera = lookUp(this.$parent, 'camera')
     // let texture = await base.waitKN(this.texture)
     let glProxy = this.glProxy = {
       add: (v) => {
@@ -63,17 +68,27 @@ export default {
     }
 
     let makeMesh = () => {
-      let RES_SIZE = 512
+      let RES_SIZE = 1024
       let screen = this.screen
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       let mesh = new Refractor(geo, {
         color: this.color,
         textureWidth: RES_SIZE,
         textureHeight: RES_SIZE * camera.aspect,
-        shader: BlurShader
+        shader: FastBlurShader
       })
-
-      mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
+      // lookUp
+      // TextureLoader,
+      //
+      if (this.dudv === 'diamond') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/diamond.jpg'))
+      } else if (this.dudv === 'water') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/waterdudv.jpg'))
+      } else if (this.dudv === 'cube') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/cube.jpg'))
+      } else if (this.dudv === 'cross') {
+        mesh.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/cross.jpg'))
+      }
       mesh.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
       return mesh
     }
@@ -83,7 +98,9 @@ export default {
       if (!mesh) {
         return
       }
-      mesh.material.uniforms['blur'].value = this.blur
+      if (mesh.material.uniforms['blur']) {
+        mesh.material.uniforms['blur'].value = this.blur
+      }
       mesh.material.uniforms['time'].value = window.performance.now() * 0.001
     })
     let onRemake = () => {
