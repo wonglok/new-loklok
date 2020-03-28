@@ -236,14 +236,14 @@ export const makePaintCanvas = ({ pixel = 32, sdk, setting, domElement, base }) 
     //   })
     // }
 
-    // if (Math.random() < 0.95) {
-    //   t.addTouch({
-    //     x: Math.random(),
-    //     y: Math.random()
-    //   })
-    // }
+    if (Math.random() < Math.random() * 2) {
+      t.addTouch({
+        x: Math.random(),
+        y: Math.random()
+      })
+    }
 
-    if (Math.random() < 0.15) {
+    if (Math.random() < 0.99) {
       t.addTouch({
         x: Math.random(),
         y: Math.random()

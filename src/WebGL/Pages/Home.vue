@@ -1,7 +1,7 @@
 <template>
   <div class="full">
-
     <div class="full" ref="mounter"></div>
+
     <HappyLayout v-if="ready" layout="omg" @scene="scene = $event" @camera="camera = $event"></HappyLayout>
   </div>
 </template>
