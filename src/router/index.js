@@ -11,6 +11,10 @@ const routes = [
     }
   },
   {
+    path: '/newhome',
+    component: () => import(/* webpackChunkName: "home" */ '../WebGL/Pages/Home.vue')
+  },
+  {
     path: '/welcome',
     component: () => import(/* webpackChunkName: "home" */ '../Lok/View/Layouts/WelcomeLayout.vue')
   },
