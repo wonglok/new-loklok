@@ -81,15 +81,27 @@ export const Tree = {
         this.$emit('syncFormula')
       })
     }
+    if (this.lookup('base')) {
+      this.lookup('base').onResize(() => {
+        this.$emit('syncFormula')
+      })
+      // console.log(this.$options.name, this.lookup('base'))
+    }
     console.log('Mounted:', this.$options.name)
   },
 
   beforeDestroy () {
+    this.o3d.visible = false
     this.$parent.$emit('remove', this.o3d)
+  },
+  computed: {
+    screen () {
+      return this.getScreen()
+    }
   },
   methods: {
     getScreen () {
-      return getScreen({ camera: this.lookup('camera'), depth: this.o3d.position.z })
+      return getScreen({ camera: lookup(this, 'camera'), depth: this.o3d.position.z })
     },
 
     castdown (ev, data) {

@@ -4,7 +4,7 @@
       "group": "paint-canvas",
       "key": "hue-spread",
       "type": "number",
-      "value": 0,
+      "value": 100,
       "id": "_160237"
     },
     {
@@ -12,9 +12,9 @@
       "key": "canvas-texture-dot",
       "type": "color",
       "value": {
-        "r": 0,
-        "g": 255,
-        "b": 240,
+        "r": 255,
+        "g": 126,
+        "b": 126,
         "a": 0.74
       },
       "id": "_929803"
@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 15,
-        "g": 69,
-        "b": 80,
+        "r": 173,
+        "g": 241,
+        "b": 255,
         "a": 0.74
       },
       "id": "_959545"
@@ -206,21 +206,21 @@
       "group": "parametric-cluster",
       "key": "maxLines",
       "type": "number",
-      "value": 7.28,
+      "value": 12.39,
       "id": "_49638"
     },
     {
       "group": "parametric-cluster",
       "key": "spread",
       "type": "number",
-      "value": 29.17,
+      "value": 13.86,
       "id": "_343757"
     },
     {
       "group": "parametric-cluster",
       "key": "thickness",
       "type": "number",
-      "value": 31.46,
+      "value": 15.27,
       "id": "_51587"
     },
     {
@@ -235,8 +235,8 @@
       "key": "displacement",
       "type": "vec3",
       "value": {
-        "x": 8,
-        "y": 14,
+        "x": 10,
+        "y": 15,
         "z": 0
       },
       "id": "_577116"

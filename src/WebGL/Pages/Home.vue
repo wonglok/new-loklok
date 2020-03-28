@@ -8,7 +8,7 @@
 
 <script>
 import { makeSDK } from '../../human'
-import { Renderer, PCamera, makeBase, Stats, makeScroller, Tree } from '../Reusable'
+import { Renderer, PCamera, makeBase, Stats, Tree } from '../Reusable'
 export default {
   name: 'Home',
   mixins: [Tree],
@@ -27,10 +27,6 @@ export default {
     this.sdk = await makeSDK()
     this.mounter = this.$refs.mounter
     this.base.mounter = this.$refs.mounter
-    this.limit = {
-      canRun: true,
-      y: 10
-    }
 
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
     this.$refs.mounter.appendChild(this.renderer.domElement)
@@ -52,7 +48,6 @@ export default {
       this.base.stats = new Stats({ mounter: this.$refs.stats })
     }
 
-    this.scroller = makeScroller({ base: this.base, mounter: this.$refs.mounter, limit: this.limit, onMove: () => { this.$emit('onMove') } })
     this.base.onInit()
     this.ready = true
   },

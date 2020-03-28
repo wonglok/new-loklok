@@ -1,12 +1,20 @@
 <template>
   <O3D>
-    <ParametricBall v-if="paintCanvasCube"></ParametricBall>
+    <!-- <O3D :animated="true" layout="ball">
+      <ParametricBall v-if="paintCubeTex" :tCube="paintCubeTex"></ParametricBall>
+    </O3D> -->
+    <O3D :animated="true" layout="cluster">
+      <ParametricCluster v-if="paintCubeTex" :tCube="paintCubeTex"></ParametricCluster>
+    </O3D>
+    <O3D :animated="true" layout="dome">
+      <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
+    </O3D>
   </O3D>
 </template>
 
 <script>
-import { Tree, makePaintCanvas } from '../Reusable'
-import { Scene, CubeTexture, EquirectangularReflectionMapping } from 'three'
+import { Tree, makePaintCanvas, makeScroller } from '../Reusable'
+import { Scene, CubeTexture } from 'three'
 export default {
   name: 'HappyLayout',
   components: {
@@ -16,15 +24,14 @@ export default {
   data () {
     return {
       scene: new Scene(),
-      paintCanvasCube: false,
+      paint2DTex: false,
+      paintCubeTex: false,
       layouts: {}
     }
   },
-  async mounted () {
-    this.scene.add(this.o3d)
-    this.$emit('scene', this.scene)
-    let paintCanvas = makePaintCanvas({ sdk: this.lookup('sdk'), setting: 'paint-canvas', domElement: this.lookup('touchDom'), base: this.lookup('base') })
-    this.paintCanvasCube = new CubeTexture([
+  created () {
+    let paintCanvas = makePaintCanvas({ pixel: 64, sdk: this.lookup('sdk'), setting: 'paint-canvas', domElement: this.lookup('touchDom'), base: this.lookup('base') })
+    this.paintCubeTex = new CubeTexture([
       paintCanvas.canvas,
       paintCanvas.canvas,
       paintCanvas.canvas,
@@ -32,20 +39,30 @@ export default {
       paintCanvas.canvas,
       paintCanvas.canvas
     ])
-    this.paintCanvasCube.mapping = EquirectangularReflectionMapping
-    // this.paintCanvasCube.mapping = EquirectangularRefractionMapping
-    this.scene.background = this.paintCanvasCube
+  },
+  async mounted () {
+    this.scene.add(this.o3d)
+    this.$emit('scene', this.scene)
+    this.scene.background = this.paintCubeTex
+
+    this.limit = {
+      canRun: true,
+      y: 10
+    }
+    this.scroller = makeScroller({ base: this.lookup('base'), mounter: this.lookup('mounter'), limit: this.limit, onMove: () => { this.$emit('onMove') } })
 
     this.lookup('base').onLoop(() => {
-      this.paintCanvasCube.needsUpdate = true
+      // let time = window.performance.now() * 0.001
+      // this.paint2DTex.needsUpdate = true
+      this.paintCubeTex.needsUpdate = true
 
-      let time = window.performance.now() * 0.001
       this.layouts = {
-        omg: {
-          px: Math.sin(time * 3.0) * 50.0,
-          py: Math.sin(time * 3.0) * 50.0,
-          ry: Math.sin(time * 3.0) * 3.1415,
-          rz: Math.sin(time * 3.0) * 3.1415
+        ball: {
+          py: this.scroller.value * (this.screen.height * 0.5)
+        },
+        cluster: {
+          pz: -200,
+          rx: this.scroller.value * (Math.PI)
         }
       }
     })

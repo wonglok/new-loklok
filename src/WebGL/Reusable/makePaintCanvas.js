@@ -1,5 +1,5 @@
 import { Vector2, Color } from 'three'
-export const makePaintCanvas = ({ sdk, setting, domElement, base }) => {
+export const makePaintCanvas = ({ pixel = 32, sdk, setting, domElement, base }) => {
   let group = sdk.getGroup(setting)
 
   const easeOutSine = (t, b, c, d) => {
@@ -13,9 +13,9 @@ export const makePaintCanvas = ({ sdk, setting, domElement, base }) => {
 
   class TouchTexture {
     constructor () {
-      this.size = 32
-      this.width = 32
-      this.height = 32
+      this.size = pixel
+      this.width = pixel
+      this.height = pixel
       this.width = this.height = this.size
 
       this.maxAge = 350
@@ -235,13 +235,15 @@ export const makePaintCanvas = ({ sdk, setting, domElement, base }) => {
     //     y: Math.random()
     //   })
     // }
-    if (Math.random() < 0.95) {
-      t.addTouch({
-        x: Math.random(),
-        y: Math.random()
-      })
-    }
-    if (Math.random() < 0.95) {
+
+    // if (Math.random() < 0.95) {
+    //   t.addTouch({
+    //     x: Math.random(),
+    //     y: Math.random()
+    //   })
+    // }
+
+    if (Math.random() < 0.15) {
       t.addTouch({
         x: Math.random(),
         y: Math.random()

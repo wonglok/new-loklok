@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import { Tree } from '../Reusable'
+import { Tree } from '../../Reusable'
 import { LineSegments, BoxBufferGeometry, MeshBasicMaterial } from 'three'
 export default {
   name: 'Test',
   mixins: [Tree],
   components: {
-    ...require('../webgl')
+    ...require('../../webgl')
   },
   data () {
     return {

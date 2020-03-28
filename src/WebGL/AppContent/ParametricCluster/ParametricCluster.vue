@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { CylinderGeometry, Vector2, InstancedBufferGeometry, BufferAttribute, InstancedBufferAttribute, RawShaderMaterial, Mesh, Object3D } from 'three'
+import { CylinderGeometry, Vector3, Vector2, InstancedBufferGeometry, BufferAttribute, InstancedBufferAttribute, RawShaderMaterial, Mesh, Object3D } from 'three'
 import { Tree } from '../../Reusable'
 /* eslint-disable */
 export const tubeV = require('raw-loader!./tubeV.glsl').default
@@ -112,7 +112,7 @@ export default {
   async mounted () {
     let count = 100
     let numSides = 4
-    let subdivisions = 350
+    let subdivisions = 275
     let openEnded = false
     let geo = await createLineGeo({ count, numSides, subdivisions, openEnded })
 
@@ -125,7 +125,6 @@ export default {
       mFresnelBias: { value: 0.2 },
       mFresnelPower: { value: 2.2 },
       mFresnelScale: { value: 1.2 },
-
       tCube: { value: null },
       tDudv: { value: null },
       useDudv: { value: false },
@@ -133,21 +132,18 @@ export default {
       // baseColor: { value: new Color('#fff') },
       thickness: { value: 0.01 },
       spread: { value: 0.01 },
-      // animateStrength: { value: 0.01 },
-      // animateRadius: { value: 0.01 },
-      time: { value: 0 }
+      time: { value: 0 },
+      displacement: { value: new Vector3() }
     }
 
     let sdk = this.lookup('sdk')
-    let group = sdk.getGroup('parametric-baller')
+    let group = sdk.getGroup('parametric-cluster')
 
     this.lookup('base').onLoop(() => {
       geo.maxInstancedCount = Math.floor(group.autoGet('maxLines') / 100.0 * count)
 
-      // uniforms.animateStrength.value = group.autoGet('animateStrength') / 100.0
-      // uniforms.animateRadius.value = group.autoGet('animateRadius') / 100.0
-
-      uniforms.spread.value = group.autoGet('spread') / 10.0
+      uniforms.displacement.value = group.autoGet('displacement').multiplyScalar(0.1)
+      uniforms.spread.value = group.autoGet('spread')
       uniforms.thickness.value = group.autoGet('thickness') / 1000.0
 
       uniforms.baseOpacity.value = group.autoGet('baseOpacity') / 100.0
@@ -176,24 +172,9 @@ export default {
 
     uniforms.tCube.value = this.tCube
 
-    // console.log(this.lookup('paintCanvasCube'))
-
     let obj3d = new Object3D()
     obj3d.add(mesh)
     this.o3d.add(obj3d)
-
-    // mesh.position.z = 34.0 - 50
-
-    // group.autoPulse('position', (v) => {
-    //   mesh.position.x = v.x - 50.0
-    //   mesh.position.y = v.y - 50.0
-    //   mesh.position.z = v.z - 50.0
-    // })
-
-    // let geo = new BoxBufferGeometry(50, 50, 50, 20, 20, 20)
-    // let mat = new MeshBasicMaterial({ color: 0xff0000 })
-    // let item = new LineSegments(geo, mat)
-    // this.o3d.add(item)
   },
   beforeDestroy () {
   }
