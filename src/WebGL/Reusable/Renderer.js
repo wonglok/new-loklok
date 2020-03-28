@@ -1,4 +1,4 @@
-import { WebGLRenderer } from "three"
+import { WebGLRenderer } from 'three'
 
 export class Renderer {
   constructor ({ base, makeGIF }) {
