@@ -102,9 +102,10 @@ export const Tree = {
   methods: {
     getScreen () {
       this.lookup('scene').updateMatrixWorld()
-      var vector = new Vector3()
-      vector.setFromMatrixPosition(this.o3d.matrixWorld)
-      return getScreen({ camera: lookup(this, 'camera'), depth: vector.z })
+      this.tempVector3 = this.tempVector3 || new Vector3()
+      this.tempVector3.setFromMatrixPosition(this.o3d.matrixWorld)
+      // console.log(this.$options.name, this.tempVector3.z)
+      return getScreen({ camera: lookup(this, 'camera'), depth: this.tempVector3.z })
     },
 
     castdown (ev, data) {

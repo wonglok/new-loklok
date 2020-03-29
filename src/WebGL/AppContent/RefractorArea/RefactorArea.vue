@@ -34,7 +34,7 @@ export default {
 
     this.$on('init', () => {
       let camera = this.lookup('camera')
-      let screen = this.getScreen(this.depth)
+      let screen = this.getScreen()
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 20, 20)
       let item = new Refractor(geo, {
         color: this.color,
@@ -70,8 +70,10 @@ export default {
         item.material.uniforms['time'].value = window.performance.now() * 0.001
       })
     })
-    this.$emit('init')
     this.lookup('base').onResize(() => {
+      this.$emit('init')
+    })
+    this.$nextTick(() => {
       this.$emit('init')
     })
   },

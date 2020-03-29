@@ -10,7 +10,7 @@
       <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
     </O3D>
     <O3D :animated="true" layout="cross">
-      <RefactorArea dudv="cross-2" :depth="20" :blur="0.95"></RefactorArea>
+      <RefactorArea dudv="cross-2" :blur="0.95"></RefactorArea>
       <O3D :animated="true" layout="gospel">
         <TextureText font="Arial" align="left" :text="gospel"></TextureText>
       </O3D>
@@ -89,7 +89,7 @@ Love never ends.
           rx: this.scroller.value * (Math.PI)
         },
         gospel: {
-          pz: 30
+          pz: 1
         }
       }
     })
