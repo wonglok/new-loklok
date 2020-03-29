@@ -13,6 +13,9 @@ export default {
   name: 'RefactorArea',
   mixins: [Tree],
   props: {
+    depth: {
+      default: 20
+    },
     blur: {},
     dudv: {},
     color: {
@@ -31,7 +34,7 @@ export default {
 
     this.$on('init', () => {
       let camera = this.lookup('camera')
-      let screen = this.getScreen()
+      let screen = this.getScreen(this.depth)
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 20, 20)
       let item = new Refractor(geo, {
         color: this.color,

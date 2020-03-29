@@ -100,8 +100,8 @@ export const Tree = {
     }
   },
   methods: {
-    getScreen () {
-      return getScreen({ camera: lookup(this, 'camera'), depth: this.o3d.position.z })
+    getScreen (depth) {
+      return getScreen({ camera: lookup(this, 'camera'), depth: depth || this.o3d.position.z })
     },
 
     castdown (ev, data) {

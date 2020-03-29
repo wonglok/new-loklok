@@ -9,8 +9,11 @@
     <O3D :animated="true" layout="dome">
       <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
     </O3D>
+    <O3D>
+      <TextureText font="Arial" align="left" :text="gospel"></TextureText>
+    </O3D>
     <O3D :animated="true" layout="cross">
-      <RefactorArea dudv="cross-2" :blur="0.96"></RefactorArea>
+      <RefactorArea dudv="cross-2" :depth="0" :blur="0.95"></RefactorArea>
     </O3D>
   </O3D>
 </template>
@@ -26,6 +29,20 @@ export default {
   mixins: [Tree],
   data () {
     return {
+      gospel: `Love is patient and kind;
+love does not envy or boast;
+It is not arrogant or rude.
+It does not insist on its own way;
+It is not irritable or resentful;
+It does not rejoice at wrongdoing,
+but rejoices with the truth.
+Love bears all things,
+believes all things,
+hopes all things,
+endures all things.
+Love never ends.
+
+1 Corinthians 13:4–8a`,
       scene: new Scene(),
       paint2DTex: false,
       paintCubeTex: false,
@@ -61,6 +78,7 @@ export default {
 
       this.layouts = {
         cross: {
+          pz: 20,
           py: this.scroller.value * (this.screen.height)
         },
         ball: {
