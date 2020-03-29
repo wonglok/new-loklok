@@ -28,7 +28,7 @@ export const makeScroller = ({ base, mounter, limit = { canRun: true, y: 1000 },
 
   let browserScrollBox = document.querySelector('.broswer-scroll-box')
   let scrollAmount = 0
-  let SmoothY = new ValueDamper(-0.2)
+  let SmoothY = new ValueDamper(0.0)
   SmoothY.value = 0.0
   if (browserScrollBox) {
     browserScrollBox.addEventListener('scroll', () => {

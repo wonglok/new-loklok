@@ -10,7 +10,7 @@
       <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
     </O3D>
     <O3D :animated="true" layout="cross">
-      <RefactorArea dudv="cross" :blur="0.6"></RefactorArea>
+      <RefactorArea dudv="cross-2" :blur="0.96"></RefactorArea>
     </O3D>
   </O3D>
 </template>
