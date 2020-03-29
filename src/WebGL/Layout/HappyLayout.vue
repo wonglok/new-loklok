@@ -9,6 +9,9 @@
     <O3D :animated="true" layout="dome">
       <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
     </O3D>
+    <O3D :animated="true" layout="cross">
+      <RefactorArea dudv="cross" :blur="0.6"></RefactorArea>
+    </O3D>
   </O3D>
 </template>
 
@@ -47,7 +50,7 @@ export default {
 
     this.limit = {
       canRun: true,
-      y: 10
+      y: 1
     }
     this.scroller = makeScroller({ base: this.lookup('base'), mounter: this.lookup('mounter'), limit: this.limit, onMove: () => { this.$emit('onMove') } })
 
@@ -57,6 +60,9 @@ export default {
       this.paintCubeTex.needsUpdate = true
 
       this.layouts = {
+        cross: {
+          py: this.scroller.value * (this.screen.height)
+        },
         ball: {
           py: this.scroller.value * (this.screen.height * 0.5)
         },

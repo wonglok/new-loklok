@@ -8,7 +8,7 @@
 import { Tree } from '../Reusable'
 // import { Mesh, BoxBufferGeometry, MeshBasicMaterial } from 'three'
 export default {
-  name: 'Test',
+  name: 'O3D',
   mixins: [Tree],
   components: {
     // ...require('../webgl')
