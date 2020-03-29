@@ -19,7 +19,7 @@ export default {
       default: 'center'
     }
   },
-  name: 'Test',
+  name: 'TexureText',
   mixins: [Tree],
   components: {
     ...require('../webgl')

@@ -4,7 +4,7 @@
       "group": "paint-canvas",
       "key": "hue-spread",
       "type": "number",
-      "value": 67.12,
+      "value": 0,
       "id": "_160237"
     },
     {
@@ -13,8 +13,8 @@
       "type": "color",
       "value": {
         "r": 0,
-        "g": 255,
-        "b": 92,
+        "g": 168,
+        "b": 255,
         "a": 0.74
       },
       "id": "_929803"
@@ -24,9 +24,9 @@
       "key": "canvas-texture-bg",
       "type": "color",
       "value": {
-        "r": 0,
-        "g": 0,
-        "b": 0,
+        "r": 230,
+        "g": 230,
+        "b": 255,
         "a": 0.74
       },
       "id": "_959545"
