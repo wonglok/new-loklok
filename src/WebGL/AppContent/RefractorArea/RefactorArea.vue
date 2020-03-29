@@ -38,8 +38,8 @@ export default {
       let geo = new PlaneBufferGeometry(screen.width, screen.height, 20, 20)
       let item = new Refractor(geo, {
         color: this.color,
-        textureWidth: RES_SIZE / camera.aspect,
-        textureHeight: RES_SIZE,
+        textureWidth: RES_SIZE,
+        textureHeight: RES_SIZE * camera.aspect,
         shader: FastBlurShader
       })
 
@@ -56,7 +56,7 @@ export default {
       } else if (this.dudv === 'flower') {
         item.material.uniforms['tDudv'].value = new TextureLoader().load(require('./tex/flower.jpg'))
       }
-      item.material.uniforms['resolution'].value = new Vector2(RES_SIZE / camera.aspect, RES_SIZE)
+      item.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
 
       this.o3d.children.forEach((v) => {
         this.o3d.remove(v)

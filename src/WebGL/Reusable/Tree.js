@@ -1,5 +1,5 @@
 import { Parser } from 'expr-eval'
-import { Object3D } from 'three'
+import { Object3D, Vector3 } from 'three'
 import { getScreen } from './index.js'
 let parent = (vm) => vm.$parent// || vm.getRootNode().host
 
@@ -100,8 +100,11 @@ export const Tree = {
     }
   },
   methods: {
-    getScreen (depth) {
-      return getScreen({ camera: lookup(this, 'camera'), depth: depth || this.o3d.position.z })
+    getScreen () {
+      this.lookup('scene').updateMatrixWorld()
+      var vector = new Vector3()
+      vector.setFromMatrixPosition(this.o3d.matrixWorld)
+      return getScreen({ camera: lookup(this, 'camera'), depth: vector.z })
     },
 
     castdown (ev, data) {

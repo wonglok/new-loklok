@@ -30,6 +30,8 @@ export default {
   },
   mounted () {
     this.$on('init', async () => {
+      this.o3d.position.z = 1
+
       async function loadSeaside () {
         const font = new FontFace('SeasideResortNF', `url('/fonts/seaside/SeasideResortNF.eot?#iefix') format('embedded-opentype'),  url('/fonts/seaside/SeasideResortNF.woff') format('woff'), url('/fonts/seaside/SeasideResortNF.ttf')  format('truetype'), url('/fonts/seaside/SeasideResortNF.svg#SeasideResortNF') format('svg')`, {
           family: 'SeasideResortNF',
@@ -59,9 +61,14 @@ export default {
         text: this.text
       })
       texture.redraw()
+      let defaultSize = texture.image.width * 0.075
 
-      let width = texture.image.width * 0.075
-      let height = texture.image.width * 0.075 * (texture.image.height) / (texture.image.width)
+      if (defaultSize > this.screen.width * 0.9) {
+        defaultSize = this.screen.width * 0.9
+      }
+
+      let width = defaultSize
+      let height = defaultSize * (texture.image.height) / (texture.image.width)
       let geo = new PlaneBufferGeometry(width, height, 2, 2)
 
       geo.computeBoundingSphere()
@@ -84,7 +91,6 @@ export default {
         this.o3d.remove(v)
       })
       this.o3d.add(item)
-      this.o3d.position.z = 1
     })
     this.$emit('init')
     this.$watch('text', () => {
@@ -94,6 +100,9 @@ export default {
       this.$emit('init')
     })
     this.$watch('align', () => {
+      this.$emit('init')
+    })
+    this.lookup('base').onResize(() => {
       this.$emit('init')
     })
   },

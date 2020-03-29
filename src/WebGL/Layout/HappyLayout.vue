@@ -1,5 +1,5 @@
 <template>
-  <O3D>
+  <O3D v-if="layouts">
     <!-- <O3D :animated="true" layout="ball">
       <ParametricBall v-if="paintCubeTex" :tCube="paintCubeTex"></ParametricBall>
     </O3D> -->
@@ -9,11 +9,11 @@
     <O3D :animated="true" layout="dome">
       <SkyDome v-if="paint2DTex" :texture="paint2DTex"></SkyDome>
     </O3D>
-    <O3D>
-      <TextureText font="Arial" align="left" :text="gospel"></TextureText>
-    </O3D>
     <O3D :animated="true" layout="cross">
-      <RefactorArea dudv="cross-2" :depth="0" :blur="0.95"></RefactorArea>
+      <RefactorArea dudv="cross-2" :depth="20" :blur="0.95"></RefactorArea>
+      <O3D :animated="true" layout="gospel">
+        <TextureText font="Arial" align="left" :text="gospel"></TextureText>
+      </O3D>
     </O3D>
   </O3D>
 </template>
@@ -46,7 +46,7 @@ Love never ends.
       scene: new Scene(),
       paint2DTex: false,
       paintCubeTex: false,
-      layouts: {}
+      layouts: false
     }
   },
   created () {
@@ -87,6 +87,9 @@ Love never ends.
         cluster: {
           pz: -200,
           rx: this.scroller.value * (Math.PI)
+        },
+        gospel: {
+          pz: 30
         }
       }
     })
