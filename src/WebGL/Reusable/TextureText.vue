@@ -29,7 +29,8 @@ export default {
     }
   },
   mounted () {
-    this.$on('init', async () => {
+    this.$on('exec', async () => {
+      console.log('exec-texture-text', this.text)
       this.o3d.position.z = 1
 
       async function loadSeaside () {
@@ -85,12 +86,19 @@ export default {
       this.$emit('child', sizing)
       this.$parent.$emit('child', sizing)
 
-      let mat = new MeshBasicMaterial({ color: 0xffffff, map: texture, transparent: true })
+      let mat = new MeshBasicMaterial({ color: 0xffffff, opacity: 1, map: texture, transparent: true })
       let item = new Mesh(geo, mat)
       this.o3d.children.forEach((v) => {
         this.o3d.remove(v)
       })
       this.o3d.add(item)
+    })
+    var tout = 0
+    this.$on('init', () => {
+      clearTimeout(tout)
+      tout = setTimeout(() => {
+        this.$emit('exec')
+      }, 100)
     })
     this.$emit('init')
     this.$watch('text', () => {
