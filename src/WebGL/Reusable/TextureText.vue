@@ -106,7 +106,6 @@ export default {
       this.$emit('init')
     })
     this.$watch('screen', () => {
-      console.log('on relayout-screen')
       this.$emit('init')
     })
   },
