@@ -105,6 +105,10 @@ export default {
     this.lookup('base').onResize(() => {
       this.$emit('init')
     })
+    this.$on('relayout', () => {
+      console.log('relayout')
+      this.$emit('init')
+    })
   },
   beforeDestroy () {
   }

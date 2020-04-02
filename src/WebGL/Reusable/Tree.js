@@ -60,7 +60,6 @@ export const Tree = {
       this.onSyncFormula()
     })
   },
-
   watch: {
     visible () {
       this.$emit('syncFormula')
@@ -75,7 +74,9 @@ export const Tree = {
 
   mounted () {
     this.$parent.$emit('add', this.o3d)
+
     this.$emit('syncFormula')
+
     if (this.animated) {
       this.lookup('base').onLoop(() => {
         this.$emit('syncFormula')
@@ -87,6 +88,8 @@ export const Tree = {
       })
       // console.log(this.$options.name, this.lookup('base'))
     }
+
+    this.relayout()
     console.log('Mounted:', this.$options.name)
   },
 
@@ -100,6 +103,15 @@ export const Tree = {
     }
   },
   methods: {
+    relayout () {
+      let castDown = ({ lv, ev }) => {
+        lv.$emit('syncFormula')
+        lv.$children.forEach((kid) => {
+          castDown({ lv: kid, ev })
+        })
+      }
+      castDown({ lv: this, ev: 'relayout' })
+    },
     getScreen () {
       this.lookup('scene').updateMatrixWorld()
       this.tempVector3 = this.tempVector3 || new Vector3()

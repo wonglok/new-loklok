@@ -61,6 +61,9 @@ Love never ends.
       paintCanvas.canvas
     ])
   },
+  methods: {
+
+  },
   async mounted () {
     this.scene.add(this.o3d)
     this.$emit('scene', this.scene)
@@ -73,13 +76,15 @@ Love never ends.
     this.scroller = makeScroller({ base: this.lookup('base'), mounter: this.lookup('mounter'), limit: this.limit, onMove: () => { this.$emit('onMove') } })
 
     this.lookup('base').onLoop(() => {
-      this.blur = this.scroller.value
+      this.blur = 1.0 - this.scroller.value
+
       // let time = window.performance.now() * 0.001
       // this.paint2DTex.needsUpdate = true
       this.paintCubeTex.needsUpdate = true
 
       this.layouts = {
         cross: {
+          visible: this.blur > 0.1,
           pz: 20,
           py: this.scroller.value * (this.screen.height)
         },
@@ -95,8 +100,6 @@ Love never ends.
         }
       }
     })
-  },
-  methods: {
   }
 }
 </script>
