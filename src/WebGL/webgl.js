@@ -24,8 +24,8 @@ async function importAll (r, type) {
   return exporter
 }
 
-importAll(require.context('./Layout', true, /\.vue$/, 'lazy'), 'lazy')
-importAll(require.context('./AppContent', true, /\.vue$/, 'lazy'), 'lazy')
-importAll(require.context('./Reusable', true, /\.vue$/, 'lazy'), 'lazy')
+importAll(require.context('./Layout', true, /\.vue$/, 'sync'), 'sync')
+importAll(require.context('./AppContent', true, /\.vue$/, 'sync'), 'sync')
+importAll(require.context('./Reusable', true, /\.vue$/, 'sync'), 'sync')
 
 export default exporter
