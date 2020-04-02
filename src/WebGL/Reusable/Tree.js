@@ -86,10 +86,8 @@ export const Tree = {
       this.lookup('base').onResize(() => {
         this.$emit('syncFormula')
       })
-      // console.log(this.$options.name, this.lookup('base'))
     }
 
-    this.relayout()
     console.log('Mounted:', this.$options.name)
   },
 
@@ -104,13 +102,13 @@ export const Tree = {
   },
   methods: {
     relayout () {
-      let castDown = ({ lv, ev }) => {
-        lv.$emit('syncFormula')
+      let castDown = ({ lv, ev, data }) => {
+        lv.$emit(ev, data)
         lv.$children.forEach((kid) => {
-          castDown({ lv: kid, ev })
+          castDown({ lv: kid, ev, data })
         })
       }
-      castDown({ lv: this, ev: 'relayout' })
+      castDown({ lv: this, ev: 'relayout', data: true })
     },
     getScreen () {
       this.lookup('scene').updateMatrixWorld()
