@@ -36,6 +36,7 @@ export const Tree = {
   },
   data () {
     return {
+      screen: false,
       child: {
         width: 0.000000000000001,
         height: 0.000000000000001,
@@ -83,12 +84,17 @@ export const Tree = {
       })
     }
     if (this.lookup('base')) {
+      this.screen = this.getScreen()
       this.lookup('base').onResize(() => {
         this.$emit('syncFormula')
+        this.screen = this.getScreen()
       })
     }
 
     console.log('Mounted:', this.$options.name)
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 0)
   },
 
   beforeDestroy () {
@@ -96,26 +102,29 @@ export const Tree = {
     this.$parent.$emit('remove', this.o3d)
   },
   computed: {
-    screen () {
-      return this.getScreen()
-    }
   },
   methods: {
-    relayout () {
-      let castDown = ({ lv, ev, data }) => {
-        lv.$emit(ev, data)
-        lv.$children.forEach((kid) => {
-          castDown({ lv: kid, ev, data })
-        })
-      }
-      castDown({ lv: this, ev: 'relayout', data: true })
-    },
+    // relayout () {
+    //   let castDown = ({ lv, ev, data }) => {
+    //     lv.$emit(ev, data)
+    //     lv.$children.forEach((kid) => {
+    //       castDown({ lv: kid, ev, data })
+    //     })
+    //   }
+    //   castDown({ lv: this, ev: 'relayout', data: true })
+    // },
     getScreen () {
-      this.lookup('scene').updateMatrixWorld()
+      let scene = this.lookup('scene')
+      let camera = this.lookup('camera')
+      if (scene) {
+        scene.updateMatrixWorld()
+      }
+      if (!camera) {
+        return
+      }
       this.tempVector3 = this.tempVector3 || new Vector3()
       this.tempVector3.setFromMatrixPosition(this.o3d.matrixWorld)
-      // console.log(this.$options.name, this.tempVector3.z)
-      return getScreen({ camera: lookup(this, 'camera'), depth: this.tempVector3.z })
+      return getScreen({ camera, depth: this.tempVector3.z })
     },
 
     castdown (ev, data) {

@@ -31,7 +31,6 @@ export default {
   mounted () {
     this.$on('init', async () => {
       this.o3d.position.z = 1
-      this.$emit('syncFormula')
 
       async function loadSeaside () {
         const font = new FontFace('SeasideResortNF', `url('/fonts/seaside/SeasideResortNF.eot?#iefix') format('embedded-opentype'),  url('/fonts/seaside/SeasideResortNF.woff') format('woff'), url('/fonts/seaside/SeasideResortNF.ttf')  format('truetype'), url('/fonts/seaside/SeasideResortNF.svg#SeasideResortNF') format('svg')`, {
@@ -106,8 +105,8 @@ export default {
     this.lookup('base').onResize(() => {
       this.$emit('init')
     })
-    this.$on('relayout', () => {
-      console.log('relayout')
+    this.$watch('screen', () => {
+      console.log('on relayout-screen')
       this.$emit('init')
     })
   },
