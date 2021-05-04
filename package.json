@@ -23,7 +23,7 @@
     "core-js": "^3.3.2",
     "csvtojson": "^2.0.10",
     "depth-reader": "^1.4.1",
-    "exiftool-vendored": "^9.4.0",
+    "exiftool-vendored": "^14.3.0",
     "expr-eval": "^2.0.2",
     "fontfaceobserver": "^2.1.0",
     "gifshot": "^0.4.5",
